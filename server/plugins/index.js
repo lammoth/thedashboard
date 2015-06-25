@@ -19,6 +19,11 @@ module.exports = function(app, plugins) {
       var path = __dirname + '/' + plugin.name + '/' + plugin.active;
       if (check(path)) {
         plugin.path = path;
+        var DruidPlugin = require(path);
+        var druidPlugin = new DruidPlugin();
+        druidPlugin.query(plugin.config);
+        // plugin.instance = require(path)(plugin.config);
+        // console.log(plugin.instance);
         currentPlugins.push(plugin);
       } else {
         throw new Error('You need add an index.js file in the ' + plugin.active + ' plugin');
@@ -34,4 +39,6 @@ module.exports = function(app, plugins) {
 
   // Plugins setted express app
   app.set('plugins', currentPlugins);
+
+  console.log('Plugins registered');
 };

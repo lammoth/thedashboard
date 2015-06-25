@@ -31,7 +31,6 @@ require('./routes')(app);
 // Setup plugins system
 var pluginsConfig = require('./config/plugins');
 require('./plugins')(app, pluginsConfig); 
-console.log(app.get('plugins'));
 
 // Start server
 server.listen(config.port, config.ip, function () {
