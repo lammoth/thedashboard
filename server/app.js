@@ -29,7 +29,9 @@ require('./config/express')(app);
 require('./routes')(app);
 
 // Setup plugins system
-require('./plugins/acquisitor/druid')({test:"test"});
+var pluginsConfig = require('./config/plugins');
+require('./plugins')(app, pluginsConfig); 
+console.log(app.get('plugins'));
 
 // Start server
 server.listen(config.port, config.ip, function () {
