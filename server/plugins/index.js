@@ -20,10 +20,10 @@ module.exports = function(app, plugins) {
       if (check(path)) {
         plugin.path = path;
         var DruidPlugin = require(path);
-        var druidPlugin = new DruidPlugin();
-        druidPlugin.query(plugin.config);
-        // plugin.instance = require(path)(plugin.config);
-        // console.log(plugin.instance);
+        var druidPlugin = new DruidPlugin(plugin.config);
+        var druidConnection = druidPlugin.connect();
+        druidPlugin.query.query = {"queryType":"timeBoundary","dataSource":"logstash.syslog.raw"};
+        druidPlugin.query.makeQuery(druidConnection);
         currentPlugins.push(plugin);
       } else {
         throw new Error('You need add an index.js file in the ' + plugin.active + ' plugin');
