@@ -9,55 +9,15 @@ var _ = require('lodash');
 module.exports = QueryReq;
 
 function QueryReq(query) {
-  // var druidConnection = createConnection;
-  // var druidQuery = parseJson(query);
-  // execQuery(druidConnection, druidQuery);
   this.query = query;
-  // makeQuery(query);
 }
-
-// function parseJson(query) {
-//   var druidQuery = makeQuery(query, _.keys(query));
-// }
-
-// QueryReq.prototype.createConnection = function(data) {
-//   return new Druid(data.address, data.parameters, data.extra);
-// }
 
 // Extract all needed key in the query
 QueryReq.prototype.makeQuery = function(connection) {
-// function makeQuery(query, keys) {
+  console.log(this.query);
   var Client = Druid.Client
     , Query = Druid.Query(Client, this.query);
-  console.log(this.query);
   this.execQuery(connection, Query);
-  // var druidObj = null;
-  // _.forEach(keys, function(key) {
-  //   if (key === "queryType") {
-  //     switch(value) {
-  //       case "groupBy":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       case "search":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       case "segmentMetadata":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       case "timeBoundary":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       case "timeseries":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       case "topN":
-  //         druidObj = new Druid.TimeBoundaryQuery();
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-  // });
 }
 
 QueryReq.prototype.execQuery = function(connection, query) {

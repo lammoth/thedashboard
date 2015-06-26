@@ -13,7 +13,7 @@ function DruidPlugin(data) {
   this.data = data;
 
   // Druid query lib
-  this.query = new Query(this.data);
+  this.queryClient = new Query();
 }
 
 // Return a new Druid connection
