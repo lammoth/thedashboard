@@ -2,6 +2,9 @@
 
 var _ = require('lodash');
 var Data = require('./data.model');
+var config = require('../../config/general');
+var Plugin = require('../../plugins');
+var pluginsConfig = require('../../config/plugins');
 
 // Get list of datas
 exports.index = function(req, res) {
@@ -57,3 +60,27 @@ exports.destroy = function(req, res) {
 function handleError(res, err) {
   return res.send(500, err);
 }
+
+// Extra controllers
+
+// Get datasources list
+exports.sources = function(req, res) {
+  var plugin = new Plugin(req.app, pluginsConfig);
+  if (req.app.get('plugins').length > 0) {
+    var activePlugins = plugin.activePlugins(req.app.get('plugins'), req.params.name);
+  }
+  // if (req.app.get('plugins').length > 0) {
+  //   console.log(req.params.name);
+  //   _.forEach(req.app.get('plugins'), function(plugin){
+  //     if (plugin.active === true && plugin.name === req.params.name) {
+  //       console.log(plugin);
+  //     }
+  //   });
+  // }
+
+  return res.json(
+    {
+      response: "ok"
+    }
+  );
+};

@@ -30,7 +30,8 @@ require('./routes')(app);
 
 // Setup plugins system
 var pluginsConfig = require('./config/plugins');
-require('./plugins')(app, pluginsConfig); 
+var PluginEngine = require('./plugins');
+var initPlugin = new PluginEngine(app, pluginsConfig);
 
 // Start server
 server.listen(config.port, config.ip, function () {

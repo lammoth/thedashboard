@@ -5,13 +5,14 @@
 'use strict';
 
 var errors = require('./components/errors');
+var config = require('./config/general');
 
 module.exports = function(app) {
 
   // Insert routes below
-  app.use('/n', require('./api/data'));
-  app.use('/api/things', require('./api/thing'));
-  app.use('/api/users', require('./api/user'));
+  app.use(config.api.path + '/things', require('./api/thing'));
+  app.use(config.api.path + '/users', require('./api/user'));
+  app.use(config.api.path + '/data', require('./api/data'));
 
   app.use('/auth', require('./auth'));
   
