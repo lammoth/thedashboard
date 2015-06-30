@@ -1,5 +1,5 @@
 /**
- * Plugin engine
+ * Druid plugin engine
  */
 
 var glob = require("glob");
@@ -22,10 +22,26 @@ module.exports = function(app, plugins) {
 
         // TODO: Remove this, it's only for test purposes
         var DruidPlugin = require(path);
-        var druidPlugin = new DruidPlugin(plugin.config);
+        var druidPlugin = new DruidPlugin(plugin.config, true);
         var druidConnection = druidPlugin.connect();
         druidConnection.once('ready', function() {
-          druidPlugin.queryClient.query = {"queryType":"timeBoundary","dataSource":"logstash.syslog.raw"};
+          druidPlugin.queryClient.query = {
+  "queryType": "timeseries",
+  "granularity": "hour",
+  "dataSource": "logstash.syslog.raw",
+  "intervals": ["2015-06-25T00:00:00.000/2015-07-01T00:00:00.000"],
+  "aggregations": [
+  {
+    "type": "count",
+    "name": "sample_name1"
+    },
+    {
+      "type": "cardinality",
+      "name": "cardinality_sample",
+      "fieldNames": ["logsource", "severity"]
+    }
+    ]
+};
           druidPlugin.queryClient.makeQuery(druidConnection);
         });
 

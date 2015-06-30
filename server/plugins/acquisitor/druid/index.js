@@ -7,13 +7,13 @@ var Druid = require('druid-query'),
 
 module.exports = DruidPlugin;
 
-function DruidPlugin(data) {
+function DruidPlugin(data, benchmark) {
 
   // Druid data needed to stablish the connection
   this.data = data;
 
   // Druid query lib
-  this.queryClient = new Query();
+  this.queryClient = new Query(benchmark);
 }
 
 // Return a new Druid connection

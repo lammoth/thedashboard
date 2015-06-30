@@ -2,25 +2,33 @@
  * Druid query lib
  */
 
-var Druid = require('druid-query');
-var _ = require('lodash');
+var Druid = require('druid-query'),
+  _ = require('lodash'),
+  Benchmark = require('./benchmark');
 
 
 module.exports = QueryReq;
 
-function QueryReq(query) {
-  this.query = query;
+// Query request object
+function QueryReq(benchmark) {
+  this.query = null;
+  this.benchmark = ((benchmark) ? new Benchmark() : null);
 }
 
 // Extract all needed key in the query
 QueryReq.prototype.makeQuery = function(connection) {
-  console.log(this.query);
-  var Client = Druid.Client
-    , Query = Druid.Query(Client, this.query);
-  this.execQuery(connection, Query);
+  var Query = Druid.Query;
+  var query = new Query(connection, this.query);
+  this.execQuery(connection, query);
 }
 
 QueryReq.prototype.execQuery = function(connection, query) {
+  var parent = this;
+
+  if (this.benchmark) {
+    this.benchmark.startBenchmark();
+  }
+
   connection.exec(query, function(err, results) {
     if (err) {
       // error reasons:
@@ -30,19 +38,19 @@ QueryReq.prototype.execQuery = function(connection, query) {
       console.log(err);
     } else {
       // handle results
-      console.log(results);
+      if (parent.benchmark) {
+        parent.benchmark.stopBenchmark();
+        console.info("Druid query has took %d %s to get %d results", parent.benchmark.result(), 'ms', results.length);
+      }
     }
     
     // Call .end() when finished working with Druid
     connection.end();
   });
 
-  connection.once('ready', function() {
-    // Do what you want with this event :-)
-  });
-
   connection.on('error', function(err) {
     // handle client error here
+    console.log(err);
   });
 }
 
