@@ -1,34 +1,114 @@
 .row
-  .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.2s; -webkit-animation-delay: 0.2s;')
-    .hpanel
-        .panel-heading
-          .panel-tools
-            a.showhide
-              i.fa.fa-chevron-up                    
-            a.closebox
-              i.fa.fa-times
-          | Create a new visualization
-        |             
-        .panel-body
-          p.m-b-lg
-            | Select the visualization you want and customized it
+  //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.2s; -webkit-animation-delay: 0.2s;')
+  //-   .hpanel
+  //-       .panel-heading
+  //-         .panel-tools
+  //-           a.showhide
+  //-             i.fa.fa-chevron-up                    
+  //-           a.closebox
+  //-             i.fa.fa-times
+  //-         | Create a new visualization
+  //-       |             
+  //-       .panel-body
+  //-         p.m-b-lg
+  //-           | Select the visualization you want and customized it
+  //-         |                 
+  //-         .list-group
+  //-           a.list-group-item(href='#')
+  //-             i.fa.fa-3x.fa-area-chart.pull-left
+  //-             p.list-group-item-heading 
+  //-               strong Area chart
+  //-             p.list-group-item-text
+  //-             | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.       
+  //-           a.list-group-item(href='#')
+  //-             i.fa.fa-3x.fa-bar-chart.pull-left
+  //-             p.list-group-item-heading 
+  //-               strong Vertical bar chart
+  //-             p.list-group-item-text
+  //-             | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+  //-           a.list-group-item(href='#')
+  //-             i.fa.fa-3x.fa-pie-chart.pull-left
+  //-             p.list-group-item-heading
+  //-               strong Pie chart
+  //-             p.list-group-item-text
+  //-             | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+
+  //- .col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+  //-   .hpanel
+  //-     .panel-body.text-center.h-200
+  //-       i.fa.fa-area-chart.fa-4x
+  //-       |                 
+  //-       h1.m-xs Area chart
+  //-       |                 
+  //-       h3.font-extra-bold.no-margins.text-success Visualization
+  //-       |                 
+  //-       small Great for stacked timelines in which the total of all series is more important than comparing any two or more series. Less useful for assessing the relative change of unrelated data points as changes in a series lower down the stack will have a difficult to gauge effect on the series above it.
+  //-       |             
+  //-     .panel-footer
+  //-       a.btn.btn-outline.btn-success.btn-block Select
+
+  .col-lg-12.text-center.m-t-md.animated-panel.zoomIn.header-title(style="animation-delay: 0.1s; -webkit-animation-delay: 0.1s;")
+    h2 Create a new visualization     
+
+  .col-xs-12.col-md-6.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+    .hpanel.stats
+        .panel-body.h-200
+          .stats-title.pull-left
+            h3.text-success Area chart
           |                 
-          .list-group
-            a.list-group-item(href='#')
-              i.fa.fa-3x.fa-area-chart.pull-left
-              p.list-group-item-heading 
-                strong Area chart
-              p.list-group-item-text
-              | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.       
-            a.list-group-item(href='#')
-              i.fa.fa-3x.fa-bar-chart.pull-left
-              p.list-group-item-heading 
-                strong Vertical bar chart
-              p.list-group-item-text
-              | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
-            a.list-group-item(href='#')
-              i.fa.fa-3x.fa-pie-chart.pull-left
-              p.list-group-item-heading
-                strong Pie chart
-              p.list-group-item-text
-              | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+          .stats-icon.pull-right
+            i.text-success.fa.fa-area-chart.fa-3x
+          |                 
+          .m-t-xl.pull-left
+            span.font-bold.no-margins
+              | Description
+            |                     
+            br
+            |                     
+            small
+              | Great for stacked timelines in which the total of all series is more important than comparing any two or more series.
+        |             
+        .panel-footer
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select
+
+  .col-xs-12.col-md-6.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+    .hpanel.stats
+        .panel-body.h-200
+          .stats-title.pull-left
+            h3.text-success Vertical bar chart
+          |                 
+          .stats-icon.pull-right
+            i.text-success.fa.fa-bar-chart.fa-3x
+          |                 
+          .m-t-xl.pull-left
+            span.font-bold.no-margins
+              | Description
+            |                     
+            br
+            |                     
+            small
+              | The goto chart for oh-so-many needs. Great for time and non-time data. Stacked or grouped, exact numbers or percentages. If you are not sure which chart your need, you could do worse than to start here.
+        |             
+        .panel-footer
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select
+
+  .col-xs-12.col-md-6.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+    .hpanel.stats
+        .panel-body.h-200
+          .stats-title.pull-left
+            h3.text-success Pie chart
+          |                 
+          .stats-icon.pull-right
+            i.text-success.fa.fa-pie-chart.fa-3x
+          |                 
+          .m-t-xl.pull-left
+            span.font-bold.no-margins
+              | Description
+            |                     
+            br
+            |                     
+            small
+              | Pie charts are ideal for displaying the parts of some whole. For example, sales percentages by department.Pro Tip: Pie charts are best used sparingly, and with no more than 7 slices per pie.
+        |             
+        .panel-footer
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select

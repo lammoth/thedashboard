@@ -30,18 +30,13 @@ function Plugin(app, plugins) {
         // druidConnection.once('ready', function() {
         //   druidPlugin.queryClient.query = {
         //     "queryType": "timeseries",
-        //     "granularity": "minute",
+        //     "granularity": "second",
         //     "dataSource": "logstash.syslog.raw",
-        //     "intervals": ["2015-06-25T00:00:00.000/2015-07-01T00:00:00.000"],
+        //     "intervals": ["2015-01-01T00:00:00.000/2015-07-02T00:00:00.000"],
         //     "aggregations": [
         //       {
         //         "type": "count",
         //         "name": "sample_name1"
-        //       },
-        //       {
-        //         "type": "cardinality",
-        //         "name": "cardinality_sample",
-        //         "fieldNames": ["logsource", "severity"]
         //       }
         //     ]
         //   };
@@ -68,6 +63,7 @@ function Plugin(app, plugins) {
   console.log('Plugins registered');
 };
 
+// Get all active plugins related with type
 Plugin.prototype.activePlugins = function(plugins, type) {
   var activeP = new Array();
   if (plugins.length > 0) {

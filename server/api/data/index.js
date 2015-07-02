@@ -5,14 +5,10 @@ var controller = require('./data.controller');
 
 var router = express.Router();
 
-// router.get('/', controller.index);
-// router.get('/:id', controller.show);
-// router.post('/', controller.create);
-// router.put('/:id', controller.update);
-// router.patch('/:id', controller.update);
-// router.delete('/:id', controller.destroy);
-
 // Extra routes
 router.get('/sources/:name', controller.sources);
+router.get('/config', controller.config);
+router.post('/config', controller.config);
+router.put('/config', controller.config);
 
 module.exports = router;

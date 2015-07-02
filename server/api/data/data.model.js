@@ -4,9 +4,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var DataSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  plugins: [
+    { name: String, pluginName: String, pluginTitle: String, enable: Boolean }
+  ]
 });
 
 module.exports = mongoose.model('Data', DataSchema);

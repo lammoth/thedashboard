@@ -8,7 +8,7 @@ angular.module('thedashboardApp')
         views: {
           "visualization": {
             templateUrl: 'app/visualization/visualization.html',
-            controller: 'VisualizationCtrl'
+            // controller: 'VisualizationCtrl'
           }
         }
       })
@@ -17,6 +17,15 @@ angular.module('thedashboardApp')
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-new.html',
+            controller: 'VisualizationCtrl'
+          }  
+        }
+      })
+      .state('main.visualization.editor', {
+        url: '/editor',
+        views: {
+          "visualization-child": {
+            templateUrl: 'app/visualization/visualization-editor.html',
             controller: 'VisualizationCtrl'
           }  
         }
