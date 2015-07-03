@@ -129,14 +129,14 @@ div(ui-view="main")
                       i.fa.fa-folder-open-o
             |             
             li
-              a(href='#')
+              a(ui-sref='main.settings')
                 span.nav-label Settings
                 span.arrow
                   i.fa.fa-sliders
 
   #wrapper
       .content.animate-panel
-        div(ui-view="visualization")
+        div(ui-view="section-view")
           .row
             .col-lg-12.text-center.m-t-md.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
               h2

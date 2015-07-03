@@ -69,7 +69,7 @@
               | Great for stacked timelines in which the total of all series is more important than comparing any two or more series.
         |             
         .panel-footer
-          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor({graph: 'area'})") Select
 
   .col-xs-12.col-md-6.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
     .hpanel.stats
@@ -90,7 +90,7 @@
               | The goto chart for oh-so-many needs. Great for time and non-time data. Stacked or grouped, exact numbers or percentages. If you are not sure which chart your need, you could do worse than to start here.
         |             
         .panel-footer
-          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor({graph: 'vertical-bar'})") Select
 
   .col-xs-12.col-md-6.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
     .hpanel.stats
@@ -111,4 +111,4 @@
               | Pie charts are ideal for displaying the parts of some whole. For example, sales percentages by department.Pro Tip: Pie charts are best used sparingly, and with no more than 7 slices per pie.
         |             
         .panel-footer
-          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor") Select
+          a.btn.btn-outline.btn-success.btn-block(ui-sref="main.visualization.editor({graph: 'pie'})") Select

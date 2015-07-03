@@ -6,7 +6,7 @@ angular.module('thedashboardApp')
       .state('main.visualization', {
         url: 'visualization',
         views: {
-          "visualization": {
+          "section-view": {
             templateUrl: 'app/visualization/visualization.html',
             // controller: 'VisualizationCtrl'
           }
@@ -22,7 +22,7 @@ angular.module('thedashboardApp')
         }
       })
       .state('main.visualization.editor', {
-        url: '/editor',
+        url: '/editor/:graph',
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-editor.html',

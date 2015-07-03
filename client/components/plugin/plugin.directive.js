@@ -9,7 +9,7 @@ angular.module('thedashboardApp')
         var acquisitorPluginPromise = Plugin.broker('getAcquisitor');
  
         acquisitorPluginPromise.then(function(acquisitorPlugin) {
-          var templateUrl = 'components/plugin/' + acquisitorPlugin + '/acquisitor-graphic-options.html';
+          var templateUrl = 'components/plugin/acquisitor/' + acquisitorPlugin + '/acquisitor-graphic-options.html';
 
           $templateRequest(templateUrl).then(function(html){
             element.append($compile(html)(scope));

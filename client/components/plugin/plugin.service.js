@@ -30,6 +30,24 @@ angular.module('thedashboardApp')
         return promise;
       },
 
+      getAcquisitorPlugins: function() {
+        if (plugins) {
+            var acquisitorPlugins = _.filter(plugins[0].plugins, function(plugin) {
+              if (plugin.name === "acquisitor") {
+                return true;
+              } else {
+                return false;
+              }
+            });
+
+            return acquisitorPlugins;
+            // _.find(plugins[0].plugins, {'name': 'acquisitor'});
+            // console.log(acquisitorPlugins);
+            // return ((_.isArray(acquisitorPlugins)) ? acquisitorPlugins : [acquisitorPlugins]);
+          }
+          return null;
+      },
+
       // Returns the acquisitor plugin active
       getAcquisitor: function() {
           if (plugins) {
