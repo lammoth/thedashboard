@@ -3,8 +3,9 @@
 // TODO: Get API version from somewhere
 
 angular.module('thedashboardApp')
-  .factory('Plugin', function Plugin($http, $q) {
+  .factory('Plugin', function Plugin($http, $q, $cacheFactory) {
     var plugins = {};
+    var cache = $cacheFactory('Plugin');
 
     // Get enable plugins
     function getConfig(cb) {
@@ -15,6 +16,7 @@ angular.module('thedashboardApp')
         success(function(data) {
           if (data.response === "error") { return data.data; }
           plugins = data.data;
+          cache.put("plugins", plugins);
           deferred.resolve(cb());
         }).
         error(function(err) {
@@ -26,12 +28,18 @@ angular.module('thedashboardApp')
     return {
       // Requests broker
       broker: function(name) {
-        var promise = getConfig(this[name]);
-        return promise;
+        if (!cache.get("plugins")) {
+          var promise = getConfig(this[name]);
+          return promise;
+        } else {
+          return this[name]();
+        }
       },
 
+      // Returns all acquisitor plugins availables
       getAcquisitorPlugins: function() {
-        if (plugins) {
+        if (plugins || cache.get("plugins")) {
+            if ((!plugins) ? plugins = cache.get("plugins") : plugins);
             var acquisitorPlugins = _.filter(plugins[0].plugins, function(plugin) {
               if (plugin.name === "acquisitor") {
                 return true;
@@ -41,17 +49,41 @@ angular.module('thedashboardApp')
             });
 
             return acquisitorPlugins;
-            // _.find(plugins[0].plugins, {'name': 'acquisitor'});
-            // console.log(acquisitorPlugins);
-            // return ((_.isArray(acquisitorPlugins)) ? acquisitorPlugins : [acquisitorPlugins]);
           }
           return null;
       },
 
       // Returns the acquisitor plugin active
       getAcquisitor: function() {
-          if (plugins) {
+          if (plugins || cache.get("plugins")) {
+            if ((!plugins) ? plugins = cache.get("plugins") : plugins);
             return _.result(_.find(plugins[0].plugins, {'name': 'acquisitor', 'enable': true}), 'pluginName');
+          }
+          return null;
+      },
+
+      // Returns all visualizator plugins availables
+      getVisualizatorPlugins: function() {
+        if (plugins || cache.get("plugins")) {
+            if ((!plugins) ? plugins = cache.get("plugins") : plugins);
+            var acquisitorPlugins = _.filter(plugins[0].plugins, function(plugin) {
+              if (plugin.name === "visualizator") {
+                return true;
+              } else {
+                return false;
+              }
+            });
+
+            return acquisitorPlugins;
+          }
+          return null;
+      },
+
+      // Returns the visualizator plugin active
+      getVisualizator: function() {
+          if (plugins || cache.get("plugins")) {
+            if ((!plugins) ? plugins = cache.get("plugins") : plugins);
+            return _.result(_.find(plugins[0].plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
           }
           return null;
       }

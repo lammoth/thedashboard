@@ -1,75 +1,143 @@
 .row
-  .col-xs-12.col-md-12.col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+  .col-xs-12.col-md-4.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
     .hpanel
-        ul.nav.nav-tabs
-          li.active
-            a(data-toggle='tab', href='#tab-1', aria-expanded='true')  Data
-          |                 
-          li
-            a(data-toggle='tab', href='#tab-2', aria-expanded='false') Options
-        |             
-        .tab-content
-          #tab-1.tab-pane.active
-            .panel-body
-              .row
-                .col-xs-12.col-md-4.col-lg-3
-                  .form-group
-                    label.control-label Search source         
-                    select.form-control.m-b(name='account')
-                      option option 1
-                      |                 
-                      option option 2
-                      |                 
-                      option option 3
-                      |                 
-                      option option 4
-                  //- .hr-line-dashed
-                  //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.5s; -webkit-animation-delay: 0.5s;')
-                  .hpanel.horange
-                      .panel-heading
-                        .panel-tools
-                          a.showhide
-                            i.fa.fa-chevron-up
-                        | Graphic data
-                      |             
-                      .panel-body
-                        //- .form-group
-                        //-   label.control-label Y Axis
-                        //-   .hr-line-dashed
-                        //-   label.control-label Aggregation  
-                        //-   select.form-control.m-b(name='account')
-                        //-     option option 1
-                        //-     |                 
-                        //-     option option 2
-                        //-     |                 
-                        //-     option option 3
-                        //-     |                 
-                        //-     option option 4
-                        //- .form-group
-                        //-   label.control-label X Axis
-                        //-   .hr-line-dashed
-                        //-   label.control-label Aggregation  
-                        //-   select.form-control.m-b(name='account')
-                        //-     option option 1
-                        //-     |                 
-                        //-     option option 2
-                        //-     |                 
-                        //-     option option 3
-                        //-     |                 
-                        //-     option option 4
-                        acquisitor-graphic-options
-                .col-xs-12.col-md-8.col-lg-9
-                  #visualization-chart-editor
-          #tab-2.tab-pane
-            .panel-body
-              strong Donec quam felis
-              |                         
-              p
-                | Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects
-                | and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath
-              |                         
-              p
-                | I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
-                | sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.
-  //- .col-xs-12.col-md-8.col-lg-9.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
-    
+      div(ng-controller="VisualizationEditorTabController")
+        tabset
+          tab(heading='Static title')           
+            .tab-content
+              #tab-1.tab-pane.active
+                .panel-body
+                  .row
+                    .col-xs-12
+                      .form-group
+                        label.control-label Search source         
+                        select.form-control.m-b(name='account')
+                          option option 1
+                          |                 
+                          option option 2
+                          |                 
+                          option option 3
+                          |                 
+                          option option 4
+                      //- .hr-line-dashed
+                      //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.5s; -webkit-animation-delay: 0.5s;')
+                      .hpanel.horange
+                          .panel-heading
+                            .panel-tools
+                              a.showhide
+                                i.fa.fa-chevron-up
+                            | Graphic data
+                          |             
+                          .panel-body
+                            //- .form-group
+                            //-   label.control-label Y Axis
+                            //-   .hr-line-dashed
+                            //-   label.control-label Aggregation  
+                            //-   select.form-control.m-b(name='account')
+                            //-     option option 1
+                            //-     |                 
+                            //-     option option 2
+                            //-     |                 
+                            //-     option option 3
+                            //-     |                 
+                            //-     option option 4
+                            //- .form-group
+                            //-   label.control-label X Axis
+                            //-   .hr-line-dashed
+                            //-   label.control-label Aggregation  
+                            //-   select.form-control.m-b(name='account')
+                            //-     option option 1
+                            //-     |                 
+                            //-     option option 2
+                            //-     |                 
+                            //-     option option 3
+                            //-     |                 
+                            //-     option option 4
+                            acquisitor-graphic-options      
+          tab(heading='Static title')           
+            .tab-content
+              //- #tab-2.tab-pane
+              //-   .panel-body
+              //-     strong Donec quam felis
+              //-     |                         
+              //-     p
+              //-       | Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects
+              //-       | and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath
+              //-     |                         
+              //-     p
+              //-       | I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
+              //-       | sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.
+  .col-xs-12.col-md-8.col-lg-9.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+    .hpanel
+      .panel-heading
+        .panel-tools
+          a.showhide
+            i.fa.fa-chevron-up
+        | Visualization
+      .panel-body
+        #visualization-chart-editor
+
+//- .row
+//-   .col-xs-12.col-md-12.col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+//-     .hpanel
+//-       tabset
+//-         tab(heading='Static title')
+//-           .tab-content
+//-               #tab-1.tab-pane.active
+//-                 .panel-body
+//-                   .row
+//-                     .col-xs-12.col-md-4.col-lg-3
+//-                       .form-group
+//-                         label.control-label Search source         
+//-                         select.form-control.m-b(name='account')
+//-                           option option 1
+//-                           |                 
+//-                           option option 2
+//-                           |                 
+//-                           option option 3
+//-                           |                 
+//-                           option option 4
+//-                       //- .hr-line-dashed
+//-                       //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.5s; -webkit-animation-delay: 0.5s;')
+//-                       .hpanel.horange
+//-                           .panel-heading
+//-                             .panel-tools
+//-                               a.showhide
+//-                                 i.fa.fa-chevron-up
+//-                             | Graphic data
+//-                           |             
+//-                           .panel-body
+//-                             //- .form-group
+//-                             //-   label.control-label Y Axis
+//-                             //-   .hr-line-dashed
+//-                             //-   label.control-label Aggregation  
+//-                             //-   select.form-control.m-b(name='account')
+//-                             //-     option option 1
+//-                             //-     |                 
+//-                             //-     option option 2
+//-                             //-     |                 
+//-                             //-     option option 3
+//-                             //-     |                 
+//-                             //-     option option 4
+//-                             //- .form-group
+//-                             //-   label.control-label X Axis
+//-                             //-   .hr-line-dashed
+//-                             //-   label.control-label Aggregation  
+//-                             //-   select.form-control.m-b(name='account')
+//-                             //-     option option 1
+//-                             //-     |                 
+//-                             //-     option option 2
+//-                             //-     |                 
+//-                             //-     option option 3
+//-                             //-     |                 
+//-                             //-     option option 4
+//-                             acquisitor-graphic-options
+//-                     .col-xs-12.col-md-8.col-lg-9
+                      
+//-         tab(select='alertMe()')
+//-           tab-heading
+//-             i.glyphicon.glyphicon-bell
+//-             |  Alert!
+//-           |       I&apos;ve got an HTML heading, and a select callback. Pretty cool!
+
+//-     

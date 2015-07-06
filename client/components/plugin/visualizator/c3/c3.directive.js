@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .directive('d3', function () {
+  .directive('c3', function () {
     return {
-      templateUrl: 'components/plugin/visualizator/d3/d3.html',
+      templateUrl: 'components/plugin/visualizator/c3/c3.html',
       restrict: 'EA',
       link: function (scope, element, attrs) {
       }
