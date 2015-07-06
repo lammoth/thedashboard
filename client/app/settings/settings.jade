@@ -23,6 +23,18 @@
                     label.control-label Select the acquisition plugin  
                     select.form-control.m-b(ng-model="plugins.acquisitors", ng-change="acquisitorSelectChange()")
                       option(ng-repeat="acquisitor in plugins.acquisitors track by $index" ng-selected="{{acquisitor.pluginName == plugins.acquisitorActive}}" value="{{acquisitor.pluginName}}") {{acquisitor.pluginTitle}}
+              .hpanel.horange
+                .panel-heading
+                  .panel-tools
+                    a.showhide
+                      i.fa.fa-chevron-up
+                  | Visualization
+                |             
+                .panel-body
+                  .form-group
+                    label.control-label Select the visualization plugin  
+                    select.form-control.m-b(ng-model="plugins.acquisitors", ng-change="acquisitorSelectChange()")
+                      option(ng-repeat="acquisitor in plugins.acquisitors track by $index" ng-selected="{{acquisitor.pluginName == plugins.acquisitorActive}}" value="{{acquisitor.pluginName}}") {{acquisitor.pluginTitle}}
           #tab-2.tab-pane
             .panel-body
               strong Donec quam felis

@@ -9,6 +9,11 @@ $(document).ready(function () {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
 
+    setTimeout(function() {
+        // Initialize metsiMenu plugin to sidebar menu
+        $('#side-menu').metisMenu();
+    }, 100);
+
     // Handle minimalize sidebar menu
     $('body').on('click', '.hide-menu', function(event){
         event.preventDefault();
@@ -54,18 +59,10 @@ $(document).ready(function () {
         hpanel.remove();
     });
 
-    // Function for small header
-    $('body').on('click', '.small-header-action', function(event){
-        event.preventDefault();
-        var icon = $(this).find('i:first');
-        var breadcrumb  = $(this).parent().find('#hbreadcrumb');
-        $(this).parent().parent().parent().toggleClass('small-header');
-        breadcrumb.toggleClass('m-t-lg');
-        icon.toggleClass('fa-arrow-up').toggleClass('fa-arrow-down');
-    });
-
     // Set minimal height of #wrapper to fit the window
-    fixWrapperHeight();
+    setTimeout(function() {
+        fixWrapperHeight();
+    }, 100);
 
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
@@ -83,14 +80,13 @@ $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
 
-    // Waint until metsiMenu, collapse and other effect finish and set wrapper height
+    // Wait until metsiMenu, collapse and other effect finish and set wrapper height
     setTimeout(function () {
         fixWrapperHeight();
     }, 300);
 })
 
 function fixWrapperHeight() {
-
     // Get and set current height
     var headerH = 62;
     var navigationH = $("#navigation").height();

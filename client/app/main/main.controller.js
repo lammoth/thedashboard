@@ -4,9 +4,6 @@ angular.module('thedashboardApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
     $scope.awesomeThings = [];
 
-    // Initialize metsiMenu plugin to sidebar menu
-    $('#side-menu').metisMenu();
-
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;
     //   socket.syncUpdates('thing', $scope.awesomeThings);

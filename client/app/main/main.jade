@@ -119,7 +119,7 @@ div(ui-view="main")
               |                 
               ul.nav.nav-second-level
                 li
-                  a(ui-sref="main.visualization.new") Create
+                  a(ui-sref-active="active", ui-sref="main.visualization.new") Create
                     span.arrow
                       i.fa.fa-plus-square-o
                 |                     
@@ -135,6 +135,15 @@ div(ui-view="main")
                   i.fa.fa-sliders
 
   #wrapper
+      .normalheader.transition.animated.fadeIn.small-header
+        .hpanel
+            .panel-body          
+              #hbreadcrumb.pull-right
+                div.hbreadcrumb(ncy-breadcrumb)
+              h2.font-light.m-b-xs
+                | {{ sectionName }}
+              |             
+              small {{ sectionDescription }}
       .content.animate-panel
         div(ui-view="section-view")
           .row

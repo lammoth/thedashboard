@@ -10,6 +10,9 @@ angular.module('thedashboardApp')
             templateUrl: 'app/visualization/visualization.html',
             // controller: 'VisualizationCtrl'
           }
+        },
+        ncyBreadcrumb: {
+          label: 'Visualizations'
         }
       })
       .state('main.visualization.new', {
@@ -17,8 +20,11 @@ angular.module('thedashboardApp')
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-new.html',
-            controller: 'VisualizationCtrl'
+            controller: 'VisualizationCtrl',
           }  
+        },
+        ncyBreadcrumb: {
+          label: 'Create'
         }
       })
       .state('main.visualization.editor', {
@@ -26,8 +32,11 @@ angular.module('thedashboardApp')
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-editor.html',
-            controller: 'VisualizationCtrl'
-          }  
+            controller: 'VisualizationEditorCtrl',
+          },
+        },
+        ncyBreadcrumb: {
+          label: 'Editor'
         }
       });
   });

@@ -7,7 +7,6 @@
     "es5-shim": "~3.0.1",
     "jquery": "~1.11.0",
     "bootstrap-sass-official": "~3.1.1",
-    "bootstrap": "~3.1.1",
     "angular-resource": ">=1.2.*",
     "angular-cookies": ">=1.2.*",
     "angular-sanitize": ">=1.2.*",
@@ -19,7 +18,9 @@
     "metisMenu": "~2.0.2",
     "animate.css": "~3.3.0",
     "iCheck": "~1.0.2",
-    "angular-gridster": "~0.13.4"
+    "angular-gridster": "~0.13.4",
+    "c3": "~0.4.10",
+    "angular-breadcrumb": "~0.4.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
