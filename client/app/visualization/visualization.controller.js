@@ -11,23 +11,27 @@ angular.module('thedashboardApp')
     //   console.log(acquisitorPlugin);
     // });
   })
-  .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, Header, $timeout, c3Visualizator) {
+  .controller('VisualizationEditorCtrl', function ($scope, $stateParams, Plugin, $injector, $timeout) {
     // console.log($stateParams);
     // Header.sectionTitle = "Visualizations";
     // Header.sectionDescription = "Create a new visulaization in the editor area";
-
+    var c3Visualizator = $injector.get('c3Visualizator');
     c3Visualizator.data();
+    c3Visualizator.type($stateParams.graph);
     c3Visualizator.bind('#visualization-chart-editor');
     var chart = c3Visualizator.compile();
     
+    // $timeout(function() {
+    //   chart.unload({
+    //     ids: ['data2']
+    //   });
+    //   $timeout(function() {
+    //     chart.transform('line');
+    //   }, 2000);
+    // }, 1000);
     $timeout(function() {
-      chart.unload({
-        ids: ['data2']
-      });
-      $timeout(function() {
-        chart.transform('line');
-      }, 2000);
-    }, 1000);
+      c3Visualizator.transform(chart, 'line');
+    }, 2000);
   })
   .controller('VisualizationEditorTabController', function ($scope, $rootScope, $stateParams, Plugin, Header) {
     console.log($stateParams);
