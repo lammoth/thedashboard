@@ -10,6 +10,9 @@ angular.module('thedashboardApp')
             templateUrl: 'app/settings/settings.html',
             controller: 'SettingsDashboardCtrl'
           }
+        },
+        ncyBreadcrumb: {
+          label: 'Settings'
         }
       });
   });

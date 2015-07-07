@@ -8,7 +8,7 @@ angular.module('thedashboardApp')
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
         ncyBreadcrumb: {
-          label: 'Dashboard'
+          label: 'Home'
         }
       });
   });

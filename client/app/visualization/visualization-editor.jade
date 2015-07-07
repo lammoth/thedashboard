@@ -5,7 +5,7 @@
         tabset
           tab(heading='Data')           
             .tab-content
-              #tab-1.tab-pane.active
+              tab-pane.active
                 .panel-body
                   .row
                     .col-xs-12
@@ -53,20 +53,28 @@
                             //-     option option 3
                             //-     |                 
                             //-     option option 4
-                            acquisitor-graphic-options      
-          tab(heading='Static title')           
+                            acquisitor-graphic-options
+                            //- accordion(close-others="true")
+                            //-   accordion-group(heading="y-axis")
+                            //-     p test
+                            //-   accordion-group(heading="x-axis")
+                            //-     p test
+                      a.btn.btn-outline.btn-warning2.btn-block Apply
+          tab(heading='Options')           
             .tab-content
-              //- #tab-2.tab-pane
-              //-   .panel-body
-              //-     strong Donec quam felis
-              //-     |                         
-              //-     p
-              //-       | Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects
-              //-       | and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath
-              //-     |                         
-              //-     p
-              //-       | I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
-              //-       | sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.
+              .panel-body
+                .row
+                  .col-xs-12
+                    .form-group
+                      label.control-label Search source         
+                      select.form-control.m-b(name='account')
+                        option option 1
+                        |                 
+                        option option 2
+                        |                 
+                        option option 3
+                        |                 
+                        option option 4
   .col-xs-12.col-md-8.col-lg-9.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
     .hpanel
       .panel-heading

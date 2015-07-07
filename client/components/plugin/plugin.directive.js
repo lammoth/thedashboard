@@ -3,6 +3,8 @@
 angular.module('thedashboardApp')
   .directive('acquisitorGraphicOptions', function ($compile, $cacheFactory, $templateRequest, Plugin) {
     return {
+      priority: 1,
+      terminal: true,
       restrict: 'E',
       link: function (scope, element, attrs) {
         // Request to get the acquisitor plugin active
@@ -23,7 +25,8 @@ angular.module('thedashboardApp')
         function compileContent(url) {
           $templateRequest(url).then(function(html){
             element.append($compile(html)(scope));
-            $compile(element.contents())(scope);
+            var childrenEl = element.children()[1]
+            $compile(childrenEl)(scope);
           });
         }
       }
