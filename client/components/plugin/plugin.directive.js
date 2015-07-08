@@ -3,21 +3,20 @@
 angular.module('thedashboardApp')
   .directive('acquisitorGraphicOptions', function ($compile, $cacheFactory, $templateRequest, Plugin) {
     return {
-      priority: 1,
-      terminal: true,
       restrict: 'E',
+      scope: false,
       link: function (scope, element, attrs) {
         // Request to get the acquisitor plugin active
         if ($cacheFactory.info().Plugin.size === 0) {
           var acquisitorPluginPromise = Plugin.broker('getAcquisitor');
           acquisitorPluginPromise.then(function(acquisitorPlugin) {
-            var templateUrl = 'components/plugin/acquisitor/' + acquisitorPlugin + '/acquisitor-graphic-options.html';
+            var templateUrl = 'components/plugin/acquisitor/' + acquisitorPlugin + '/directives/acquisitor-graphic-options-' + attrs.chart + '.html';
             compileContent(templateUrl);
           });
         } else {
           var cache = $cacheFactory.get("Plugin");
           if (cache.get("plugins")) {
-            var templateUrl = 'components/plugin/acquisitor/' + Plugin.getAcquisitor() + '/acquisitor-graphic-options.html';
+            var templateUrl = 'components/plugin/acquisitor/' + Plugin.getAcquisitor() + '/directives/acquisitor-graphic-options-' + attrs.chart + '.html';
             compileContent(templateUrl);
           }
         }

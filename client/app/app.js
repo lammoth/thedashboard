@@ -7,7 +7,8 @@ angular.module('thedashboardApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'ncy-angular-breadcrumb'
+  'ncy-angular-breadcrumb',
+  'gridster'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

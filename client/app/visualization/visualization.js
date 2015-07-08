@@ -8,7 +8,7 @@ angular.module('thedashboardApp')
         views: {
           "section-view": {
             templateUrl: 'app/visualization/visualization.html',
-            // controller: 'VisualizationCtrl'
+            controller: 'VisualizationCtrl'
           }
         },
         ncyBreadcrumb: {
@@ -28,7 +28,7 @@ angular.module('thedashboardApp')
         }
       })
       .state('main.visualization.editor', {
-        url: '/editor/:graph',
+        url: '/editor/:chart',
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-editor.html',

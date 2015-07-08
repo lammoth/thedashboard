@@ -10,7 +10,7 @@ var config = require('./config/general');
 module.exports = function(app) {
 
   // Insert routes below
-  app.use(config.api.path + '/things', require('./api/thing'));
+  app.use(config.api.path + '/broker', require('./api/broker'));
   app.use(config.api.path + '/users', require('./api/user'));
   app.use(config.api.path + '/data', require('./api/data'));
 

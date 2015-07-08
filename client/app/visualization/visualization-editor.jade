@@ -19,8 +19,6 @@
                           option option 3
                           |                 
                           option option 4
-                      //- .hr-line-dashed
-                      //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.5s; -webkit-animation-delay: 0.5s;')
                       .hpanel.horange
                           .panel-heading
                             .panel-tools
@@ -29,37 +27,9 @@
                             | Graphic data
                           |             
                           .panel-body
-                            //- .form-group
-                            //-   label.control-label Y Axis
-                            //-   .hr-line-dashed
-                            //-   label.control-label Aggregation  
-                            //-   select.form-control.m-b(name='account')
-                            //-     option option 1
-                            //-     |                 
-                            //-     option option 2
-                            //-     |                 
-                            //-     option option 3
-                            //-     |                 
-                            //-     option option 4
-                            //- .form-group
-                            //-   label.control-label X Axis
-                            //-   .hr-line-dashed
-                            //-   label.control-label Aggregation  
-                            //-   select.form-control.m-b(name='account')
-                            //-     option option 1
-                            //-     |                 
-                            //-     option option 2
-                            //-     |                 
-                            //-     option option 3
-                            //-     |                 
-                            //-     option option 4
-                            acquisitor-graphic-options
-                            //- accordion(close-others="true")
-                            //-   accordion-group(heading="y-axis")
-                            //-     p test
-                            //-   accordion-group(heading="x-axis")
-                            //-     p test
-                      a.btn.btn-outline.btn-warning2.btn-block Apply
+                            acquisitor-graphic-options(chart="{{chart}}")
+
+                      a.btn.btn-outline.btn-warning2.btn-block(ng-click="makeQuery()") Apply
           tab(heading='Options')           
             .tab-content
               .panel-body
@@ -84,68 +54,3 @@
         | Visualization
       .panel-body
         #visualization-chart-editor
-
-//- .row
-//-   .col-xs-12.col-md-12.col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
-//-     .hpanel
-//-       tabset
-//-         tab(heading='Static title')
-//-           .tab-content
-//-               #tab-1.tab-pane.active
-//-                 .panel-body
-//-                   .row
-//-                     .col-xs-12.col-md-4.col-lg-3
-//-                       .form-group
-//-                         label.control-label Search source         
-//-                         select.form-control.m-b(name='account')
-//-                           option option 1
-//-                           |                 
-//-                           option option 2
-//-                           |                 
-//-                           option option 3
-//-                           |                 
-//-                           option option 4
-//-                       //- .hr-line-dashed
-//-                       //- .col-lg-12.animated-panel.zoomIn(style='animation-delay: 0.5s; -webkit-animation-delay: 0.5s;')
-//-                       .hpanel.horange
-//-                           .panel-heading
-//-                             .panel-tools
-//-                               a.showhide
-//-                                 i.fa.fa-chevron-up
-//-                             | Graphic data
-//-                           |             
-//-                           .panel-body
-//-                             //- .form-group
-//-                             //-   label.control-label Y Axis
-//-                             //-   .hr-line-dashed
-//-                             //-   label.control-label Aggregation  
-//-                             //-   select.form-control.m-b(name='account')
-//-                             //-     option option 1
-//-                             //-     |                 
-//-                             //-     option option 2
-//-                             //-     |                 
-//-                             //-     option option 3
-//-                             //-     |                 
-//-                             //-     option option 4
-//-                             //- .form-group
-//-                             //-   label.control-label X Axis
-//-                             //-   .hr-line-dashed
-//-                             //-   label.control-label Aggregation  
-//-                             //-   select.form-control.m-b(name='account')
-//-                             //-     option option 1
-//-                             //-     |                 
-//-                             //-     option option 2
-//-                             //-     |                 
-//-                             //-     option option 3
-//-                             //-     |                 
-//-                             //-     option option 4
-//-                             acquisitor-graphic-options
-//-                     .col-xs-12.col-md-8.col-lg-9
-                      
-//-         tab(select='alertMe()')
-//-           tab-heading
-//-             i.glyphicon.glyphicon-bell
-//-             |  Alert!
-//-           |       I&apos;ve got an HTML heading, and a select callback. Pretty cool!
-
-//-     

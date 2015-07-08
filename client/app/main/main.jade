@@ -47,10 +47,13 @@ div(ui-view="main")
       |         
       .navbar-right
         ul.nav.navbar-nav.no-borders
+          li
+            a
+              i.fa.fa-clock-o
+              span.time-filter Last 1 hour
           li.dropdown
             a.dropdown-toggle.label-menu-corner(href='#', data-toggle='dropdown')
               i.fa.fa-bell-o
-              |                         
               span.label.label-danger 3
             |                     
             ul.dropdown-menu.hdropdown.notification.animated.flipInX
@@ -147,92 +150,106 @@ div(ui-view="main")
       .content.animate-panel
         div(ui-view="section-view")
           .row
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
-            .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-              .hpanel
-                .panel-heading.hbuilt
-                  .panel-tools
-                    a.showhide
-                      i.fa.fa-chevron-up
-                    |                     
-                    a.closebox
-                      i.fa.fa-times
-                  | Example
-                .panel-body
+            .col-xs-12
+              div(gridster="gridsterOptions")
+                ul
+                  li(gridster-item="item" ng-repeat="item in standardItems")
+                    .hpanel
+                      .panel-heading.hbuilt
+                        .panel-tools
+                          a.showhide
+                            i.fa.fa-chevron-up
+                          |                     
+                          a.closebox
+                            i.fa.fa-times
+                        | Example
+                      .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
+            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
+            //-   .hpanel
+            //-     .panel-heading.hbuilt
+            //-       .panel-tools
+            //-         a.showhide
+            //-           i.fa.fa-chevron-up
+            //-         |                     
+            //-         a.closebox
+            //-           i.fa.fa-times
+            //-       | Example
+            //-     .panel-body
 

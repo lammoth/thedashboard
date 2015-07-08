@@ -51,8 +51,6 @@ exports.config = function(req, res) {
     Data.findById(req.body._id, function (err, data) {
       if (err) { return handleError(res, err); }
       if(!data) { return res.json({response: "error", data: "No config data found"}); }
-      console.log(data);
-      console.log(req.body);
       var updated = _.merge(data, req.body);
       updated.save(function (err) {
         if (err) { return handleError(res, err); }

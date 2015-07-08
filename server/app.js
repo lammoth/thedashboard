@@ -33,6 +33,11 @@ var pluginsConfig = require('./config/plugins');
 var PluginEngine = require('./plugins');
 var initPlugin = new PluginEngine(app, pluginsConfig);
 
+// Setup queue system
+var Tasker = require('./tasker');
+var tasker = new Tasker();
+app.set('tasker', tasker);
+
 // Start server
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
