@@ -32,9 +32,9 @@ angular.module('thedashboardApp')
       queryVisualization.query(
         function(data) {
           if (data.response !== 'error') {
-            console.log(socket);
+            console.log(data.data.job);
             socket.socket.on("query-" + data.data.job, function(data) {
-              console.log(data);
+              console.log("WebSocket event received");
             });
           }
         }

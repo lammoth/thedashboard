@@ -10,11 +10,12 @@ module.exports = Tasker;
 function Tasker() {
   this.queue = kue.createQueue();
   
-  this.create = function(type, cb) {
-    var job = this.queue.create(type, {title:'Query job'});
+  this.create = function(type, broker, cb) {
+    var job = this.queue.create(type, {title:'Task job'});
 
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
+      broker.socketEvent({name: type + "-" + job.id, data: {}});
     } ).on( 'enqueue', function () {
       console.log( " Job enqueue" );
     } ).on( 'failed', function () {
@@ -30,8 +31,6 @@ function Tasker() {
 
   this.queue.process('query', 1, function(job, done) {
     console.log("Processing job %d", job.id);
-    setTimeout(function() {
-      done();
-    }, 5000);
+    done();
   });
 }
