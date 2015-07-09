@@ -4,14 +4,20 @@
 
 
 var kue = require('kue');
+var _ = require('lodash');
 
 module.exports = Tasker;
 
 function Tasker() {
   this.queue = kue.createQueue();
   
-  this.create = function(type, broker, cb) {
-    var job = this.queue.create(type, {title:'Task job'});
+  this.createTask = function(type, broker, cb) {
+    var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
+
+    // TODO: Check errors
+    this.queue.complete( function( err, ids ) {
+      console.log(ids);
+    });
 
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
@@ -29,8 +35,20 @@ function Tasker() {
     });
   }
 
-  this.queue.process('query', 1, function(job, done) {
-    console.log("Processing job %d", job.id);
-    done();
-  });
+  this.executeTask = function(job, type, cb) {
+    var self = this;
+    console.log("Getting job %d", job);
+    
+    kue.Job.get(job, function(err, jobObject) {
+      // Executing job
+      jobObject.state('active');
+      try {
+        self.queue.process(type, 1, function(jobChanged, done) {
+          done(cb(jobChanged.id));
+        });
+      } catch(err) {
+        console.log(err);
+      }
+    });
+  }
 }

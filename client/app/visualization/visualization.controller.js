@@ -26,18 +26,28 @@ angular.module('thedashboardApp')
       c3Visualizator.transform(chart, 'line');
     }, 2000);
   })
-  .controller('VisualizationEditorTabController', function ($scope, queryVisualization, socket) {
+  .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
+
     $scope.makeQuery = function() {
-      queryVisualization.query(
+      queryService.createTask('query',
         function(data) {
           if (data.response !== 'error') {
-            console.log(data.data.job);
-            socket.socket.on("query-" + data.data.job, function(data) {
+            createSocket("query-" + data.data.job, function(data) {
               console.log("WebSocket event received");
+            });
+            queryService.executeTask(data.data.job, 'query', function(data) {
+              console.log("Task executed");
             });
           }
         }
       );
     };
+
+    function createSocket(name, cb) {
+      socket.socket.on(name, function(data) {
+        cb(data);
+      });
+    }
+
   });
