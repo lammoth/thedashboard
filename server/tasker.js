@@ -15,13 +15,9 @@ function Tasker() {
     var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
 
     // TODO: Check errors
-    this.queue.complete( function( err, ids ) {
-      console.log(ids);
-    });
-
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
-      broker.socketEvent({name: type + "-" + job.id, data: {}});
+      broker.socketEvent({name: type + "-" + job.id, data: {job: job.id}});
     } ).on( 'enqueue', function () {
       console.log( " Job enqueue" );
     } ).on( 'failed', function () {
@@ -33,22 +29,10 @@ function Tasker() {
     job.save(function(err) {
       if( !err ) return cb(job.id);
     });
-  }
 
-  this.executeTask = function(job, type, cb) {
-    var self = this;
-    console.log("Getting job %d", job);
-    
-    kue.Job.get(job, function(err, jobObject) {
-      // Executing job
-      jobObject.state('active');
-      try {
-        self.queue.process(type, 1, function(jobChanged, done) {
-          done(cb(jobChanged.id));
-        });
-      } catch(err) {
-        console.log(err);
-      }
+    this.queue.process(type, 1, function(job, done) {
+      console.log("Processing job %d", job.id);
+      done();
     });
   }
 }

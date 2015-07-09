@@ -34,10 +34,7 @@ angular.module('thedashboardApp')
         function(data) {
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
-              console.log("WebSocket event received");
-            });
-            queryService.executeTask(data.data.job, 'query', function(data) {
-              console.log("Task executed");
+              console.log("Task %d event received", data.job);
             });
           }
         }
