@@ -12,26 +12,25 @@ module.exports = Acquisitor;
 
 function Acquisitor() {
 
-  this.acquisitor = null;
+  this.plugin = null;
 
-  fetchPluginActive();
+  fetchPluginActive(this.plugin);
 
   this.query = function(query) {
     // Fetch the acquisition plugin
     // Pass the query to the acquisition plugin
     // Get query response
     // Pass query response to the visualization engine 
-    this.acquisitor
   };
 
-  function fetchPluginActive() {
+  function fetchPluginActive(plugin) {
     var self = this;
     Data.findOne(function (err, data) {
       if(err) { return handleError(res, err); }
       if (!data) {
         
       } else {
-        self.acquisitor = _.find(data.plugins, {'name': 'acquisitor', 'enable': true})
+        plugin = _.find(data.plugins, {'name': 'acquisitor', 'enable': true});
       }
     });
   };
