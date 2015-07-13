@@ -18,7 +18,7 @@ function Engine(app) {
   this.visualizator = new Visualizator();
 }
 
-Engine.prototype.visualizationQuery = function(raw) {
+Engine.prototype.visualizationQuery = function(raw, cb) {
   var parent = this;
   this.acquisitor.plugin().then(function(data) {
     var acquisitorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
@@ -32,6 +32,7 @@ Engine.prototype.visualizationQuery = function(raw) {
     var AcquisitorInstancePlugin = new AcquisitorPlugin(acquisitorPluginObj.config);
     var AcquisitorPluginConnection = AcquisitorInstancePlugin.connect(function () {
       console.log(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
+      cb();
     });
   });
 };
