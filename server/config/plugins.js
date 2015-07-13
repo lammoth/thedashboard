@@ -40,10 +40,10 @@ var plugins = [
     },
     {
         name: 'visualizator',
-        active: null,
-        config: {
-            address: null
-        }
+        pluginName: 'c3',
+        pluginTitle: 'C3',
+        active: true,
+        config: {}
     }
 ];
 

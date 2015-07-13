@@ -6,12 +6,6 @@ var Visualizator = require('./lib/visualizator');
 
 module.exports = Engine;
 
-// {
-//   "plugins": [
-//     { "name": "acquisitor", "pluginName": "druid", "pluginTitle": "Druid", "enable": true }
-//   ]
-// }
-
 function Engine(app) {
   this.app = app;
   this.acquisitor = new Acquisitor();
@@ -20,9 +14,9 @@ function Engine(app) {
 
 Engine.prototype.visualizationQuery = function(raw, cb) {
   var parent = this;
-  this.acquisitor.plugin().then(function(data) {
+  this.acquisitor.plugin().then(function(dataAcquisitor) {
     var acquisitorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
-      if (plugin.pluginName === data.pluginName && plugin.name === data.name) {
+      if (plugin.pluginName === dataAcquisitor.pluginName && plugin.name === dataAcquisitor.name) {
         return true;
       }
     }));
@@ -31,8 +25,17 @@ Engine.prototype.visualizationQuery = function(raw, cb) {
     var AcquisitorPlugin = require(acquisitorPluginObj.path);
     var AcquisitorInstancePlugin = new AcquisitorPlugin(acquisitorPluginObj.config);
     var AcquisitorPluginConnection = AcquisitorInstancePlugin.connect(function () {
-      console.log(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
-      cb();
+      // console.log(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
+      parent.visualizator.plugin().then(function(dataVisualizator) {
+        var visualizatorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
+          if (plugin.pluginName === dataVisualizator.pluginName && plugin.name === dataVisualizator.name) {
+            return true;
+          }
+        }));
+        var VisualizatorPlugin = require(visualizatorPluginObj.path);
+        var VisualizatorInstancePlugin = new VisualizatorPlugin(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
+        cb();
+      });
     });
   });
 };
