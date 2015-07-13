@@ -18,7 +18,7 @@ function Engine(app) {
   this.visualizator = new Visualizator();
 }
 
-Engine.prototype.visualizationQuery = function() {
+Engine.prototype.visualizationQuery = function(raw) {
   var parent = this;
   this.acquisitor.plugin().then(function(data) {
     var pluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
@@ -31,7 +31,7 @@ Engine.prototype.visualizationQuery = function() {
     var Plugin = require(pluginObj.path);
     var pluginInstance = new Plugin(pluginObj.config, true);
     var pluginConnection = pluginInstance.connect(function () {
-      pluginInstance.queryClient.execQuery('SHOW DATABASES');
+      pluginInstance.queryClient.execQuery('SHOW DATABASES', raw);
     });
   });
 };

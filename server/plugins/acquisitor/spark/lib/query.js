@@ -2,12 +2,13 @@
  * Spark query lib
  */
 
-var _ = require('lodash');
+var _ = require('lodash'),
+  Parser = require('./parser')();
 
 
 module.exports = QueryReq;
 
-// Query request object
+// Spark query object
 function QueryReq(connection) {
   this.connection = connection;
 
@@ -29,11 +30,12 @@ function QueryReq(connection) {
 }
 
 
-QueryReq.prototype.execQuery = function(query) {
+QueryReq.prototype.execQuery = function(query, raw) {
+  var parent = this;
   this.connection.open(function(err, conn) {
     if (err) console.log(err);
     if (conn) {
-      this.connection.executeQuery(query, this.genericQueryHandler);
+      parent.connection.executeQuery(((raw) ? query : Parser.parse(query)), parent.genericQueryHandler);
     }
   });
 }

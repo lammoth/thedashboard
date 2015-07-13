@@ -10,7 +10,7 @@ exports.task = function(req, res) {
   var brokerRequestType = req.params.type;
   var tasker = req.app.get('tasker');
   var engine = new EngineSystem(req.app);
-  engine.visualizationQuery();
+  engine.visualizationQuery(true);
 
   tasker.createTask(brokerRequestType, broker, function(job) {
     // TODO: Check errors

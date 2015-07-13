@@ -19,7 +19,7 @@ function SparkPlugin(data) {
 
 // Return a new Druid connection
 SparkPlugin.prototype.connect = function(cb) {
-  parent = this;
+  var parent = this;
   jdbc.initialize(this.data, function(err, res) {
     if (err) {
       console.log(err);
