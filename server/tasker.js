@@ -11,7 +11,7 @@ module.exports = Tasker;
 function Tasker() {
   this.queue = kue.createQueue();
   
-  this.createTask = function(type, broker, cb) {
+  this.createTask = function(type, broker, task, cb) {
     var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
 
     // TODO: Check errors
@@ -32,7 +32,7 @@ function Tasker() {
 
     this.queue.process(type, 1, function(job, done) {
       console.log("Processing job %d", job.id);
-      done();
+      task(done);
     });
   }
 }

@@ -12,10 +12,17 @@ exports.task = function(req, res) {
   var engine = new EngineSystem(req.app);
   engine.visualizationQuery(true);
 
-  tasker.createTask(brokerRequestType, broker, function(job) {
-    // TODO: Check errors
-    return res.json(200, {response: 'ok', data: {job: job}});
-  });
+  tasker.createTask(
+    brokerRequestType, 
+    broker, 
+    function(promise) {
+      promise();
+    },
+    function(job) {
+      // TODO: Check errors
+      return res.json(200, {response: 'ok', data: {job: job}});
+    }
+  );
 };
 
 function handleError(res, err) {

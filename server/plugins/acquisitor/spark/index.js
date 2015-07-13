@@ -14,7 +14,6 @@ function SparkPlugin(data) {
 
   // Spark query lib
   this.queryClient = null;
-
 }
 
 // Return a new Druid connection
@@ -28,4 +27,4 @@ SparkPlugin.prototype.connect = function(cb) {
       cb();
     }
   });
-}
+};

@@ -22,28 +22,6 @@ function Plugin(app, plugins) {
       var path = __dirname + '/' + plugin.name + '/' + plugin.pluginName;
       if (check(path)) {
         plugin.path = path;
-
-        // TODO: Remove this, it's only for test purposes
-        // var DruidPlugin = require(path);
-        // var druidPlugin = new DruidPlugin(plugin.config, true);
-        // var druidConnection = druidPlugin.connect();
-        // druidConnection.once('ready', function() {
-        //   druidPlugin.queryClient.query = {
-        //     "queryType": "timeseries",
-        //     "granularity": "second",
-        //     "dataSource": "logstash.syslog.raw",
-        //     "intervals": ["2015-01-01T00:00:00.000/2015-07-02T00:00:00.000"],
-        //     "aggregations": [
-        //       {
-        //         "type": "count",
-        //         "name": "sample_name1"
-        //       }
-        //     ]
-        //   };
-        //   druidPlugin.queryClient.makeQuery(druidConnection);
-        // });
-
-
         currentPlugins.push(plugin);
       } else {
         console.log(plugin.pluginName);
