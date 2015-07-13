@@ -16,9 +16,8 @@ exports.task = function(req, res) {
     broker, 
     function(promise) {
       engine.visualizationQuery(true, function() {
-        
+        promise();
       });
-      promise();
     },
     function(job) {
       // TODO: Check errors
