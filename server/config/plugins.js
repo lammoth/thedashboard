@@ -30,7 +30,7 @@ var plugins = [
         pluginTitle: 'Spark',
         active: true,
         config: {
-            url: 'jdbc:hive2://10.128.19.61:10000',
+            url: 'jdbc:hive2://10.128.19.61:10000/default',
             user: '',
             password: '',
             libpath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'spark', 'jar', 'hive-jdbc-0.10.0.jar'),

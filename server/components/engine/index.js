@@ -25,7 +25,6 @@ Engine.prototype.visualizationQuery = function(raw, cb) {
     var AcquisitorPlugin = require(acquisitorPluginObj.path);
     var AcquisitorInstancePlugin = new AcquisitorPlugin(acquisitorPluginObj.config);
     var AcquisitorPluginConnection = AcquisitorInstancePlugin.connect(function () {
-      // console.log(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
       parent.visualizator.plugin().then(function(dataVisualizator) {
         var visualizatorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
           if (plugin.pluginName === dataVisualizator.pluginName && plugin.name === dataVisualizator.name) {
@@ -33,8 +32,12 @@ Engine.prototype.visualizationQuery = function(raw, cb) {
           }
         }));
         var VisualizatorPlugin = require(visualizatorPluginObj.path);
-        var VisualizatorInstancePlugin = new VisualizatorPlugin(AcquisitorInstancePlugin.queryClient.execQuery('SHOW DATABASES', raw));
-        cb();
+        AcquisitorInstancePlugin.queryClient.execQuery('SHOW TABLES', raw, function(data) {
+          var VisualizatorInstancePlugin = new VisualizatorPlugin(data);
+          VisualizatorInstancePlugin.parser(VisualizatorInstancePlugin.data, function() {
+            cb();
+          });
+        });
       });
     });
   });
