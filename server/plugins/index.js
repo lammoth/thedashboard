@@ -45,7 +45,7 @@ function Plugin(app, plugins) {
 Plugin.prototype.activePlugins = function(plugins, type) {
   var activeP = new Array();
   if (plugins.length > 0) {
-    _.forEach(plugins, function(p){
+    _.forEach(plugins, function(p) {
       if (p.active === true && p.name === type) {
         activeP.push(p);
       }

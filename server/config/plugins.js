@@ -33,9 +33,9 @@ var plugins = [
             url: 'jdbc:hive2://10.128.19.61:10000/default',
             user: '',
             password: '',
-            libpath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'spark', 'jar', 'hive-jdbc-0.10.0.jar'),
+            libpath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'spark', 'jar', 'custom-jdbc-hive-0.0.1.jar'),
             libs: [],
-            drivername: 'org.apache.hadoop.hive.jdbc.HiveDriver',
+            drivername: 'org.apache.hive.jdbc.HiveDriver',
         }
     },
     {

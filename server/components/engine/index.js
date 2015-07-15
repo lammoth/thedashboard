@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Acquisitor = require('./lib/acquisitor');
 var Visualizator = require('./lib/visualizator');
+var Persistor = require('./lib/persistor');
 
 module.exports = Engine;
 
@@ -10,6 +11,7 @@ function Engine(app) {
   this.app = app;
   this.acquisitor = new Acquisitor();
   this.visualizator = new Visualizator();
+  this.persistor = new Persistor();
 }
 
 Engine.prototype.visualizationQuery = function(raw, cb) {
@@ -32,7 +34,7 @@ Engine.prototype.visualizationQuery = function(raw, cb) {
           }
         }));
         var VisualizatorPlugin = require(visualizatorPluginObj.path);
-        AcquisitorInstancePlugin.queryClient.execQuery('SHOW TABLES', raw, function(data) {
+        AcquisitorInstancePlugin.queryClient.execQuery('select * from pruebas', raw, function(data) {
           var VisualizatorInstancePlugin = new VisualizatorPlugin(data);
           VisualizatorInstancePlugin.parser(VisualizatorInstancePlugin.data, function() {
             cb();
