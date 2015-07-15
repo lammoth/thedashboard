@@ -36,8 +36,8 @@ Engine.prototype.visualizationQuery = function(raw, cb) {
         var VisualizatorPlugin = require(visualizatorPluginObj.path);
         AcquisitorInstancePlugin.queryClient.execQuery('select * from pruebas', raw, function(data) {
           var VisualizatorInstancePlugin = new VisualizatorPlugin(data);
-          VisualizatorInstancePlugin.parser(VisualizatorInstancePlugin.data, function() {
-            cb();
+          VisualizatorInstancePlugin.parser(VisualizatorInstancePlugin.data, function(parsedData) {
+            parent.persistor.saveTaskResults(12, parsedData, cb);
           });
         });
       });

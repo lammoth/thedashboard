@@ -15,3 +15,16 @@ function Persistor() {
     console.log("Error " + err);
   });
 }
+
+Persistor.prototype.saveTaskResults = function(task, data, cb) {
+  this.client.hmset(
+    'task:' + task,
+    data,
+    function(err, response) {
+      if (!err) {
+        this.client.quit();
+        cb();
+      }
+    }
+  );
+}
