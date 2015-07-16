@@ -31,7 +31,7 @@ function QueryReq(connection) {
 
     function close() {
       parent.connection.close(function(err) {
-        if(err) {
+        if (err) {
           console.log(err);
         } else {
           console.log("Connection closed successfully!");
@@ -46,16 +46,18 @@ QueryReq.prototype.execQuery = function(query) {
   var parent = this;
   var deferred = Q.defer();
 
-  this.connection.open(function(err, conn) {
-    if (err) {
-      console.log(err);
-      deferred.resolve({});
-    }
+  // TODO: Uncomment when Spark will be ready
+  // this.connection.open(function(err, conn) {
+  //   if (err) {
+  //     console.log(err);
+  //     deferred.resolve({});
+  //   }
 
-    if (conn) {
-      parent.manager(Parser.parse(query), deferred);
-    }
-  });
+  //   if (conn) {
+  //     parent.manager(Parser.parse(query), deferred);
+  //   }
+  // });
+  deferred.resolve({});
 
   return deferred.promise;
 }

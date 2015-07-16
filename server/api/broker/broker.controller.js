@@ -16,12 +16,9 @@ exports.task = function(req, res) {
     brokerRequestType, 
     broker, 
     function(task, promise) {
-      engine.selectQuery(brokerRequestType, brokerRequestSubType, task, function() {
+      engine.select(brokerRequestType, brokerRequestSubType, task, function() {
         promise();
       });
-      // engine.visualizationQuery(task, function() {
-      //   promise();
-      // });
     },
     function(job) {
       // TODO: Check errors

@@ -15,6 +15,7 @@ function Tasker() {
     var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
 
     // TODO: Check errors
+    // Sometimes tasks are processed but not completed
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
       broker.socketEvent({name: type + "-" + job.id, data: {job: job.id}});

@@ -34,7 +34,7 @@ var PluginEngine = require('./plugins');
 var initPlugin = new PluginEngine(app, pluginsConfig);
 
 // Setup queue system
-var Tasker = require('./tasker');
+var Tasker = require('./components/engine/lib/tasker');
 var tasker = new Tasker();
 app.set('tasker', tasker);
 

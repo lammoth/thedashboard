@@ -44,6 +44,7 @@ angular.module('thedashboardApp')
     };
 
     function createSocket(name, cb) {
+      console.log("Creating socket %s", name);
       socket.socket.on(name, function(data) {
         cb(data);
       });
