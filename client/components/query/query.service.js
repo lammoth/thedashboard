@@ -12,6 +12,16 @@ angular.module('thedashboardApp')
             error(function(err) {
               console.log(err);
             });
+        },
+        updateVisualization: function(task) {
+          $http.get('/api/v1/broker/task/' + task).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
         }
     };
   });

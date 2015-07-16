@@ -22,13 +22,17 @@ angular.module('thedashboardApp')
     //     chart.transform('line');
     //   }, 2000);
     // }, 1000);
-    $timeout(function() {
-      c3Visualizator.transform(chart, 'line');
-    }, 2000);
+    $scope.c3test = function() { 
+      $timeout(function() {
+        c3Visualizator.transform(chart, 'line');
+      }, 2000);
+    };
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
-
+    $scope.$on('c3test', function(event, mass) { 
+      console.log(mass);
+    });
     $scope.makeQuery = function() {
       queryService.createTask(
         'query',
@@ -37,6 +41,7 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
+              $scope.$parent.c3test();
             });
           }
         }
