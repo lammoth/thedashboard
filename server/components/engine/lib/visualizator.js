@@ -30,3 +30,11 @@ function Visualizator() {
     return deferred.promise;
   }
 }
+
+Visualizator.prototype.getObject = function(plugins, data) {
+  return _.first(_.filter(plugins, function(plugin) {
+    if (plugin.pluginName === data.pluginName && plugin.name === data.name) {
+      return true;
+    }
+  }));
+};

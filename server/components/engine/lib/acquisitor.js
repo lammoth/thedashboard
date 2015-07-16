@@ -32,9 +32,10 @@ function Acquisitor() {
   }
 }
 
-Acquisitor.prototype.query = function(query) {
-  // Fetch the acquisition plugin
-  // Pass the query to the acquisition plugin
-  // Get query response
-  // Pass query response to the visualization engine 
+Acquisitor.prototype.getObject = function(plugins, data) {
+  return _.first(_.filter(plugins, function(plugin) {
+    if (plugin.pluginName === data.pluginName && plugin.name === data.name) {
+      return true;
+    }
+  }));
 };

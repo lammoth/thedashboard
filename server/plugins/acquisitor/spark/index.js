@@ -3,7 +3,8 @@
  */
 
 var jdbc = new (require('jdbc')),
-    Query = require('./lib/query');
+    Query = require('./lib/query'),
+    Q = require('q');
 
 module.exports = SparkPlugin;
 
@@ -16,15 +17,18 @@ function SparkPlugin(data) {
   this.queryClient = null;
 }
 
-// Return a new Druid connection
-SparkPlugin.prototype.connect = function(cb) {
-  var parent = this;
+// Return a new Spark connection
+SparkPlugin.prototype.connect = function() {
+
+  var deferred = Q.defer();
+  var parent = this;  
   jdbc.initialize(this.data, function(err, res) {
     if (err) {
       console.log(err);
     } else {
       parent.queryClient = new Query(jdbc);
-      cb();
+      deferred.resolve();
     }
   });
+  return deferred.promise;
 };

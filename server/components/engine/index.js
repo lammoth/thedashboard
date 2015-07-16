@@ -16,31 +16,44 @@ function Engine(app) {
 
 Engine.prototype.visualizationQuery = function(raw, cb) {
   var parent = this;
-  this.acquisitor.plugin().then(function(dataAcquisitor) {
-    var acquisitorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
-      if (plugin.pluginName === dataAcquisitor.pluginName && plugin.name === dataAcquisitor.name) {
-        return true;
-      }
-    }));
 
-    // TODO: Check errors (array elements)
-    var AcquisitorPlugin = require(acquisitorPluginObj.path);
-    var AcquisitorInstancePlugin = new AcquisitorPlugin(acquisitorPluginObj.config);
-    var AcquisitorPluginConnection = AcquisitorInstancePlugin.connect(function () {
-      parent.visualizator.plugin().then(function(dataVisualizator) {
-        var visualizatorPluginObj = _.first(_.filter(parent.app.get('plugins'), function(plugin) {
-          if (plugin.pluginName === dataVisualizator.pluginName && plugin.name === dataVisualizator.name) {
-            return true;
-          }
-        }));
-        var VisualizatorPlugin = require(visualizatorPluginObj.path);
-        AcquisitorInstancePlugin.queryClient.execQuery('select * from pruebas', raw, function(data) {
-          var VisualizatorInstancePlugin = new VisualizatorPlugin(data);
-          VisualizatorInstancePlugin.parser(VisualizatorInstancePlugin.data, function(parsedData) {
-            parent.persistor.saveTaskResults(12, parsedData, cb);
-          });
-        });
-      });
-    });
+  var data = {
+    acquisitorPluginObj: null,
+    visualizatorPluginObj: null,
+    AcquisitorPlugin: null,
+    VisualizatorPlugin: null,
+  };
+
+  // Getting the acquisitor plugin
+  this.acquisitor.plugin()
+  .then(function(dataAcquisitor) {
+    data.acquisitorPluginObj = parent.acquisitor.getObject(parent.app.get('plugins'), dataAcquisitor);
+    return parent.visualizator.plugin();
+  })
+  // Getting the visualizator plugin
+  // Instantiating the acquisitor plugin
+  // Connecting the acquisitor plugin
+  .then(function(dataVisualizator) {
+    data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);
+    data.AcquisitorPlugin = new (require(data.acquisitorPluginObj.path))(data.acquisitorPluginObj.config);
+    return data.AcquisitorPlugin.connect();
+  })
+  // Executing the query in the acquisitor plugin
+  .then(function() {
+    return data.AcquisitorPlugin.queryClient.execQuery('select * from pruebas');
+  })
+  // Instantiating the visualizator plugin
+  // Parsing the acquisitor results in the visualizator
+  .then(function(queryResult) {
+    data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))(queryResult);
+    return data.VisualizatorPlugin.parser(data.VisualizatorPlugin.data);
+  })
+  // Saving task results in Redis
+  .then(function(visualizatorData) {
+    return parent.persistor.saveTaskResults(12, visualizatorData);
+  })
+  // Emitting an event in order to refresh the web visualization
+  .then(function(){
+    cb();
   });
 };

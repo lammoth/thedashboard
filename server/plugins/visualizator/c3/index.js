@@ -2,7 +2,8 @@
  * C3 visualizator engine
  */
 
-var Parser = new (require('./lib/parser'))();
+var Q = require('q'),
+  Parser = new (require('./lib/parser'))();
 
 
 module.exports = C3Plugin;
@@ -12,6 +13,8 @@ function C3Plugin(data) {
   this.data = data;
 }
 
-C3Plugin.prototype.parser = function(data, cb) {
-  Parser.parse(((data) ? data : this.data), cb);
+C3Plugin.prototype.parser = function(data) {
+  var deferred = Q.defer();
+  Parser.parse(((data) ? data : this.data), deferred);
+  return deferred.promise;
 }
