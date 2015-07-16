@@ -32,7 +32,7 @@ function Tasker() {
 
     this.queue.process(type, 1, function(job, done) {
       console.log("Processing job %d", job.id);
-      task(done);
+      task(job.id, done);
     });
   }
 }

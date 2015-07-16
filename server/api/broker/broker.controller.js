@@ -8,16 +8,20 @@ var EngineSystem = require('../../components/engine');
 // Get task id from broker
 exports.task = function(req, res) {
   var brokerRequestType = req.params.type;
+  var brokerRequestSubType = req.params.subtype;
   var tasker = req.app.get('tasker');
   var engine = new EngineSystem(req.app);
 
   tasker.createTask(
     brokerRequestType, 
     broker, 
-    function(promise) {
-      engine.visualizationQuery(true, function() {
+    function(task, promise) {
+      engine.selectQuery(brokerRequestType, brokerRequestSubType, task, function() {
         promise();
       });
+      // engine.visualizationQuery(task, function() {
+      //   promise();
+      // });
     },
     function(job) {
       // TODO: Check errors

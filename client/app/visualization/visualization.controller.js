@@ -30,7 +30,9 @@ angular.module('thedashboardApp')
     $scope.form = {};
 
     $scope.makeQuery = function() {
-      queryService.createTask('query',
+      queryService.createTask(
+        'query',
+        'visualization',
         function(data) {
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
