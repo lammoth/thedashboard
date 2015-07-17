@@ -66,7 +66,7 @@ angular.module('thedashboardApp')
       getVisualizatorPlugins: function() {
         if (plugins || cache.get("plugins")) {
             if ((!plugins) ? plugins = cache.get("plugins") : plugins);
-            var acquisitorPlugins = _.filter(plugins[0].plugins, function(plugin) {
+            var visualizatorPlugins = _.filter(plugins[0].plugins, function(plugin) {
               if (plugin.name === "visualizator") {
                 return true;
               } else {
@@ -74,7 +74,7 @@ angular.module('thedashboardApp')
               }
             });
 
-            return acquisitorPlugins;
+            return visualizatorPlugins;
           }
           return null;
       },

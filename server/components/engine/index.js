@@ -13,7 +13,7 @@ function Engine(app) {
   this.app = app;
   this.acquisitor = new Acquisitor();
   this.visualizator = new Visualizator();
-  this.persistor = new Persistor();
+  this.persistor = app.get('persistor');
 }
 
 

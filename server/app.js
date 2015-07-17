@@ -33,6 +33,10 @@ var pluginsConfig = require('./config/plugins');
 var PluginEngine = require('./plugins');
 var initPlugin = new PluginEngine(app, pluginsConfig);
 
+// Setup persist system
+var Persistor = new (require('./components/engine/lib/persistor'))();
+app.set('persistor', Persistor);
+
 // Setup queue system
 var Tasker = require('./components/engine/lib/tasker');
 var tasker = new Tasker();

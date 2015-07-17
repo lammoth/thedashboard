@@ -3,8 +3,9 @@
  */
 
 
-var kue = require('kue');
-var _ = require('lodash');
+var kue = require('kue'),
+  _ = require('lodash'),
+  Persistor = new (require('./persistor'))();
 
 module.exports = Tasker;
 
@@ -15,7 +16,6 @@ function Tasker() {
     var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
 
     // TODO: Check errors
-    // Sometimes tasks are processed but not completed
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
       broker.socketEvent({name: type + "-" + job.id, data: {job: job.id}});
@@ -35,5 +35,9 @@ function Tasker() {
       console.log("Processing job %d", job.id);
       task(job.id, done);
     });
+  }
+
+  this.getTaskData = function(task, persistor, cb) {
+    persistor.getTaskResults(task, cb);
   }
 }

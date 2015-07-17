@@ -26,11 +26,16 @@ Persistor.prototype.saveTaskResults = function(task, data) {
     data,
     function(err, response) {
       if (!err) {
-        parent.client.quit();
         deferred.resolve();
       }
     }
   );
 
   return deferred.promise;
+}
+
+Persistor.prototype.getTaskResults = function(task, cb) {
+  this.client.hgetall("task:" + task, function(err, result) {
+    cb(result);
+  });
 }

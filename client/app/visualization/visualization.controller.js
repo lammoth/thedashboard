@@ -5,35 +5,32 @@ angular.module('thedashboardApp')
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Create a new visulaization";
   })
-  .controller('VisualizationEditorCtrl', function ($scope, $stateParams, Plugin, $injector, $timeout) {
+  .controller('VisualizationEditorCtrl', function ($scope, $stateParams, Plugin, $injector, $timeout, $cacheFactory) {
     $scope.chart = $stateParams.chart;
-    // Header.sectionTitle = "Visualizations";
-    // Header.sectionDescription = "Create a new visulaization in the editor area";
-    var c3Visualizator = $injector.get('c3Visualizator');
-    c3Visualizator.data();
-    c3Visualizator.type($stateParams.chart);
-    c3Visualizator.bind('#visualization-chart-editor');
-    var chart = c3Visualizator.compile();
-    // $timeout(function() {
-    //   chart.unload({
-    //     ids: ['data2']
-    //   });
-    //   $timeout(function() {
-    //     chart.transform('line');
-    //   }, 2000);
-    // }, 1000);
-    $scope.c3test = function() { 
-      $timeout(function() {
-        c3Visualizator.transform(chart, 'line');
-      }, 2000);
-    };
+    var VisualizatorService = null;
+    var chart = null;
+
+    if ($cacheFactory.info().Plugin.size === 0) {
+      var visualizatorPluginPromise = Plugin.broker('getVisualizator');
+      visualizatorPluginPromise.then(function(visualizatorPlugin) {
+        VisualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
+        // VisualizatorService.data();
+        // VisualizatorService.type($stateParams.chart);
+        // VisualizatorService.bind('#visualization-chart-editor');
+        // chart = VisualizatorService.compile();
+      });
+    } else {
+      var cache = $cacheFactory.get("Plugin");
+      if (cache.get("plugins")) {
+        VisualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+      }
+    }
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
-    $scope.$on('c3test', function(event, mass) { 
-      console.log(mass);
-    });
+
     $scope.makeQuery = function() {
+      var chart = $scope.$parent.chart;
       queryService.createTask(
         'query',
         'visualization',
@@ -41,7 +38,12 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
-              $scope.$parent.c3test();
+              queryService.updateVisualization(
+                data.job,
+                function(taskData) {
+                  console.log(taskData);
+                }
+              );
             });
           }
         }
