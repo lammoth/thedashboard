@@ -1,41 +1,8 @@
-//- div(ng-include='"components/navbar/navbar.html"')
-
-//- header#banner.hero-unit
-//-   .container
-//-     h1 'Allo, 'Allo!
-//-     p.lead Kick-start your next web app with Angular Fullstack
-//-     img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
-
-//- .container
-//-   .row
-//-     .col-lg-12
-//-       h1.page-header Features:
-//-       ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-//-         li
-//-           a(href='#', tooltip='{{thing.info}}')
-//-             | {{thing.name}}
-//-             button.close(type='button', ng-click='deleteThing(thing)') ×
-
-//-   form.thing-form
-//-     label Syncs in realtime across clients
-//-     p.input-group
-//-       input.form-control(type='text', placeholder='Add a new thing here.', ng-model='newThing')
-//-       span.input-group-btn
-//-         button.btn.btn-primary(type='submit', ng-click='addThing()') Add New
-
-//- footer.footer
-//-   .container
-//-     p
-//-       | Angular Fullstack v2.0.13
-//-       = ' | '
-//-       a(href='https://twitter.com/tyhenkel') @tyhenkel
-//-       = ' | '
-//-       a(href='https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open') Issues
 div(ui-view="main")
   #header
     .color-line
     #logo.light-version
-      a(ui-sref="main") 
+      a(ui-sref="main.dashboard") 
         strong The dashboard
            
     nav(role='navigation')
@@ -95,7 +62,7 @@ div(ui-view="main")
               |                 
               ul.nav.nav-second-level
                 li
-                  a Create
+                  a(ui-sref='main.dashboard') Create
                     span.arrow
                       i.fa.fa-plus-square-o
                 |                     
@@ -149,107 +116,3 @@ div(ui-view="main")
               small {{ sectionDescription }}
       .content.animate-panel
         div(ui-view="section-view")
-          .row
-            .col-xs-12
-              div(gridster="gridsterOptions")
-                ul
-                  li(gridster-item="item" ng-repeat="item in standardItems")
-                    .hpanel
-                      .panel-heading.hbuilt
-                        .panel-tools
-                          a.showhide
-                            i.fa.fa-chevron-up
-                          |                     
-                          a.closebox
-                            i.fa.fa-times
-                        | Example
-                      .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-            //- .col-lg-3.col-md-4.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.1s; -webkit-animation-delay: 0.1s;')
-            //-   .hpanel
-            //-     .panel-heading.hbuilt
-            //-       .panel-tools
-            //-         a.showhide
-            //-           i.fa.fa-chevron-up
-            //-         |                     
-            //-         a.closebox
-            //-           i.fa.fa-times
-            //-       | Example
-            //-     .panel-body
-

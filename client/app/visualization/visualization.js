@@ -20,7 +20,7 @@ angular.module('thedashboardApp')
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-new.html',
-            controller: 'VisualizationCtrl',
+            controller: 'VisualizationNewCtrl',
           }  
         },
         ncyBreadcrumb: {

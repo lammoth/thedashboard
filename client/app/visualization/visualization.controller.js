@@ -1,28 +1,27 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('VisualizationCtrl', function ($scope, $rootScope, Plugin) {
+  .controller('VisualizationCtrl', function ($scope, $state) {
+  })
+  .controller('VisualizationNewCtrl', function ($scope, $rootScope) {
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Create a new visulaization";
   })
-  .controller('VisualizationEditorCtrl', function ($scope, $stateParams, Plugin, $injector, $timeout, $cacheFactory) {
+  .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory) {
+    $rootScope.sectionName = "Visualizations";
+    $rootScope.sectionDescription = "Edit a visulaization";
     $scope.chart = $stateParams.chart;
-    var VisualizatorService = null;
-    var chart = null;
+    $scope.visualizatorService = null;
 
     if ($cacheFactory.info().Plugin.size === 0) {
       var visualizatorPluginPromise = Plugin.broker('getVisualizator');
       visualizatorPluginPromise.then(function(visualizatorPlugin) {
-        VisualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-        // VisualizatorService.data();
-        // VisualizatorService.type($stateParams.chart);
-        // VisualizatorService.bind('#visualization-chart-editor');
-        // chart = VisualizatorService.compile();
+        $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
       });
     } else {
       var cache = $cacheFactory.get("Plugin");
       if (cache.get("plugins")) {
-        VisualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+        $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
       }
     }
   })
@@ -41,7 +40,18 @@ angular.module('thedashboardApp')
               queryService.updateVisualization(
                 data.job,
                 function(taskData) {
-                  console.log(taskData);
+                  var columnsArray = [];
+                  _.forEach(taskData.data, function(td) {
+                    columnsArray.push(td);
+                  });
+                  $scope.$parent.visualizatorService.data(
+                    {
+                      columns: columnsArray
+                    }
+                  );
+                  $scope.$parent.visualizatorService.type($scope.$parent.chart);
+                  $scope.$parent.visualizatorService.bind('#visualization-chart-editor');
+                  $scope.$parent.visualizatorService.render();
                 }
               );
             });

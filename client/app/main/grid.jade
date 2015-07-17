@@ -1,0 +1,16 @@
+.row
+  .col-xs-12
+    div(gridster="gridsterOptions")
+      ul
+        li(gridster-item="item" ng-repeat="item in standardItems")
+          .hpanel
+            .panel-heading.hbuilt
+              .panel-tools
+                a.showhide
+                  i.fa.fa-chevron-up
+                |                     
+                a.closebox
+                  i.fa.fa-times
+              | Example
+            .panel-body
+
