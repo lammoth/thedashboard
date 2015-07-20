@@ -29,10 +29,10 @@ angular.module('thedashboardApp')
     $scope.form = {};
     $scope.graphicOptions = {};
 
-    $scope.changeGraphicOptions = function(options, indicator) {
-      if (Boolean(parseInt(indicator))) {
-        console.log(options);
-        $scope.$parent.visualizatorService.option(options, $scope.chart); 
+    $scope.changeGraphicOptions = function(options, model) {
+      $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
+      if (options.restart) {
+        $scope.chart = $scope.$parent.visualizatorService.render();
       }
     }
 
