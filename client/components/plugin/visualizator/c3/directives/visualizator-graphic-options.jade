@@ -1,0 +1,10 @@
+.row
+  .col-xs-12
+    .form-group
+      label.control-label Ease up the graphic      
+      select.form-control.m-b(
+        ng-model="graphicOptions.transform", 
+        ng-change="changeGraphicOptions({option: 'transform', effect: 'area-spline'}, graphicOptions.transform)",
+      )
+        option(value=1) Yes
+        option(value=0) No

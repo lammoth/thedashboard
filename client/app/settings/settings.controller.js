@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('SettingsDashboardCtrl', function ($scope, $cacheFactory, Plugin) {
+  .controller('SettingsDashboardCtrl', function ($scope) {
+    
+  })
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin) {
     $scope.plugins = {};
 
     if ($cacheFactory.info().Plugin.size === 0) {
@@ -11,6 +14,8 @@ angular.module('thedashboardApp')
         if (acquisitorPlugins) {      
           $scope.plugins.acquisitors = acquisitorPlugins;
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+          $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
+          $scope.plugins.visualizatorActive = Plugin.getVisualizator();
         }
       });
     } else {
@@ -18,6 +23,8 @@ angular.module('thedashboardApp')
       if (cache.get("plugins")) {
         $scope.plugins.acquisitors = Plugin.getAcquisitorPlugins();
         $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+        $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
+        $scope.plugins.visualizatorActive = Plugin.getVisualizator();
       }
     }
 
@@ -25,4 +32,7 @@ angular.module('thedashboardApp')
       console.log($scope.plugins.acquisitors);
     }
 
+    $scope.visulizatorSelectChange = function() {
+      console.log($scope.plugins.visualizators);
+    }
   });

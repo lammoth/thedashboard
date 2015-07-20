@@ -10,7 +10,7 @@ angular.module('thedashboardApp')
   .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory) {
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Edit a visulaization";
-    $scope.chart = $stateParams.chart;
+    $scope.chartType = $stateParams.chart;
     $scope.visualizatorService = null;
 
     if ($cacheFactory.info().Plugin.size === 0) {
@@ -27,6 +27,14 @@ angular.module('thedashboardApp')
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
+    $scope.graphicOptions = {};
+
+    $scope.changeGraphicOptions = function(options, indicator) {
+      if (Boolean(parseInt(indicator))) {
+        console.log(options);
+        $scope.$parent.visualizatorService.option(options, $scope.chart); 
+      }
+    }
 
     $scope.makeQuery = function() {
       var chart = $scope.$parent.chart;
@@ -49,9 +57,9 @@ angular.module('thedashboardApp')
                       columns: columnsArray
                     }
                   );
-                  $scope.$parent.visualizatorService.type($scope.$parent.chart);
+                  $scope.$parent.visualizatorService.type($scope.$parent.chartType);
                   $scope.$parent.visualizatorService.bind('#visualization-chart-editor');
-                  $scope.$parent.visualizatorService.render();
+                  $scope.chart = $scope.$parent.visualizatorService.render();
                 }
               );
             });

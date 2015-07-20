@@ -28,12 +28,18 @@ function visualizationQuery(parent, task, cb) {
   })
   // Executing the query in the acquisitor plugin
   .then(function() {
+    // TODO: Sergio's task
+    // In this call, you must transform the frontend JSON to SQL or whatever
     return data.AcquisitorPlugin.queryClient.execQuery('select * from pruebas');
   })
   // Instantiating the visualizator plugin
   // Parsing the acquisitor results in the visualizator
   .then(function(queryResult) {
     data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))(queryResult);
+    // TODO: Sergio's task
+    // In this call, you must transform the acquisitor results to C3 valid data
+    // From Parser, you should choose the proper parser (Spark) in order to adapt
+    // the results to C3
     return data.VisualizatorPlugin.parser(data.VisualizatorPlugin.data);
   })
   // Saving task results in Redis

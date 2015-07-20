@@ -4,7 +4,8 @@
 
 'use strict';
 
-var redis = require("redis"),
+var redis = require('redis'),
+  _ = require('lodash'),
   Q = require('q');
 
 module.exports = Persistor;
@@ -36,6 +37,13 @@ Persistor.prototype.saveTaskResults = function(task, data) {
 
 Persistor.prototype.getTaskResults = function(task, cb) {
   this.client.hgetall("task:" + task, function(err, result) {
-    cb(result);
+    // TODO: Only for test purposes
+    // The result should be parsed yet 
+    var resultArray = [];
+    _.forEach(result, function(value, key){
+      resultArray.push(value.split(","));
+    });
+    cb(resultArray);
+    //cb(result);
   });
 }

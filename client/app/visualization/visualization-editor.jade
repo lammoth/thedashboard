@@ -27,24 +27,13 @@
                             | Graphic data
                           |             
                           .panel-body
-                            acquisitor-graphic-options(chart="{{chart}}")
+                            acquisitor-graphic-options(chart="{{chartType}}")
 
                       a.btn.btn-outline.btn-warning2.btn-block(ng-click="makeQuery()") Apply
           tab(heading='Options')           
             .tab-content
               .panel-body
-                .row
-                  .col-xs-12
-                    .form-group
-                      label.control-label Search source         
-                      select.form-control.m-b(name='account')
-                        option option 1
-                        |                 
-                        option option 2
-                        |                 
-                        option option 3
-                        |                 
-                        option option 4
+                visualizator-graphic-options
   .col-xs-12.col-md-8.col-lg-9.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
     .hpanel
       .panel-heading
