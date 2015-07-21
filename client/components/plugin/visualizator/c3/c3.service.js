@@ -5,6 +5,8 @@ angular.module('thedashboardApp')
     var graph = {};
 
     return {
+      graph: graph,
+      
       type: function(type) {
         graph.data.type = type;
       },

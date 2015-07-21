@@ -11,4 +11,10 @@ router.get('/plugins/info', controller.pluginsInfo);
 // router.post('/plugins', controller.config);
 // router.put('/plugins', controller.config);
 
+// Visualization routes
+router.post('/visualization', controller.visualization);
+
+// Dashboard routes
+router.post('/dashboard', controller.dashboard);
+
 module.exports = router;

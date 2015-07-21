@@ -30,7 +30,7 @@ function visualizationQuery(parent, task, cb) {
   .then(function() {
     // TODO: Sergio's task
     // In this call, you must transform the frontend JSON to SQL or whatever
-    return data.AcquisitorPlugin.queryClient.execQuery('select * from pruebas');
+    return data.AcquisitorPlugin.queryClient.execQuery('select * from logstash_collectd');
   })
   // Instantiating the visualizator plugin
   // Parsing the acquisitor results in the visualizator

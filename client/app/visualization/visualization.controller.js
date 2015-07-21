@@ -68,6 +68,12 @@ angular.module('thedashboardApp')
       );
     };
 
+    $scope.saveVisualization = function() {
+      if ($scope.$parent.visualizatorService.graph) {
+        
+      }
+    };
+
     function createSocket(name, cb) {
       console.log("Creating socket %s", name);
       socket.socket.on(name, function(data) {

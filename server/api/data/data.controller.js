@@ -4,33 +4,64 @@ var _ = require('lodash'),
   config = require('../../config/general'),
   PluginModel = require('./plugin.model'),
   pluginsConfig = require('../../config/plugins'),
-  Plugin = require('../../plugins');
+  Plugin = require('../../plugins'),
+  VisualizationModel = require('./visualization.model'),
+  DashboardModel = require('./dashboard.model');
 
 
-// Get datasources list
-exports.sources = function(req, res) {
-  // Plugin engine instance
-  var plugin = new Plugin(req.app, pluginsConfig);
-  var data = null;
+// // Get datasources list
+// exports.sources = function(req, res) {
+//   // Plugin engine instance
+//   var plugin = new Plugin(req.app, pluginsConfig);
+//   var data = null;
 
-  if (req.app.get('plugins').length > 0) {
-    data = plugin.activePlugins(req.app.get('plugins'), req.params.name);
-  }
+//   if (req.app.get('plugins').length > 0) {
+//     data = plugin.activePlugins(req.app.get('plugins'), req.params.name);
+//   }
 
-  return res.json(
-    {
-      response: "ok",
-      data: data
-    }
-  );
-};
+//   return res.json(
+//     {
+//       response: "ok",
+//       data: data
+//     }
+//   );
+// };
 
+// Plugins
 // Get plugins info
 exports.pluginsInfo = function(req, res) {
   PluginModel.find(function (err, data) {
     if(err) { return handleError(res, err); }
     return res.json(200, {response: "ok", data: data});
   });
+};
+
+
+// Visualizations
+exports.visualization = function(req, res) {
+  if (req.method == 'GET') {
+    
+  } else if (req.method == 'POST') {
+    // TODO: Check if request is correct
+    VisualizationModel.create(req.body, function(err, data) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, {response: "ok", data: data});
+    });
+  }
+};
+
+
+// Dashboards
+exports.dashboard = function(req, res) {
+  if (req.method == 'GET') {
+    
+  } else if (req.method == 'POST') {
+    // TODO: Check if request is correct
+    DashboardModel.create(req.body, function(err, data) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, {response: "ok", data: data});
+    });
+  }
 };
 
 
