@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('thedashboardApp', [
   'ngCookies',
   'ngResource',
@@ -54,3 +55,14 @@ angular.module('thedashboardApp', [
       });
     });
   });
+
+var apiPrefix = null;
+
+angular.element(document).ready(function() {
+  $.get('/info', function(data) {
+    if (data.response === "ok") {
+      apiPrefix = data.data.api.path;
+      angular.bootstrap(document, ['thedashboardApp']);
+    }
+  });
+});

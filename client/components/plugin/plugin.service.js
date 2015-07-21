@@ -8,11 +8,11 @@ angular.module('thedashboardApp')
     var cache = $cacheFactory('Plugin');
 
     // Get enable plugins
-    function getConfig(cb) {
+    function getData(cb) {
       
       var deferred = $q.defer();
 
-      $http.get('/api/v1/data/config', {}).
+      $http.get(apiPrefix + '/data/plugins/info', {}).
         success(function(data) {
           if (data.response === "error") { return data.data; }
           plugins = data.data;
@@ -29,7 +29,7 @@ angular.module('thedashboardApp')
       // Requests broker
       broker: function(name) {
         if (!cache.get("plugins")) {
-          var promise = getConfig(this[name]);
+          var promise = getData(this[name]);
           return promise;
         } else {
           return this[name]();
@@ -40,14 +40,13 @@ angular.module('thedashboardApp')
       getAcquisitorPlugins: function() {
         if (plugins || cache.get("plugins")) {
             if ((!plugins) ? plugins = cache.get("plugins") : plugins);
-            var acquisitorPlugins = _.filter(plugins[0].plugins, function(plugin) {
+            var acquisitorPlugins = _.filter(plugins, function(plugin) {
               if (plugin.name === "acquisitor") {
                 return true;
               } else {
                 return false;
               }
             });
-
             return acquisitorPlugins;
           }
           return null;
@@ -57,7 +56,7 @@ angular.module('thedashboardApp')
       getAcquisitor: function() {
           if (plugins || cache.get("plugins")) {
             if ((!plugins) ? plugins = cache.get("plugins") : plugins);
-            return _.result(_.find(plugins[0].plugins, {'name': 'acquisitor', 'enable': true}), 'pluginName');
+            return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'pluginName');
           }
           return null;
       },
@@ -66,7 +65,7 @@ angular.module('thedashboardApp')
       getVisualizatorPlugins: function() {
         if (plugins || cache.get("plugins")) {
             if ((!plugins) ? plugins = cache.get("plugins") : plugins);
-            var visualizatorPlugins = _.filter(plugins[0].plugins, function(plugin) {
+            var visualizatorPlugins = _.filter(plugins, function(plugin) {
               if (plugin.name === "visualizator") {
                 return true;
               } else {
@@ -83,7 +82,7 @@ angular.module('thedashboardApp')
       getVisualizator: function() {
           if (plugins || cache.get("plugins")) {
             if ((!plugins) ? plugins = cache.get("plugins") : plugins);
-            return _.result(_.find(plugins[0].plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
+            return _.result(_.find(plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
           }
           return null;
       }

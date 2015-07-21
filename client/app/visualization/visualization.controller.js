@@ -36,7 +36,7 @@ angular.module('thedashboardApp')
       }
     }
 
-    $scope.makeQuery = function() {
+    $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
       queryService.createTask(
         'query',

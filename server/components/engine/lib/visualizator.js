@@ -4,7 +4,7 @@
 
 'use strict';
 
-var Data = require('../../../api/data/data.model');
+var PluginData = require('../../../api/data/plugin.model');
 var _ = require('lodash');
 var Q = require('q');
 
@@ -18,12 +18,12 @@ function Visualizator() {
   };
 
   function fetchPluginActive(deferred) {
-    Data.findOne(function (err, data) {
+    PluginData.findOne({"name": "visualizator", "enable": true}, function (err, data) {
       if(err) { deferred.resolve({}) }
       if (!data) {
         deferred.resolve({});
       } else {
-        deferred.resolve(_.find(data.plugins, {'name': 'visualizator', 'enable': true}));
+        deferred.resolve(data);
       }
     });
 

@@ -3,7 +3,7 @@
 angular.module('thedashboardApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
     $scope.gridsterOpts = {
-      columns: 6, // the width of the grid, in columns
+      columns: 12, // the width of the grid, in columns
         pushing: true, // whether to push other items out of the way on move or resize
         floating: true, // whether to automatically float items up so they stack (you can temporarily disable if you are adding unsorted items with ng-repeat)
         swapping: false, // whether or not to have items of the same size switch places instead of pushing down if they are the same size
@@ -18,7 +18,7 @@ angular.module('thedashboardApp')
         minColumns: 1, // the minimum columns the grid must have
         minRows: 2, // the minimum height of the grid, in rows
         maxRows: 100,
-        defaultSizeX: 2, // the default width of a gridster item, if not specifed
+        defaultSizeX: 1, // the default width of a gridster item, if not specifed
         defaultSizeY: 1, // the default height of a gridster item, if not specified
         minSizeX: 1, // minimum column width of an item
         maxSizeX: null, // maximum column width of an item
@@ -42,12 +42,12 @@ angular.module('thedashboardApp')
 
     $scope.standardItems = [
       { sizeX: 3, sizeY: 2, row: 0, col: 0 , id: "area"},
-      { sizeX: 3, sizeY: 2, row: 0, col: 3 , id: "line"},
+      { sizeX: 3, sizeY: 2, row: 0, col: 6 , id: "line"},
       { sizeX: 3, sizeY: 2, row: 1, col: 0 , id: "pie"},
-      { sizeX: 3, sizeY: 2, row: 1, col: 3 , id: "bar"},
+      { sizeX: 3, sizeY: 2, row: 1, col: 6 , id: "bar"},
       { sizeX: 3, sizeY: 2, row: 2, col: 0 , id: "donut"},
-      { sizeX: 3, sizeY: 2, row: 2, col: 3 , id: "gauge"},
-      { sizeX: 6, sizeY: 2, row: 3, col: 6 , id: "scatter"}
+      { sizeX: 3, sizeY: 2, row: 2, col: 6 , id: "gauge"},
+      { sizeX: 6, sizeY: 2, row: 3, col: 12 , id: "scatter"}
     ];
 
     setTimeout(function(){

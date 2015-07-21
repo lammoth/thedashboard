@@ -5,7 +5,7 @@ angular.module('thedashboardApp')
     return {
         // Creates a task in the backend and returns the task id 
         createTask: function(type, subtype, cb) {
-          $http.post('/api/v1/broker/task', {type: type, subtype:subtype}).
+          $http.post(apiPrefix + '/broker/task', {type: type, subtype:subtype}).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
               return cb(data);
@@ -16,7 +16,7 @@ angular.module('thedashboardApp')
         },
         // Update a visualization with the data returned by a task
         updateVisualization: function(task, cb) {
-          $http.get('/api/v1/broker/task/' + task).
+          $http.get(apiPrefix + '/broker/task/' + task).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
               return cb(data);

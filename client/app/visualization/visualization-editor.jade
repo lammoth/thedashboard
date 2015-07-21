@@ -28,8 +28,13 @@
                           |             
                           .panel-body
                             acquisitor-graphic-options(chart="{{chartType}}")
-
-                      a.btn.btn-outline.btn-warning2.btn-block(ng-click="makeQuery()") Apply
+                      div.pull-right
+                        a.btn.btn-info.btn-outline.btn-margin(ng-click="saveVisualization()")
+                          i.fa.fa-floppy-o
+                          | &nbsp; Save 
+                        a.btn.btn-warning2.btn-outline.btn-margin(ng-click="runVisualization()")
+                          i.fa.fa-play
+                          | &nbsp; Run
           tab(heading='Options')           
             .tab-content
               .panel-body

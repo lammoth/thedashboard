@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Data = require('./data.model');
+var PluginModel = require('./plugin.model');
 
 exports.register = function(socket) {
-  Data.schema.post('save', function (doc) {
-    onSave(socket, doc);
+  PluginModel.schema.post('save', function (doc) {
+    onSavePlugin(socket, doc);
   });
-  Data.schema.post('remove', function (doc) {
-    onRemove(socket, doc);
+  PluginModel.schema.post('remove', function (doc) {
+    onRemovePlugin(socket, doc);
   });
 }
 
-function onSave(socket, doc, cb) {
-  socket.emit('data:save', doc);
+function onSavePlugin(socket, doc, cb) {
+  socket.emit('plugin:save', doc);
 }
 
-function onRemove(socket, doc, cb) {
-  socket.emit('data:remove', doc);
+function onRemovePlugin(socket, doc, cb) {
+  socket.emit('plugin:remove', doc);
 }

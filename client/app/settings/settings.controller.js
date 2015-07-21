@@ -7,24 +7,29 @@ angular.module('thedashboardApp')
   .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin) {
     $scope.plugins = {};
 
-    if ($cacheFactory.info().Plugin.size === 0) {
-      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+    // Initializing plugins tab
+    initTabPlugins();
 
-      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
-        if (acquisitorPlugins) {      
-          $scope.plugins.acquisitors = acquisitorPlugins;
+    function initTabPlugins() {
+      if ($cacheFactory.info().Plugin.size === 0) {
+        var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+
+        pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+          if (acquisitorPlugins) {      
+            $scope.plugins.acquisitors = acquisitorPlugins;
+            $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+            $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
+            $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+          }
+        });
+      } else {
+        var cache = $cacheFactory.get("Plugin");
+        if (cache.get("plugins")) {
+          $scope.plugins.acquisitors = Plugin.getAcquisitorPlugins();
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
           $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
           $scope.plugins.visualizatorActive = Plugin.getVisualizator();
         }
-      });
-    } else {
-      var cache = $cacheFactory.get("Plugin");
-      if (cache.get("plugins")) {
-        $scope.plugins.acquisitors = Plugin.getAcquisitorPlugins();
-        $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
-        $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
-        $scope.plugins.visualizatorActive = Plugin.getVisualizator();
       }
     }
 

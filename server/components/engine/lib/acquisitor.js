@@ -4,7 +4,7 @@
 
 'use strict';
 
-var Data = require('../../../api/data/data.model');
+var PluginData = require('../../../api/data/plugin.model');
 var _ = require('lodash');
 var Q = require('q');
 
@@ -19,12 +19,12 @@ function Acquisitor() {
   };
 
   function fetchPluginActive(deferred) {
-    Data.findOne(function (err, data) {
+    PluginData.findOne({"name": "acquisitor", "enable": true}, function (err, data) {
       if(err) { deferred.resolve({}) }
       if (!data) {
         deferred.resolve({});
       } else {
-        deferred.resolve(_.find(data.plugins, {'name': 'acquisitor', 'enable': true}));
+        deferred.resolve(data);
       }
     });
 
