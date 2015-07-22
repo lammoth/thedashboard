@@ -10,4 +10,8 @@ var PluginSchema = new Schema({
   enable: Boolean
 });
 
+PluginSchema.statics.getAcquisitorEnabled = function(cb) {
+  
+};
+
 module.exports = mongoose.model('Plugin', PluginSchema);

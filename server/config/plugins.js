@@ -12,6 +12,8 @@ var plugins = [
     pluginName: 'druid',
     pluginTitle: 'Druid',
     active: true,
+    // When Boot option is true, the acqusitor is initialized at app boot
+    boot: true,
     config: {
       address: '10.128.19.58:2181,10.128.19.60:2181,10.128.19.65:2181/druid',
       parameters: '/discovery/broker',
@@ -29,6 +31,8 @@ var plugins = [
     pluginName: 'spark',
     pluginTitle: 'Spark',
     active: true,
+    // When Boot option is true, the acqusitor is initialized at app boot
+    boot: true,
     config: {
       url: 'jdbc:hive2://10.128.19.61:10000/default',
       user: '',

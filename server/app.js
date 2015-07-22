@@ -30,8 +30,9 @@ require('./routes')(app);
 
 // Setup plugins system
 var pluginsConfig = require('./config/plugins');
-var PluginEngine = require('./plugins');
-var initPlugin = new PluginEngine(app, pluginsConfig);
+var PluginEngine = new (require('./plugins'))(app, pluginsConfig);
+PluginEngine.checkPluginsInDB();
+// Acquisitor connection
 
 // Setup persist system
 var Persistor = new (require('./components/engine/lib/persistor'))();

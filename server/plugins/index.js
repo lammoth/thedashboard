@@ -2,43 +2,48 @@
  * Druid plugin engine
  */
 
-var glob = require("glob");
-var _ = require("lodash");
+var glob = require("glob"),
+  _ = require("lodash")
+  PluginModel = require("../api/data/plugin.model.js");
 
 
 module.exports = Plugin;
 
 function Plugin(app, plugins) {
-  var currentPlugins = new Array();
+  this.currentPlugins = new Array();
 
-  // Check if plugins array contains only one "name" key
-  activePlugins = _.filter(plugins, function(plugin) {
-    return ((plugin.active) ? true: false);
-  });
+  pluginCompile(this);
 
-  if (activePlugins.length > 0) {
-    // Collect active plugins
-    _.forEach(activePlugins, function(plugin) {
-      var path = __dirname + '/' + plugin.name + '/' + plugin.pluginName;
-      if (check(path)) {
-        plugin.path = path;
-        currentPlugins.push(plugin);
-      } else {
-        console.log(plugin.pluginName);
-        throw new Error('You need add an index.js file in the ' + plugin.pluginName + ' plugin');
-      }
+  function pluginCompile(parent) {
+    // Check if plugins array contains only one "name" key
+    activePlugins = _.filter(plugins, function(plugin) {
+      return ((plugin.active) ? true : false);
     });
 
-    // Check if path contains an index.js file
-    function check(path) {
-      files = glob.sync("index.js", {cwd: path, root: path});
-      return ((files && files.length === 1) ? true : false);
-    }
-  }
+    if (activePlugins.length > 0) {
+      // Collect active plugins
+      _.forEach(activePlugins, function(plugin) {
+        var path = __dirname + '/' + plugin.name + '/' + plugin.pluginName;
+        if (check(path)) {
+          plugin.path = path;
+          parent.currentPlugins.push(plugin);
+        } else {
+          console.log(plugin.pluginName);
+          throw new Error('You need add an index.js file in the ' + plugin.pluginName + ' plugin');
+        }
+      });
 
-  // Plugins setted express app
-  app.set('plugins', currentPlugins);
-  console.log('Plugins registered');
+      // Check if path contains an index.js file
+      function check(path) {
+        files = glob.sync("index.js", {cwd: path, root: path});
+        return ((files && files.length === 1) ? true : false);
+      }
+    }
+
+    // Plugins setted express app
+    app.set('plugins', parent.currentPlugins);
+    console.log('Plugins registered');
+  }
 };
 
 // Get all active plugins related with type
@@ -52,4 +57,8 @@ Plugin.prototype.activePlugins = function(plugins, type) {
     });
   }
   return activeP;
-}
+};
+
+Plugin.prototype.checkPluginsInDB = function() {
+  console.log(this.currentPlugins);
+};

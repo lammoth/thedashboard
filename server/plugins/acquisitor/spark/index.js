@@ -19,7 +19,6 @@ function SparkPlugin(data) {
 
 // Return a new Spark connection
 SparkPlugin.prototype.connect = function() {
-
   var deferred = Q.defer();
   var parent = this;  
   jdbc.initialize(this.data, function(err, res) {
