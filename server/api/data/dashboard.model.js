@@ -8,6 +8,7 @@ var DashboardSchema = new Schema({
   visualizatorPlugin: String,
   acquisitorPlugin: String,
   visualizations: [{ type: Schema.Types.ObjectId, ref: 'visualization'}],
+  matrix: [],
   time: Date
 });
 

@@ -10,7 +10,7 @@ function visualizationQuery(parent, task, cb) {
     VisualizatorPlugin: null,
   };
 
-  // Getting the acquisitor plugin
+  // Getting the visualizator plugin
   parent.visualizator.plugin()
   .then(function(dataVisualizator) {
     data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);

@@ -10,7 +10,7 @@
                   .col-xs-12
           tab(heading='Plugins')            
             .tab-content
-              tab-pane.active
+              tab-pane
                 .panel-body
                   .hpanel.horange
                     .panel-heading
@@ -36,6 +36,21 @@
                         label.control-label Select the visualization plugin  
                         select.form-control.m-b(ng-model="plugins.visualizators", ng-change="visualizatorSelectChange()")
                           option(ng-repeat="visualizator in plugins.visualizators track by $index" ng-selected="{{visualizator.pluginName == plugins.visualizatorActive}}" value="{{visualizator.pluginName}}") {{visualizator.pluginTitle}}
+          tab(heading='Dashboards')           
+            .tab-content
+              .panel-body
+                .row
+                  .col-xs-12
+          tab(heading='Visualizations')           
+            .tab-content
+              .panel-body
+                .row
+                  .col-xs-12
+          tab(heading='ACLs')           
+            .tab-content
+              .panel-body
+                .row
+                  .col-xs-12
   .col-md-3.col-lg-3.col-xs-12
     .row
       .col-md-12.col-lg-12.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.9s; -webkit-animation-delay: 0.9s;')
@@ -49,6 +64,8 @@
                 |                             
                 small
                   | Dashboards available
+                br
+                a.btn.btn-default.btn-xs.btn-outline(style="margin-top: 5px;") See all dashboards
       .col-md-12.col-lg-12.col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.9s; -webkit-animation-delay: 0.9s;')
         .hpanel.hbggreen
             .panel-body
@@ -60,6 +77,8 @@
                 |                             
                 small
                   | Visualizations available
+                br
+                a.btn.btn-default.btn-xs.btn-outline(style="margin-top: 5px;") See all visualizations
       .col-md-12.col-lg-12.col-xs-12.animated-panel.zoomIn(style='animation-delay: 1.3s; -webkit-animation-delay: 1.3s;')
         .hpanel
             .panel-body
