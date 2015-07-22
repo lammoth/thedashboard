@@ -69,8 +69,9 @@ angular.module('thedashboardApp')
     };
 
     $scope.saveVisualization = function() {
-      if ($scope.$parent.visualizatorService.graph) {
-        
+      console.log($scope.$parent.visualizatorService.hasGraph);
+      if ($scope.$parent.visualizatorService.hasGraph) {
+        console.log($scope.chart);
       }
     };
 
