@@ -4,7 +4,8 @@
 
 var glob = require("glob"),
   _ = require("lodash")
-  PluginModel = require("../api/data/plugin.model.js");
+  PluginModel = require("../api/data/plugin.model.js"),
+  Acquisitor = new (require('../components/engine/lib/acquisitor'))();
 
 
 module.exports = Plugin;
@@ -59,6 +60,19 @@ Plugin.prototype.activePlugins = function(plugins, type) {
   return activeP;
 };
 
-Plugin.prototype.checkPluginsInDB = function() {
-  console.log(this.currentPlugins);
+// Used to load plugins at app boot
+Plugin.prototype.load = function(type, app) {
+  var parent = this;
+  switch(type) {
+    case 'acquisitor':
+      Acquisitor.plugin().then(function(data) {
+        var acquisitorPluginData = Acquisitor.getObject(app.get('plugins'), data);
+        var AcquisitorPlugin = new (require(acquisitorPluginData.path))(acquisitorPluginData.config);
+        AcquisitorPlugin.connect().then(function() {
+          console.log("Acquisitor loaded at boot");
+          app.set('acquisitor', AcquisitorPlugin);
+        });
+      });
+      break;
+  }
 };

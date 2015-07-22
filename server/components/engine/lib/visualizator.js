@@ -18,8 +18,7 @@ function Visualizator() {
   };
 
   function fetchPluginActive(deferred) {
-    PluginData.findOne({"name": "visualizator", "enable": true}, function (err, data) {
-      if(err) { deferred.resolve({}) }
+    PluginModel.getPluginEnabled('visualizator', function(data){
       if (!data) {
         deferred.resolve({});
       } else {

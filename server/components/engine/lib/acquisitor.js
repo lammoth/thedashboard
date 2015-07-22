@@ -19,8 +19,7 @@ function Acquisitor() {
   };
 
   function fetchPluginActive(deferred) {
-    PluginData.findOne({"name": "acquisitor", "enable": true}, function (err, data) {
-      if(err) { deferred.resolve({}) }
+    PluginModel.getPluginEnabled('acquisitor', function(data){
       if (!data) {
         deferred.resolve({});
       } else {

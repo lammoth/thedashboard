@@ -26,11 +26,10 @@ function QueryReq(connection) {
       if (err) {
         console.log(err);
         deferred.resolve({});
-        close();
+        // close();
       } else if (results) {
-        // console.log(results);
         deferred.resolve(results);
-        close();
+        // close();
       }
     });
 

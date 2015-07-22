@@ -11,8 +11,10 @@ module.exports = Engine;
 
 function Engine(app) {
   this.app = app;
-  this.acquisitor = new Acquisitor();
+  // Loaded at app boot
+  this.acquisitor = app.get('acquisitor');
   this.visualizator = new Visualizator();
+  // Loaded at app boot
   this.persistor = app.get('persistor');
 }
 

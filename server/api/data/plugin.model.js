@@ -10,8 +10,13 @@ var PluginSchema = new Schema({
   enable: Boolean
 });
 
-PluginSchema.statics.getAcquisitorEnabled = function(cb) {
-  
+PluginSchema.statics.getPluginEnabled = function(type, cb) {
+  this
+    .findOne({enable: true, name: type})
+    .exec(function(err, result) {
+      if (err) console.log(err);
+      cb(result);
+    });
 };
 
 module.exports = mongoose.model('Plugin', PluginSchema);
