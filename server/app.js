@@ -31,8 +31,6 @@ require('./routes')(app);
 // Setup plugins system
 var pluginsConfig = require('./config/plugins');
 var PluginEngine = new (require('./plugins'))(app, pluginsConfig);
-// Initializing Acquisitor connection
-PluginEngine.load('acquisitor', app);
 
 // Setup persist system
 var Persistor = new (require('./components/engine/lib/persistor'))();

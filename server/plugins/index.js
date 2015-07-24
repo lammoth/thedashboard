@@ -11,6 +11,7 @@ var glob = require("glob"),
 module.exports = Plugin;
 
 function Plugin(app, plugins) {
+  var parent = this;
   this.currentPlugins = new Array();
 
   pluginCompile(this);
@@ -45,7 +46,9 @@ function Plugin(app, plugins) {
     app.set('plugins', parent.currentPlugins);
     console.log('Plugins registered');
     PluginModel.checkAndUpdate(parent.currentPlugins, function() {
-      console.log("done");
+      console.log("Plugins updated");
+      // Initializing Acquisitor connection
+      parent.load('acquisitor', app);
     });
   }
 };
