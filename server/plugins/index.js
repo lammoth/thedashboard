@@ -44,6 +44,9 @@ function Plugin(app, plugins) {
     // Plugins setted express app
     app.set('plugins', parent.currentPlugins);
     console.log('Plugins registered');
+    PluginModel.checkAndUpdate(parent.currentPlugins, function() {
+      console.log("done");
+    });
   }
 };
 

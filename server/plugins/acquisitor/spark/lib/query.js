@@ -62,6 +62,7 @@ QueryReq.prototype.execQuery = function(query) {
   //     parent.manager(Parser.parse(query), deferred);
   //   }
   // });
+
   deferred.resolve({});
 
   return deferred.promise;

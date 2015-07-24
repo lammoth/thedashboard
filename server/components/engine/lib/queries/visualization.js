@@ -16,7 +16,7 @@ function visualizationQuery(parent, task, cb) {
     data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);
     // TODO: Sergio's task
     // In this call, you must transform the frontend JSON to SQL or whatever
-    return parent.acquisitor.queryClient.execQuery('select * from logstash_collectd');
+    return parent.acquisitor.queryClient.execQuery('select * from newdata');
   })
   .then(function(queryResult) {
     data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))(queryResult);
