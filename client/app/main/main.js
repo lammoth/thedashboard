@@ -7,7 +7,7 @@ angular.module('thedashboardApp')
         url: '/',
         abstract: true,
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl',
+        // controller: 'MainCtrl',
         ncyBreadcrumb: {
           label: 'Home'
         }
