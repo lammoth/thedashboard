@@ -9,10 +9,9 @@ $(document).ready(function () {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
 
-    setTimeout(function() {
-        // Initialize metsiMenu plugin to sidebar menu
-        $('#side-menu').metisMenu();
-    }, 100);
+    // Initialize metisMenu plugin to sidebar menu
+    // Moved this to MenuController in order to initialize the plugin when the page has been rendered.
+    // $('#side-menu').metisMenu();
 
     // Handle minimalize sidebar menu
     $('body').on('click', '.hide-menu', function(event){
@@ -60,9 +59,8 @@ $(document).ready(function () {
     });
 
     // Set minimal height of #wrapper to fit the window
-    setTimeout(function() {
-        fixWrapperHeight();
-    }, 100);
+    // Moved this to MenuController in order to set the minimal height when the page has been rendered.
+    // fixWrapperHeight();
 
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
@@ -78,11 +76,6 @@ $(window).bind("load", function () {
 $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
-
-    // Wait until metsiMenu, collapse and other effect finish and set wrapper height
-    setTimeout(function () {
-        fixWrapperHeight();
-    }, 300);
 })
 
 function fixWrapperHeight() {
