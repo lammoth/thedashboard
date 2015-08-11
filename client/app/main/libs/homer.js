@@ -21,6 +21,11 @@ $(document).ready(function () {
         } else {
             $("body").toggleClass("hide-sidebar");
         }
+        // We need to notify that the screen is resized.
+        // Wait until the animation finish
+        setTimeout(function() {
+            $(window).trigger('resize');
+        }, 600);
     });
 
     // Initialize iCheck plugin
