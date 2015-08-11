@@ -25,36 +25,39 @@ angular.module('thedashboardApp')
       minSizeY: 1, // minumum row height of an item
       maxSizeY: null, // maximum row height of an item
       resizable: {
-         enabled: true,
-         handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
-         start: function(event, $element, widget) {}, // optional callback fired when resize is started,
-         resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
-         stop: function(event, $element, widget) {resize(widget.id)} // optional callback fired when item is finished resizing
+        enabled: true,
+        handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+        start: function(event, $element, widget) {}, // optional callback fired when resize is started,
+        resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
+        stop: function(event, $element, widget) {
+          resize(widget.id, $element[0].clientHeight);
+        } // optional callback fired when item is finished resizing
       },
       draggable: {
-         enabled: true, // whether dragging items is supported
-         handle: '.my-class', // optional selector for resize handle
-         start: function(event, $element, widget) {}, // optional callback fired when drag is started,
-         drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
-         stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
+        enabled: true, // whether dragging items is supported
+        handle: '.my-class', // optional selector for resize handle
+        start: function(event, $element, widget) {}, // optional callback fired when drag is started,
+        drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
+        stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
       }
     };
 
     // IMPORTANT: Charts appears in the grid in the inverse order in which they should appear.
     $scope.standardItems = [
-      { sizeX: 6, sizeY: 6, row: 0, col: 0 , id: "area"},
-      { sizeX: 6, sizeY: 6, row: 0, col: 6 , id: "line"},
-      { sizeX: 6, sizeY: 6, row: 1, col: 0 , id: "pie"},
-      { sizeX: 6, sizeY: 6, row: 1, col: 6 , id: "bar"},
-      { sizeX: 6, sizeY: 6, row: 2, col: 0 , id: "donut"},
-      { sizeX: 6, sizeY: 6, row: 2, col: 6 , id: "gauge"},
-      { sizeX: 12, sizeY: 6, row: 3, col: 0 , id: "scatter"}
+      { sizeX: 6, sizeY: 3, row: 0, col: 0 , id: "area"},
+      { sizeX: 6, sizeY: 3, row: 0, col: 6 , id: "line"},
+      { sizeX: 6, sizeY: 3, row: 1, col: 0 , id: "pie"},
+      { sizeX: 6, sizeY: 3, row: 1, col: 6 , id: "bar"},
+      { sizeX: 6, sizeY: 3, row: 2, col: 0 , id: "donut"},
+      { sizeX: 6, sizeY: 3, row: 2, col: 6 , id: "gauge"},
+      { sizeX: 12, sizeY: 3, row: 3, col: 0 , id: "scatter"}
     ];
 
     var charts = {};
     setTimeout(function(){
       charts.area = c3.generate({
         bindto: '#area',
+        onresize: function(){resize('area')},
         data: {
           columns: [
             ['data1', 300, 350, 300, 0, 0, 0],
@@ -64,32 +67,44 @@ angular.module('thedashboardApp')
             data1: 'area',
             data2: 'area-spline'
           }
+        },
+        size: {
+          height: getHeight('area')
         }
       });
 
       charts.line = c3.generate({
         bindto: '#line',
+        onresize: function(){resize('line')},
         data: {
           columns: [
             ['data1', 30, 200, 100, 400, 150, 250],
             ['data2', 50, 20, 10, 40, 15, 25]
           ]
+        },
+        size: {
+          height: getHeight('line')
         }
       });
 
       charts.pie = c3.generate({
         bindto: '#pie',
+        onresize: function(){resize('pie')},
         data: {
           columns: [
             ['data1', 30],
             ['data2', 120],
           ],
           type : 'pie'
+        },
+        size: {
+          height: getHeight('pie')
         }
       });
 
       charts.bar = c3.generate({
         bindto: '#bar',
+        onresize: function(){resize('bar')},
         data: {
           columns: [
             ['data1', -30, 200, 200, 400, -150, 250],
@@ -105,11 +120,15 @@ angular.module('thedashboardApp')
           y: {
             lines: [{value:0}]
           }
+        },
+        size: {
+          height: getHeight('bar')
         }
       });
 
       charts.donut = c3.generate({
         bindto: '#donut',
+        onresize: function(){resize('donut')},
         data: {
           columns: [
             ['data1', 30],
@@ -119,11 +138,15 @@ angular.module('thedashboardApp')
         },
         donut: {
             title: "Iris Petal Width"
+        },
+        size: {
+          height: getHeight('donut')
         }
       });
 
       charts.gauge = c3.generate({
         bindto: '#gauge',
+        onresize: function(){resize('gauge')},
         data: {
           columns: [
             ['data', 91.4]
@@ -135,12 +158,15 @@ angular.module('thedashboardApp')
           threshold: {
             values: [30, 60, 90, 100]
           }
+        },
+        size: {
+          height: getHeight('gauge')
         }
       });
 
       charts.scatter = c3.generate({
         bindto: '#scatter',
-        onresize: function(){console.log('onresize');},
+        onresize: function(){resize('scatter')},
         data: {
           xs: {
             setosa: 'setosa_x',
@@ -164,14 +190,40 @@ angular.module('thedashboardApp')
           y: {
             label: 'Petal.Width'
           }
+        },
+        size: {
+          height: getHeight('scatter')
         }
       });
     }, 1000);
 
 
-    function resize(chart_id) {
-      charts[chart_id].resize();
+    // This function use resize method of the c3js charts to modify its sizes.
+    // Is used to adjust the chart to its containers
+    // VERY IMPORTANT: all charts need to call this in its onresize function.
+    function resize(chart_id, height) {
+      if (!height) {
+        height = getHeight(chart_id) + getRemainingHeight(chart_id);
+      }
+      charts[chart_id].resize({height: height - getRemainingHeight(chart_id)});
     }
+
+    // This function return the height of a gridster item container.
+    // Is used to know the height that should have the chart.
+    // VERY IMPORTANT: all charts need to call this when its size is declared.
+    function getHeight(chart_id) {
+      var el = angular.element('#_'+chart_id)[0];
+      var size = el.clientHeight - getRemainingHeight(chart_id);
+      return size;
+    }
+
+    // This function return the remaining height between container and chart.
+    function getRemainingHeight(chart_id) {
+      var heading = angular.element('#_'+chart_id + ' .panel-heading')[0].clientHeight;
+      var spacingTop = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-top').replace('px', ''));
+      var spacingBottom = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-bottom').replace('px', ''));
+      return heading + spacingTop + spacingBottom;
+    } 
 
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;

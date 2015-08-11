@@ -2,7 +2,7 @@
   .col-xs-12
     div(gridster="gridsterOpts")
       ul
-        li(gridster-item="item" ng-repeat="item in standardItems")
+        li(gridster-item="item", ng-repeat="item in standardItems", id="_{{item.id}}")
           .hpanel
             .panel-heading.hbuilt
               .panel-tools
