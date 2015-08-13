@@ -44,9 +44,9 @@
                     div
                       .checkbox.pull-left
                         label.select-all
-                          input(type="checkbox", ng-click="toggleAll()")
+                          input(type="checkbox", ng-click="toggleAllDashboards()")
                           | Select All
-                      a.btn.btn-danger.btn-xs.delete-btn(ng-click='deleteAll()', ng-disabled="selectedItems.length === 0")
+                      a.btn.btn-danger.btn-xs.delete-btn(ng-click='deleteAllDashboards()', ng-disabled="selectedDashboards.length === 0")
                         i.glyphicon.glyphicon-trash
                         | &nbsp;
                         | Delete
@@ -56,19 +56,45 @@
                       tbody
                         tr(ng-repeat='dashboard in dashboards')
                           td(width="1%")
-                            input.checkbox(type="checkbox", ng-checked="selectedItems.indexOf(dashboard) >= 0", ng-click="toggleItem(dashboard)")
+                            input.checkbox(type="checkbox", ng-checked="selectedDashboards.indexOf(dashboard) >= 0", ng-click="toggleDashboard(dashboard)")
                           td {{dashboard.name}}
                           td.min(width="1%") 
-                            a.btn.btn-default.btn-xs(ng-click='show(dashboard)')
+                            a.btn.btn-default.btn-xs(ng-click='showDashboard(dashboard)')
                               i.glyphicon.glyphicon-eye-open
                           td.min(width="1%") 
-                            a.btn.btn-danger.btn-xs(ng-click='delete(dashboard)')
+                            a.btn.btn-danger.btn-xs(ng-click='deleteDashboard(dashboard)')
                               i.glyphicon.glyphicon-trash
           tab(heading='Visualizations')           
             .tab-content
               .panel-body
                 .row
                   .col-xs-12
+                    div
+                      .checkbox.pull-left
+                        label.select-all
+                          input(type="checkbox", ng-click="toggleAllVisualizations()")
+                          | Select All
+                      a.btn.btn-danger.btn-xs.delete-btn(ng-click='deleteAllVisualizations()', ng-disabled="selectedVisualizations.length === 0")
+                        i.glyphicon.glyphicon-trash
+                        | &nbsp;
+                        | Delete
+
+                    table.table.table-hover.visualizations
+                      thead
+                      tbody
+                        tr(ng-repeat='visualization in visualizations')
+                          td(width="1%")
+                            input.checkbox(type="checkbox", ng-checked="selectedVisualizations.indexOf(visualization) >= 0", ng-click="toggleVisualization(visualization)")
+                          td {{visualization.name}}
+                          td.min(width="1%") 
+                            a.btn.btn-default.btn-xs(ng-click='editVisualization(visualization)')
+                              i.glyphicon.glyphicon-pencil
+                          td.min(width="1%") 
+                            a.btn.btn-default.btn-xs(ng-click='showVisualization(visualization)')
+                              i.glyphicon.glyphicon-eye-open
+                          td.min(width="1%") 
+                            a.btn.btn-danger.btn-xs(ng-click='deleteVisualization(visualization)')
+                              i.glyphicon.glyphicon-trash
           tab(heading='ACLs')           
             .tab-content
               .panel-body

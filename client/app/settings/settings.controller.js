@@ -41,6 +41,9 @@ angular.module('thedashboardApp')
       console.log($scope.plugins.visualizators);
     }
 
+
+
+    // Dashboards
     $scope.dashboards = [
       {
         _id: "a000000000000001",
@@ -71,18 +74,18 @@ angular.module('thedashboardApp')
       }
     ];
 
-    $scope.selectedItems = [];
-    $scope.toggleAll = function() {
-      if ($scope.selectedItems.length === $scope.dashboards.length) {
+    $scope.selectedDashboards = [];
+    $scope.toggleAllDashboards = function() {
+      if ($scope.selectedDashboards.length === $scope.dashboards.length) {
         // all items selected
-        $scope.selectedItems = [];
+        $scope.selectedDashboards = [];
       } else {
         // 0/some items selected
-        $scope.selectedItems = $scope.dashboards;
+        $scope.selectedDashboards = $scope.dashboards;
       }
     }
 
-    $scope.delete = function(dashboard) {
+    $scope.deleteDashboard = function(dashboard) {
       // TODO: delete the dashboard
       var iDasboards = $scope.dashboards.indexOf(dashboard);
       if (iDasboards > -1) {
@@ -91,26 +94,103 @@ angular.module('thedashboardApp')
       }
     }
 
-    $scope.show = function(dashboard) {
+    $scope.showDashboard = function(dashboard) {
       // TODO: show the dashboard
       console.log('Showing dashboard: ' + dashboard.name);
     }
 
-    $scope.deleteAll = function() {
+    $scope.deleteAllDashboards = function() {
       // TODO: delete all the dashboard
-      var temp = _.clone($scope.selectedItems);
+      var temp = _.clone($scope.selectedDashboards);
       _.each(temp, function(dashboard) {
-        $scope.delete(dashboard);
+        $scope.deleteDashboard(dashboard);
       });
       temp = null;
     }
 
-    $scope.toggleItem = function(dashboard) {
-      var index = $scope.selectedItems.indexOf(dashboard);
+    $scope.toggleDashboard = function(dashboard) {
+      var index = $scope.selectedDashboards.indexOf(dashboard);
       if (index > -1) {
-        $scope.selectedItems.splice(index, 1);
+        $scope.selectedDashboards.splice(index, 1);
       } else {
-        $scope.selectedItems.push(dashboard);
+        $scope.selectedDashboards.push(dashboard);
+      }
+    }
+
+
+    // Visualizations
+    $scope.visualizations = [
+      {
+        _id: "b000000000000001",
+        name: 'Visualization one',
+        visualizatorPlugin: 'Visualizator Plugin one',
+        acquisitorPlugin: 'Acquisitor Plugin one',
+        query: {},
+        graphOptions: {}
+      },
+      {
+        _id: "b000000000000002",
+        name: 'Visualization two',
+        visualizatorPlugin: 'Visualizator Plugin two',
+        acquisitorPlugin: 'Acquisitor Plugin two',
+        query: {},
+        graphOptions: {}
+      },
+      {
+        _id: "b000000000000003",
+        name: 'Visualization three',
+        visualizatorPlugin: 'Visualizator Plugin three',
+        acquisitorPlugin: 'Acquisitor Plugin three',
+        query: {},
+        graphOptions: {}
+      }
+    ];
+
+    $scope.selectedVisualizations = [];
+    $scope.toggleAllVisualizations = function() {
+      if ($scope.selectedVisualizations.length === $scope.visualizations.length) {
+        // all items selected
+        $scope.selectedVisualizations = [];
+      } else {
+        // 0/some items selected
+        $scope.selectedVisualizations = $scope.visualizations;
+      }
+    }
+
+    $scope.deleteVisualization = function(visualization) {
+      // TODO: delete the visualization
+      var iDasboards = $scope.visualizations.indexOf(visualization);
+      if (iDasboards > -1) {
+        $scope.visualizations.splice(iDasboards, 1);
+        console.log('Deleted visualization: >' + visualization.name);
+      }
+    }
+
+    $scope.showVisualization = function(visualization) {
+      // TODO: show the visualization
+      console.log('Showing visualization: ' + visualization.name);
+    }
+
+    $scope.editVisualization = function(visualization) {
+      // TODO: edit the visualization
+      console.log('Editing visualization: ' + visualization.name);
+    }
+
+    $scope.deleteAllVisualizations = function() {
+      // TODO: delete all the visualization
+      var temp = _.clone($scope.selectedVisualizations);
+      _.each(temp, function(visualization) {
+        $scope.deleteVisualization(visualization);
+      });
+      temp = null;
+    }
+
+    $scope.toggleVisualization = function(visualization) {
+      var index = $scope.selectedVisualizations.indexOf(visualization);
+      if (index > -1) {
+        $scope.selectedVisualizations.splice(index, 1);
+      } else {
+        $scope.selectedVisualizations.push(visualization);
       }
     }
 
