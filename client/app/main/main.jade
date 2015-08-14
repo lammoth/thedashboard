@@ -1,5 +1,5 @@
 div(ui-view="main")
-  #header
+  #header(ng-controller="HeaderController")
     .color-line
     #logo.light-version
       a(ui-sref="main.dashboard") 
@@ -15,9 +15,9 @@ div(ui-view="main")
       .navbar-right
         ul.nav.navbar-nav.no-borders
           li
-            a
+            a(ng-click="toggleTimeFilter()")
               i.fa.fa-clock-o
-              span.time-filter Last 1 hour
+              span.time-filter {{quick.name}}
           li.dropdown
             a.dropdown-toggle.label-menu-corner(href='#', data-toggle='dropdown')
               i.fa.fa-bell-o
@@ -105,14 +105,16 @@ div(ui-view="main")
                   i.fa.fa-sliders
 
   #wrapper
-      .normalheader.transition.animated.fadeIn.small-header
-        .hpanel
-            .panel-body          
-              #hbreadcrumb.pull-right
-                div.hbreadcrumb(ncy-breadcrumb)
-              h2.font-light.m-b-xs
-                | {{ sectionName }}
-              |             
-              small {{ sectionDescription }}
-      .content.animate-panel
-        div(ui-view="section-view")
+    div(ng-include='"components/time-filter/time_filter.html"')
+
+    .normalheader.transition.animated.fadeIn.small-header
+      .hpanel
+          .panel-body          
+            #hbreadcrumb.pull-right
+              div.hbreadcrumb(ncy-breadcrumb)
+            h2.font-light.m-b-xs
+              | {{ sectionName }}
+            |             
+            small {{ sectionDescription }}
+    .content.animate-panel
+      div(ui-view="section-view")

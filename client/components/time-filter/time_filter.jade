@@ -1,0 +1,17 @@
+#time-filter(ng-controller="TimeFilterController")
+  div.time-filter(ng-show="isVisible")
+    .row
+      .col-md-2
+        ul.nav.nav-pills.nav-stacked
+          li(ng-class="{active: mode === 'quick' }")
+            a(ng-click="setMode('quick')") quick
+          |                         
+          li(ng-class="{active: mode === 'absolute' }")
+            a(ng-click="setMode('absolute')") absolute
+      |         
+      .col-md-10
+        .container-fluid(ng-switch='mode')
+          div(ng-switch-when="quick")
+            div(ng-include='"components/time-filter/quick.html"')
+          div(ng-switch-when="absolute")
+            div(ng-include='"components/time-filter/absolute.html"')

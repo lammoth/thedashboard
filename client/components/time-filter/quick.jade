@@ -1,0 +1,5 @@
+div
+  div.col-xs-4(ng-repeat="list in quickLists")
+    ul.list-unstyled
+      li(ng-repeat='option in list')
+        a(ng-click='setQuick(option)', bo-text='option.display') {{option.name}}
