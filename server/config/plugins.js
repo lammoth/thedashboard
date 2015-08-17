@@ -13,15 +13,19 @@ var plugins = [
     pluginTitle: 'Phoenix',
     active: true,
     config: {
-      address: '10.128.19.58',
-      jdbc : {
-        libPath: '/../java/phoenix-4.5.0-HBase-1.0-client.jar',
+        url: 'jdbc:phoenix:10.128.19.58',
+        libPath: '/home/soto/src/thedashboard/server/plugins/acquisitor/phoenix/lib/jar/phoenix-4.5.0-HBase-1.0-client.jar',
         driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
         auth: {
-          user: 'desarrollo', 
+          user: 'desarrollo',
           password: '46ef56263520e531be309552de761d8f'
+        },
+        pool: {
+          max: 10,
+          min: 3,
+          idleTimeoutMillis: 30000,
+          log: true
         }
-      }
     }
   },
   {
