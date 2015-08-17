@@ -14,17 +14,17 @@ var plugins = [
     active: true,
     config: {
         url: 'jdbc:phoenix:10.128.19.58',
-        libPath: '/home/soto/src/thedashboard/server/plugins/acquisitor/phoenix/lib/jar/phoenix-4.5.0-HBase-1.0-client.jar',
+        libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
         driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
         auth: {
           user: 'desarrollo',
           password: '46ef56263520e531be309552de761d8f'
         },
         pool: {
-          max: 10,
-          min: 3,
+          maxConnections: 10,
+          minConnections: 3,
           idleTimeoutMillis: 30000,
-          log: true
+          verboseLog: true
         }
     }
   },
