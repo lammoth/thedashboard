@@ -17,6 +17,7 @@
     "jade": "~1.2.0",
     "jdbc": "0.0.13",
     "jsonwebtoken": "^0.3.0",
+    "kafka-node": "^0.2.27",
     "kue": "^0.9.3",
     "lodash": "~2.4.1",
     "lodash.mapkeys": "^3.8.0",

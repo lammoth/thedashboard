@@ -39,6 +39,21 @@ var plugins = [
     }
   },
   {
+    name: 'eventor',
+    pluginName: 'kafka',
+    pluginTitle: 'Kafka',
+    active: true,
+    config: {
+      address: '10.128.19.58:2181,10.128.19.59:2181,10.128.19.60:2181/kafka',
+      // TODO: Partition number could be required in a near future
+      topics: [
+        {topic: 'logstash.collectd'},
+        {topic: 'logstash.netflow'}
+      ],
+      options: { autoCommit: true, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024*1024 }
+    }
+  },
+  {
     name: 'visualizator',
     pluginName: 'c3',
     pluginTitle: 'C3',
