@@ -12,16 +12,19 @@ angular.module('thedashboardApp')
     $rootScope.sectionDescription = "Edit a visulaization";
     $scope.chartType = $stateParams.chart;
     $scope.visualizatorService = null;
+    $scope.acquisitorService = null;
 
     if ($cacheFactory.info().Plugin.size === 0) {
       var visualizatorPluginPromise = Plugin.broker('getVisualizator');
       visualizatorPluginPromise.then(function(visualizatorPlugin) {
         $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       });
     } else {
       var cache = $cacheFactory.get("Plugin");
       if (cache.get("plugins")) {
         $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       }
     }
   })
@@ -38,9 +41,11 @@ angular.module('thedashboardApp')
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
+      var query = $scope.$parent.acquisitorService.parse($scope.form);
       queryService.createTask(
         'query',
         'visualization',
+        query,
         function(data) {
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {

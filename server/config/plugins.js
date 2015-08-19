@@ -39,6 +39,18 @@ var plugins = [
     }
   },
   {
+    name: 'acquisitor',
+    pluginName: 'mysql',
+    pluginTitle: 'MySQL',
+    active: true,
+    config: {
+      address: '10.200.2.53',
+      database: 'thedashboard',
+      user: 'thedashboard',
+      password: 'thedashboard'
+    }
+  },
+  {
     name: 'eventor',
     pluginName: 'kafka',
     pluginTitle: 'Kafka',

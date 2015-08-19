@@ -6,7 +6,6 @@ var glob = require("glob"),
   _ = require("lodash")
   PluginModel = require("../api/data/plugin.model.js"),
   Acquisitor = new (require('../components/engine/lib/acquisitor'))();
-  Eventor = new (require('../components/engine/lib/eventor'))();
 
 
 module.exports = Plugin;
@@ -48,11 +47,9 @@ function Plugin(app, plugins) {
     console.log('Plugins registered');
     PluginModel.checkAndUpdate(parent.currentPlugins, function() {
       console.log("Plugins updated");
+
       // Initializing Acquisitor connection
       parent.load('acquisitor', app);
-
-      // Initializing Eventor connection
-      parent.load('eventor', app);
     });
   }
 };
@@ -83,15 +80,6 @@ Plugin.prototype.load = function(type, app) {
           console.log("Acquisitor loaded at boot");
           app.set('acquisitor', AcquisitorPlugin);
         });
-      });
-      break;
-    case 'eventor':
-      Eventor.plugin().then(function(data) {
-        var eventorPluginData = Eventor.getObject(app.get('plugins'), data);
-        var EventorPlugin = new (require(eventorPluginData.path))(eventorPluginData.config);
-        EventorPlugin.connect();
-        console.log("Eventor loaded at boot");
-        app.set('eventor', EventorPlugin);
       });
       break;
   }

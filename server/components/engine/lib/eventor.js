@@ -1,17 +1,17 @@
 /**
- * Acqusitor engine
+ * Eventor engine
  */
 
 'use strict';
 
-var PluginData = require('../../../api/data/plugin.model');
-var _ = require('lodash');
-var Q = require('q');
+var PluginData = require('../../../api/data/plugin.model'),
+    _ = require('lodash'),
+    Q = require('q');
 
 
-module.exports = Acquisitor;
+module.exports = Eventor;
 
-function Acquisitor() {
+function Eventor() {
 
   this.plugin = function() {
     var deferred = Q.defer();
@@ -31,7 +31,7 @@ function Acquisitor() {
   }
 }
 
-Acquisitor.prototype.getObject = function(plugins, data) {
+Eventor.prototype.getObject = function(plugins, data) {
   return _.first(_.filter(plugins, function(plugin) {
     if (plugin.pluginName === data.pluginName && plugin.name === data.name) {
       return true;

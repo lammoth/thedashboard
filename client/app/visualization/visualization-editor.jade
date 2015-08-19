@@ -10,15 +10,10 @@
                   .row
                     .col-xs-12
                       .form-group
-                        label.control-label Search source         
-                        select.form-control.m-b(name='account')
-                          option option 1
-                          |                 
-                          option option 2
-                          |                 
-                          option option 3
-                          |                 
-                          option option 4
+                        label.control-label Select datasource         
+                        select.form-control.m-b(name='account', ng-model="form.datasource")
+                          option(value="t_1") t_1
+                          option(value="t_1") t_2
                       .hpanel.horange
                           .panel-heading
                             .panel-tools

@@ -10,6 +10,7 @@ exports.register = function(socket) {
   PluginModel.schema.post('save', function (doc) {
     onSavePlugin(socket, doc);
   });
+  
   PluginModel.schema.post('remove', function (doc) {
     onRemovePlugin(socket, doc);
   });

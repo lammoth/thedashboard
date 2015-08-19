@@ -194,4 +194,53 @@ angular.module('thedashboardApp')
       }
     }
 
+    // Datasources
+    $scope.datasources = [
+      {
+        _id: "b000000000000001",
+        name: 't_1',
+        engine: 'MySQL',
+        fields: [
+          {
+            name: 'metric',
+            type: 'float'
+          },
+          {
+            name: 'quantity',
+            type: 'float'
+          },
+          {
+            name: 'type',
+            type: 'string'
+          },
+          {
+            name: 'ts',
+            type: 'date'
+          }
+        ]
+      },
+      {
+        _id: "b000000000000002",
+        name: 't_2',
+        engine: 'MySQL',
+        fields: [
+          {
+            name: 'metric',
+            type: 'float'
+          },
+          {
+            name: 'quantity',
+            type: 'float'
+          },
+          {
+            name: 'type',
+            type: 'string'
+          },
+          {
+            name: 'ts',
+            type: 'date'
+          }
+        ]
+      }
+    ];
   });
