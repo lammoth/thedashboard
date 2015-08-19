@@ -55,6 +55,7 @@ function Plugin(app, plugins) {
 };
 
 // Get all active plugins related with type
+//REVIEW: where are you using that function?
 Plugin.prototype.activePlugins = function(plugins, type) {
   var activeP = new Array();
   if (plugins.length > 0) {
