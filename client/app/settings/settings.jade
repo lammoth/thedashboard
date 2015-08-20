@@ -95,6 +95,21 @@
                           td.min(width="1%") 
                             a.btn.btn-danger.btn-xs(ng-click='deleteVisualization(visualization)')
                               i.glyphicon.glyphicon-trash
+          tab(heading='DataSources')           
+            .tab-content
+              .panel-body
+                .row
+                  .col-xs-12
+                    table.table.table-hover
+                      thead
+                        th Datasource
+                        th Fields
+                      tbody
+                        tr(ng-repeat='datasource in datasources')
+                          td {{datasource.name}}
+                          td.min(width="1%") 
+                            a.btn.btn-default.btn-xs(ng-click='showDashboard(dashboard)')
+                              i.glyphicon.glyphicon-eye-open
           tab(heading='ACLs')           
             .tab-content
               .panel-body

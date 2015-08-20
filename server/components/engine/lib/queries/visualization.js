@@ -3,7 +3,7 @@
 module.exports = visualizationQuery;
 
 
-function visualizationQuery(parent, task, cb) {
+function visualizationQuery(parent, query, task, cb) {
 
   var data = {
     visualizatorPluginObj: null,
@@ -14,13 +14,12 @@ function visualizationQuery(parent, task, cb) {
   parent.visualizator.plugin()
   .then(function(dataVisualizator) {
     data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);
-    // TODO: Sergio's task
     // In this call, you must transform the frontend JSON to SQL or whatever
-    return parent.acquisitor.queryClient.execQuery('select * from newdata');
+    console.log(query);
+    return parent.acquisitor.queryClient.execQuery(query);
   })
   .then(function(queryResult) {
     data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))(queryResult);
-    // TODO: Sergio's task
     // In this call, you must transform the acquisitor results to C3 valid data
     // From Parser, you should choose the proper parser (Spark) in order to adapt
     // the results to C3

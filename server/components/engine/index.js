@@ -19,10 +19,10 @@ function Engine(app) {
 }
 
 
-Engine.prototype.select = function(type, subtype, task, cb) {
+Engine.prototype.select = function(type, subtype, data, task, cb) {
   switch (subtype) {
     case 'visualization':
-      visualizationQuery(this, task, cb);
+      visualizationQuery(this, data, task, cb);
       break;
   }
 };

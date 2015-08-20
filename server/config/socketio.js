@@ -4,7 +4,8 @@
 
 'use strict';
 
-var config = require('./environment');
+var config = require('./environment'),
+    Eventor = new (require('../components/engine/lib/eventor'))();
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -22,7 +23,7 @@ function onConnect(socket) {
   require('../api/data/data.socket').register(socket);
 }
 
-module.exports = function (socketio) {
+module.exports = function (socketio, app) {
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //
@@ -54,5 +55,19 @@ module.exports = function (socketio) {
     // Call onConnect.
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
+
+    // TODO: That behaviour could be an error
+    // Set socket in app
+    // app.set('socket', socket);
+
+    // Starting system eventor
+    // Eventor.plugin().then(function(data) {
+    //   var eventorPluginData = Eventor.getObject(app.get('plugins'), data);
+    //   var EventorPlugin = new (require(eventorPluginData.path))(socket, eventorPluginData.config);
+    //   EventorPlugin.connect();
+    //   console.log("Eventor loaded at boot");
+    //   app.set('eventor', EventorPlugin);
+    // });
+
   });
 };

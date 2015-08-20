@@ -4,8 +4,8 @@ angular.module('thedashboardApp')
   .service('queryService', function ($http, socket) {
     return {
         // Creates a task in the backend and returns the task id 
-        createTask: function(type, subtype, cb) {
-          $http.post(apiPrefix + '/broker/task', {type: type, subtype:subtype}).
+        createTask: function(type, subtype, data, cb) {
+          $http.post(apiPrefix + '/broker/task', {type: type, subtype: subtype, data: data}).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
               return cb(data);

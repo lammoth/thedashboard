@@ -9,6 +9,7 @@ var EngineSystem = require('../../components/engine');
 exports.task = function(req, res) {
   var brokerRequestType = req.body.type;
   var brokerRequestSubType = req.body.subtype;
+  var borkerRequestData = req.body.data;
   var tasker = req.app.get('tasker');
   var engine = new EngineSystem(req.app);
 
@@ -16,7 +17,7 @@ exports.task = function(req, res) {
     brokerRequestType, 
     broker, 
     function(task, promise) {
-      engine.select(brokerRequestType, brokerRequestSubType, task, function() {
+      engine.select(brokerRequestType, brokerRequestSubType, borkerRequestData, task, function() {
         promise();
       });
     },
