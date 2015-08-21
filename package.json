@@ -32,7 +32,7 @@
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
-    "squel": "^4.0.0"
+    "squel": "^4.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

@@ -18,18 +18,23 @@ angular.module('thedashboardApp')
       var visualizatorPluginPromise = Plugin.broker('getVisualizator');
       visualizatorPluginPromise.then(function(visualizatorPlugin) {
         $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+        // $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       });
     } else {
       var cache = $cacheFactory.get("Plugin");
       if (cache.get("plugins")) {
         $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+        // $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       }
     }
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
+    $scope.form.x = {};
+    $scope.form.y = {};
+    $scope.form.x.aggregations = [];
+    $scope.form.y.aggregations = [];
+    $scope.form.chartType = $scope.$parent.chartType;
     $scope.graphicOptions = {};
 
     $scope.changeGraphicOptions = function(options, model) {
@@ -41,11 +46,11 @@ angular.module('thedashboardApp')
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
-      var query = $scope.$parent.acquisitorService.parse($scope.form);
+      // var query = $scope.$parent.acquisitorService.parse($scope.form);
       queryService.createTask(
         'query',
         'visualization',
-        query,
+        $scope.form,
         function(data) {
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {

@@ -6,13 +6,14 @@ accordion(close-others="true")
           div.col-xs-12
             .form-group
               label.control-label Aggregation
-              select.form-control.m-b(ng-model="form.y.aggregation.type")
+              select.form-control.m-b(ng-model="form.y.aggregations[0].type")
                 option(value="count") Count
                 option(value="avg") Average
                 option(value="sum") Sum
+                option(value="timeseries") TimeSeries
             .form-group
               label.control-label Field      
-              select.form-control.m-b(ng-model="form.y.aggregation.field")
+              select.form-control.m-b(ng-model="form.y.aggregations[0].field")
                 option(value="metric") metric
                 option(value="quantity") quantity
                 option(value="type") type
@@ -20,7 +21,7 @@ accordion(close-others="true")
           div.col-xs-12
             a.btn.btn-default.btn-outline.btn-block.btn-sm
               i.fa.fa-plus-circle
-              | &nbsp; Add new aggregation
+              | &nbsp; Add new
   accordion-group(heading="x-axis options")
     accordion
       accordion-group(heading="aggregations")
@@ -28,13 +29,14 @@ accordion(close-others="true")
           div.col-xs-12
             .form-group
               label.control-label Aggregation
-              select.form-control.m-b(ng-model="form.x.aggregation.type")
+              select.form-control.m-b(ng-model="form.x.aggregations[0].type")
                 option(value="count") Count
                 option(value="avg") Average
                 option(value="sum") Sum
+                option(value="timeseries") TimeSeries
             .form-group
               label.control-label Field      
-              select.form-control.m-b(ng-model="form.x.aggregation.field")
+              select.form-control.m-b(ng-model="form.x.aggregations[0].field")
                 option(value="metric") metric
                 option(value="quantity") quantity
                 option(value="type") type
@@ -42,7 +44,7 @@ accordion(close-others="true")
           div.col-xs-12
             a.btn.btn-default.btn-outline.btn-block.btn-sm
               i.fa.fa-plus-circle
-              | &nbsp; Add new aggregation
+              | &nbsp; Add new
   accordion-group(heading="Order options")
     div.row
       div.col-xs-12

@@ -8,9 +8,12 @@ var Q = require('q'),
 
 module.exports = C3Plugin;
 
-function C3Plugin(data) {
-  // C3 data needed to stablish the connection
-  this.data = data;
+function C3Plugin() {
+  // C3 data needed to make the dataset
+  this.data = null;
+
+  // C3 graphic requirements
+  this.requirements = null; 
 }
 
 C3Plugin.prototype.parser = function(data) {

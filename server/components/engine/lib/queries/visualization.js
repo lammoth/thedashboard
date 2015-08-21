@@ -3,7 +3,7 @@
 module.exports = visualizationQuery;
 
 
-function visualizationQuery(parent, query, task, cb) {
+function visualizationQuery(parent, queryData, task, cb) {
 
   var data = {
     visualizatorPluginObj: null,
@@ -14,16 +14,18 @@ function visualizationQuery(parent, query, task, cb) {
   parent.visualizator.plugin()
   .then(function(dataVisualizator) {
     data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);
+    // Instantiating Visulazator plugin 
+    data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))();
     // In this call, you must transform the frontend JSON to SQL or whatever
-    console.log(query);
-    return parent.acquisitor.queryClient.execQuery(query);
+    return parent.acquisitor.queryClient.execQuery(queryData);
   })
   .then(function(queryResult) {
-    data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))(queryResult);
+    // Passing the Acquisitor results to the Visualizator plugin
+    data.VisualizatorPlugin.data = queryResult;
     // In this call, you must transform the acquisitor results to C3 valid data
     // From Parser, you should choose the proper parser (Spark) in order to adapt
     // the results to C3
-    return data.VisualizatorPlugin.parser(data.VisualizatorPlugin.data);
+    return data.VisualizatorPlugin.parser();
   })
   // Saving task results in Redis
   .then(function(visualizatorData) {

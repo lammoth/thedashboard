@@ -15,6 +15,9 @@ angular.module('thedashboardApp')
       },
       bind: function(element) {
         graph.bindto = element;
+        graph.legend = {
+          position: 'right'
+        };
       },
       render: function() {
         return c3.generate(graph);

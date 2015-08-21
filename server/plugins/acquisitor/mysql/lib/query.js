@@ -1,10 +1,9 @@
 /**
- * Spark query lib
+ * MySQL query lib
  */
 
 var _ = require('lodash'),
   Q = require('q'),
-  Benchamark = new (require('./benchmark'))(),
   Parser = new (require('./parser'))();
 
 
@@ -13,19 +12,17 @@ module.exports = QueryReq;
 
 // Spark query object
 function QueryReq(connection) {
-  var parent = this;
-
   this.connection = connection;
 }
 
 // Spark query executor
-QueryReq.prototype.execQuery = function(query) {  
-  var parent = this;
+QueryReq.prototype.execQuery = function(data) {  
   var deferred = Q.defer();
-
-  this.connection.query(query, function(err, rows) {
+  Parser.parse(data);
+  console.log(Parser.query);  
+  this.connection.query(Parser.query, function(err, rows) {
     console.log(rows);
-    deferred.resolve({});
+    deferred.resolve(rows);
   });
 
   return deferred.promise;
