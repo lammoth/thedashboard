@@ -95,7 +95,7 @@
                           td.min(width="1%") 
                             a.btn.btn-danger.btn-xs(ng-click='deleteVisualization(visualization)')
                               i.glyphicon.glyphicon-trash
-          tab(heading='DataSources')           
+          tab(heading='DataSources', ng-controller="SettingsTabDataSourcesController")           
             .tab-content
               .panel-body
                 .row
@@ -110,6 +110,11 @@
                           td.min(width="1%") 
                             a.btn.btn-default.btn-xs(ng-click='showDashboard(dashboard)')
                               i.glyphicon.glyphicon-eye-open
+                  .col-xs-12
+                    .pull-right
+                      a.btn.btn-info.btn-outline.btn-margin(ng-click="updateDatasources()")
+                        i.fa.fa-refresh
+                        | &nbsp; Update data
           tab(heading='ACLs')           
             .tab-content
               .panel-body

@@ -3,8 +3,9 @@
 var _ = require('lodash'),
   Acquisitor = require('./lib/acquisitor'),
   Visualizator = require('./lib/visualizator'),
-  Persistor = require('./lib/persistor');
-  visualizationQuery = require('./lib/queries/visualization');
+  Persistor = require('./lib/persistor'),
+  visualizationQuery = require('./lib/queries/visualization'),
+  settingQuery = require('./lib/queries/setting');
  
 
 module.exports = Engine;
@@ -20,9 +21,12 @@ function Engine(app) {
 
 
 Engine.prototype.select = function(type, subtype, data, task, cb) {
-  switch (subtype) {
+  switch(subtype) {
     case 'visualization':
       visualizationQuery(this, data, task, cb);
+      break;
+    case 'setting':
+      settingQuery(this, data, task, cb);
       break;
   }
 };

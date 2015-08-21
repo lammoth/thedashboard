@@ -10,18 +10,27 @@ var _ = require('lodash'),
 module.exports = QueryReq;
 
 
-// Spark query object
+// MySQL query object
 function QueryReq(connection) {
   this.connection = connection;
 }
 
-// Spark query executor
-QueryReq.prototype.execQuery = function(data) {  
+// MySQL query executor
+QueryReq.prototype.execQuery = function(data, parsing) {  
   var deferred = Q.defer();
-  Parser.parse(data);
-  console.log(Parser.query);  
-  this.connection.query(Parser.query, function(err, rows) {
-    console.log(rows);
+  if (!parsing) {
+    switch(data) {
+      case "updateDatasources":
+        data = "SHOW TABLES;"
+        break;
+      default:
+        break;
+    }
+  } else {
+    Parser.parse(data)
+  }
+
+  this.connection.query(((parsing) ? Parser.query : data), function(err, rows) {
     deferred.resolve(rows);
   });
 

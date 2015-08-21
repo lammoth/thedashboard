@@ -35,11 +35,11 @@ angular.module('thedashboardApp')
 
     $scope.acquisitorSelectChange = function() {
       console.log($scope.plugins.acquisitors);
-    }
+    };
 
     $scope.visulizatorSelectChange = function() {
       console.log($scope.plugins.visualizators);
-    }
+    };
 
 
 
@@ -83,7 +83,7 @@ angular.module('thedashboardApp')
         // 0/some items selected
         $scope.selectedDashboards = $scope.dashboards;
       }
-    }
+    };
 
     $scope.deleteDashboard = function(dashboard) {
       // TODO: delete the dashboard
@@ -92,12 +92,12 @@ angular.module('thedashboardApp')
         $scope.dashboards.splice(iDasboards, 1);
         console.log('Deleted dashboard: >' + dashboard.name);
       }
-    }
+    };
 
     $scope.showDashboard = function(dashboard) {
       // TODO: show the dashboard
       console.log('Showing dashboard: ' + dashboard.name);
-    }
+    };
 
     $scope.deleteAllDashboards = function() {
       // TODO: delete all the dashboard
@@ -106,7 +106,7 @@ angular.module('thedashboardApp')
         $scope.deleteDashboard(dashboard);
       });
       temp = null;
-    }
+    };
 
     $scope.toggleDashboard = function(dashboard) {
       var index = $scope.selectedDashboards.indexOf(dashboard);
@@ -115,7 +115,7 @@ angular.module('thedashboardApp')
       } else {
         $scope.selectedDashboards.push(dashboard);
       }
-    }
+    };
 
 
     // Visualizations
@@ -155,7 +155,7 @@ angular.module('thedashboardApp')
         // 0/some items selected
         $scope.selectedVisualizations = $scope.visualizations;
       }
-    }
+    };
 
     $scope.deleteVisualization = function(visualization) {
       // TODO: delete the visualization
@@ -164,17 +164,17 @@ angular.module('thedashboardApp')
         $scope.visualizations.splice(iDasboards, 1);
         console.log('Deleted visualization: >' + visualization.name);
       }
-    }
+    };
 
     $scope.showVisualization = function(visualization) {
       // TODO: show the visualization
       console.log('Showing visualization: ' + visualization.name);
-    }
+    };
 
     $scope.editVisualization = function(visualization) {
       // TODO: edit the visualization
       console.log('Editing visualization: ' + visualization.name);
-    }
+    };
 
     $scope.deleteAllVisualizations = function() {
       // TODO: delete all the visualization
@@ -183,7 +183,7 @@ angular.module('thedashboardApp')
         $scope.deleteVisualization(visualization);
       });
       temp = null;
-    }
+    };
 
     $scope.toggleVisualization = function(visualization) {
       var index = $scope.selectedVisualizations.indexOf(visualization);
@@ -192,8 +192,11 @@ angular.module('thedashboardApp')
       } else {
         $scope.selectedVisualizations.push(visualization);
       }
-    }
+    };
 
+    
+  })
+  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket) {
     // Datasources
     $scope.datasources = [
       {
@@ -243,4 +246,26 @@ angular.module('thedashboardApp')
         ]
       }
     ];
+
+    $scope.updateDatasources = function() {
+      queryService.createTask(
+        'query',
+        'setting',
+        {action: "updateDatasources"},
+        function(data) {
+          if (data.response !== 'error') {
+            createSocket("query-" + data.data.job, function(data) {
+              console.log("Task %d event received", data.job);
+            });
+          }
+        }
+      );
+    };
+
+    function createSocket(name, cb) {
+      console.log("Creating socket %s", name);
+      socket.socket.on(name, function(data) {
+        cb(data);
+      });
+    }
   });

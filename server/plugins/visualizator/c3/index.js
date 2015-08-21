@@ -20,4 +20,4 @@ C3Plugin.prototype.parser = function(data) {
   var deferred = Q.defer();
   Parser.parse(((data) ? data : this.data), deferred);
   return deferred.promise;
-}
+};
