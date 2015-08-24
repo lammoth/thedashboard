@@ -3,9 +3,14 @@
 angular.module('thedashboardApp')
   .controller('TimeFilterController', function ($scope, TimeFilter) {
     TimeFilter.registerObserver('visibility', updateVisibility);
+    TimeFilter.registerObserver('quick', updateQuick);
+    
     $scope.isVisible = false;
     function updateVisibility() {
       $scope.isVisible = TimeFilter.isVisible;
+    }
+    function updateQuick() {
+      $scope.quick = TimeFilter.quick;
     }
     $scope.quickLists = TimeFilter.quicks;
     console.log($scope.quickLists[0][0].from());

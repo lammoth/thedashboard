@@ -9,10 +9,15 @@ angular.module('thedashboardApp')
     return {
       observerCallbacks: {},
       registerObserver: function(name, callback) {
-        this.observerCallbacks[name] = callback;
+        if (!this.observerCallbacks[name]) {
+          this.observerCallbacks[name] = [];
+        }
+        this.observerCallbacks[name].push(callback);
       },
       notifyObservers: function (name) {
-        this.observerCallbacks[name]();
+        _.each(this.observerCallbacks[name], function(cb) {
+          cb();          
+        })
       },
       isVisible: false,
       toogle: function(name) {
