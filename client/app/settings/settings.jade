@@ -95,8 +95,8 @@
                           td.min(width="1%") 
                             a.btn.btn-danger.btn-xs(ng-click='deleteVisualization(visualization)')
                               i.glyphicon.glyphicon-trash
-          tab(heading='DataSources', ng-controller="SettingsTabDataSourcesController")           
-            .tab-content
+          tab(heading='DataSources')           
+            .tab-content(ng-controller="SettingsTabDataSourcesController")
               .panel-body
                 .row
                   .col-xs-12
