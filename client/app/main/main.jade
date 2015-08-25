@@ -15,9 +15,9 @@ div(ui-view="main")
       .navbar-right
         ul.nav.navbar-nav.no-borders
           li
-            a(ng-click="toggleTimeFilter()")
+            a.toggle-time-filter(ng-click="toggleTimeFilter()")
               i.fa.fa-clock-o
-              span.time-filter {{quick.name}}
+              span.time-filter {{timeFilterText}}
           li.dropdown
             a.dropdown-toggle.label-menu-corner(href='#', data-toggle='dropdown')
               i.fa.fa-bell-o

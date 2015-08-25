@@ -13,7 +13,6 @@ angular.module('thedashboardApp')
       $scope.quick = TimeFilter.quick;
     }
     $scope.quickLists = TimeFilter.quicks;
-    console.log($scope.quickLists[0][0].from());
     TimeFilter.setQuick('quick', $scope.quickLists[0][0]);
 
     $scope.mode = 'quick';
@@ -25,5 +24,22 @@ angular.module('thedashboardApp')
       TimeFilter.setQuick('quick', quick);
       TimeFilter.toogle('visibility');
     }
+
+    $scope.selectAbsoluteDates = function() {
+      TimeFilter.setAbsolute($scope.absoluteDate);
+      TimeFilter.toogle('visibility');
+    }
+
+    $scope.now = new Date();
+    $scope.absoluteDate = {
+      from: $scope.now,
+      to: $scope.now
+    };
+
+    $scope.format = 'YYYY-MM-DD HH:mm:ss.SSS';
+
+    $scope.setToNow = function() {
+      $scope.absoluteDate.to = new Date();
+    };
 
   });

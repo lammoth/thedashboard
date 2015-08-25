@@ -24,9 +24,29 @@ angular.module('thedashboardApp')
         this.isVisible = !this.isVisible;
         this.notifyObservers(name);
       },
+      setAbsolute: function(dates) {
+        this.mode = 'absolute';
+        this.absoluteDates = dates;
+        this.notifyObservers('absolute');
+      },
       setQuick: function(name, quick) {
         this.quick = quick;
+        this.mode = 'quick';
         this.notifyObservers(name);
+      },
+      from: function() {
+        if (this.mode == 'quick') {
+          return this.quick.from();
+        } else {
+          return this.absoluteDates.from;
+        }
+      },
+      to: function() {
+        if (this.mode == 'quick') {
+          return this.quick.to();
+        } else {
+          return this.absoluteDates.to;
+        }
       },
       quicks: [
         [
@@ -144,6 +164,8 @@ angular.module('thedashboardApp')
           }
         ]
       ],
-      quick: null
+      quick: null,
+      absoluteDates: null,
+      mode: null
     };
   });

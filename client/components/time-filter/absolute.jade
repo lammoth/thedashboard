@@ -1,7 +1,17 @@
-div
-  div.col-sm-12.col-md-6
+form(ng-submit="selectAbsoluteDates()")
+  div.timepicker-section
     div(style="display:inline-block; min-height:290px;")
-      datepicker(ng-model="dt", min-date="minDate", show-weeks="true", class="well well-sm", custom-class="getDayClass(date, mode)")
-  div.col-sm-12.col-md-6
+      label From:
+      input(type="text", class="form-control", ng-model="absoluteDate.from", max-date="absoluteDate.to", input-datetime="{{format}}")
+      datepicker(ng-model="absoluteDate.from", max-date="absoluteDate.to", show-weeks="false", class="time-filter-datepicker")
+  div.timepicker-section
     div(style="display:inline-block; min-height:290px;")
-      datepicker(ng-model="dt", min-date="minDate", show-weeks="true", class="well well-sm", custom-class="getDayClass(date, mode)")
+      Label To:
+        &nbsp;
+        a.label.label-default.small(ng-click="setToNow()") Set to now
+      input(type="text", class="form-control", ng-model="absoluteDate.to", min-date="absoluteDate.from", input-datetime="{{format}}")
+      datepicker(ng-model="absoluteDate.to", min-date="absoluteDate.from", show-weeks="false", class="time-filter-datepicker")
+  div.timepicker-section
+    label &nbsp;
+    br
+    button.btn.btn-default(ng-disabled="absoluteDate.from > absoluteDate.to || !absoluteDate.from || !absoluteDate.to", type="submit") Go
