@@ -16,7 +16,7 @@ function QueryReq(connection) {
 }
 
 // MySQL query executor
-QueryReq.prototype.execQuery = function(data, parsing) {  
+QueryReq.prototype.execQuery = function(data, parsing) {
   var deferred = Q.defer();
   if (!parsing) {
     switch(data) {

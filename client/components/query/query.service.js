@@ -25,6 +25,17 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
+        // Update any setting data
+        updateSetting: function(task, cb) {
+          $http.get(apiPrefix + '/broker/task/' + task).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
+        },
         // Create a visualization
         createVisualization: function() {
           $http.get(apiPrefix + '/data/visualization/').

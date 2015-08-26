@@ -18,24 +18,34 @@ angular.module('thedashboardApp')
       var visualizatorPluginPromise = Plugin.broker('getVisualizator');
       visualizatorPluginPromise.then(function(visualizatorPlugin) {
         $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-        // $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       });
     } else {
       var cache = $cacheFactory.get("Plugin");
       if (cache.get("plugins")) {
         $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
-        // $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       }
     }
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
     $scope.form = {};
-    $scope.form.x = {};
-    $scope.form.y = {};
-    $scope.form.x.aggregations = [];
-    $scope.form.y.aggregations = [];
+    $scope.form.groups = [];
     $scope.form.chartType = $scope.$parent.chartType;
-    $scope.graphicOptions = {};
+
+    $scope.addAggregation = function() {
+      if (!$scope.form.aggregations) {
+        $scope.form.aggregations = [];
+      }
+      $scope.form.aggregations.push({});
+    };
+
+    $scope.addGroup = function() {
+      if (!$scope.form.groups) {
+        $scope.form.groups = [];
+      }
+      $scope.form.groups.push({});
+    };
 
     $scope.changeGraphicOptions = function(options, model) {
       $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
@@ -79,6 +89,7 @@ angular.module('thedashboardApp')
     };
 
     $scope.saveVisualization = function() {
+      console.log($scope.form);
       console.log($scope.$parent.visualizatorService.hasGraph);
       if ($scope.$parent.visualizatorService.hasGraph) {
         console.log($scope.chart);

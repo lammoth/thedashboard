@@ -17,7 +17,7 @@ function settingQuery(parent, queryData, task, cb) {
         // Saving task results in Redis
         return parent.persistor.saveTaskResults(task, queryResult);
       })
-      // Emitting an event in order to refresh the web visualization
+      // Emitting an event in order to update settings data
       .then(function(){
         cb();
       });
