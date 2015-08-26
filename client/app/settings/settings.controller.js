@@ -4,7 +4,7 @@ angular.module('thedashboardApp')
   .controller('SettingsDashboardCtrl', function ($scope) {
     
   })
-  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin) {
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http) {
     $scope.plugins = {};
 
     // Initializing plugins tab
@@ -20,6 +20,7 @@ angular.module('thedashboardApp')
             $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
             $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
             $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+            getDashboards();
           }
         });
       } else {
@@ -29,6 +30,7 @@ angular.module('thedashboardApp')
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
           $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
           $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+          getDashboards();
         }
       }
     }
@@ -41,38 +43,18 @@ angular.module('thedashboardApp')
       console.log($scope.plugins.visualizators);
     };
 
-
-
     // Dashboards
-    $scope.dashboards = [
-      {
-        _id: "a000000000000001",
-        name: 'Dashboard one',
-        visualizatorPlugin: 'Visualizator Plugin one',
-        acquisitorPlugin: 'Acquisitor Plugin one',
-        visualizations: [{name: 'Visualization one'}, {name: 'Visualization two'}, {name: 'Visualization three'}],
-        matrix: [],
-        time: new Date()
-      },
-      {
-        _id: "a000000000000002",
-        name: 'Dashboard two',
-        visualizatorPlugin: 'Visualizator Plugin two',
-        acquisitorPlugin: 'Acquisitor Plugin two',
-        visualizations: [],
-        matrix: [],
-        time: new Date()
-      },
-      {
-        _id: "a000000000000003",
-        name: 'Dashboard three',
-        visualizatorPlugin: 'Visualizator Plugin three',
-        acquisitorPlugin: 'Acquisitor Plugin three',
-        visualizations: [{name: 'Visualization one'}, {name: 'Visualization two'}, {name: 'Visualization three'}],
-        matrix: [],
-        time: new Date()
-      }
-    ];
+    function getDashboards() {
+      var q = {
+        visualizator: $scope.plugins.visualizatorActive,
+        acquisitor: $scope.plugins.acquisitorActive
+      };
+      $http.get('api/v1/data/dashboards', {params: q}).success(function(res) {
+        if (res.response == 'ok') {
+          $scope.dashboards = res.data;
+        }
+      });
+    }
 
     $scope.selectedDashboards = [];
     $scope.toggleAllDashboards = function() {
@@ -86,12 +68,13 @@ angular.module('thedashboardApp')
     };
 
     $scope.deleteDashboard = function(dashboard) {
-      // TODO: delete the dashboard
-      var iDasboards = $scope.dashboards.indexOf(dashboard);
-      if (iDasboards > -1) {
-        $scope.dashboards.splice(iDasboards, 1);
-        console.log('Deleted dashboard: >' + dashboard.name);
-      }
+      $http.delete('/api/v1/data/dashboard/' + dashboard._id).success(function() {
+        var iDasboards = $scope.dashboards.indexOf(dashboard);
+        if (iDasboards > -1) {
+          $scope.dashboards.splice(iDasboards, 1);
+          console.log('Deleted dashboard: >' + dashboard.name);
+        }
+      });
     };
 
     $scope.showDashboard = function(dashboard) {

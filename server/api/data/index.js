@@ -2,6 +2,7 @@
 
 var express = require('express');
 var controller = require('./data.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
@@ -15,6 +16,8 @@ router.get('/plugins/info', controller.pluginsInfo);
 router.post('/visualization', controller.visualization);
 
 // Dashboard routes
+router.get('/dashboards', auth.hasRole('admin'), controller.dashboards);
 router.post('/dashboard', controller.dashboard);
+router.delete('/dashboard/:id', auth.hasRole('admin'), controller.destroy);
 
 module.exports = router;

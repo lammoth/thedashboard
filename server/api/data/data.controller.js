@@ -64,6 +64,36 @@ exports.dashboard = function(req, res) {
   }
 };
 
+/*
+ * Return all dashboards filtered by a visualizator and an acquisitor Plugin
+ * Only for admin role
+ * @query: visualizator
+ * @query: acquisitor
+ */
+exports.dashboards = function(req, res) {
+  var q = {
+    visualizatorPlugin: req.query.visualizator,
+    acquisitorPlugin: req.query.acquisitor
+  };
+
+  DashboardModel.find(q, function(err, data) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, {response: "ok", data: data});
+  });
+};
+
+/*
+ * Delete dashboard
+ * Only for admin role
+ * @param: id
+ */
+exports.destroy = function(req, res) {
+  DashboardModel.findByIdAndRemove(req.params.id, function(err, dashboard) {
+    if(err) return res.send(500, err);
+    return res.send(204);
+  });
+};
+
 
 // Get, create or update a plugin data
 // exports.config = function(req, res) {
