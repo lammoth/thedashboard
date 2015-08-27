@@ -50,6 +50,36 @@ exports.visualization = function(req, res) {
   }
 };
 
+/*
+ * Return all visualizations filtered by a visualizator and an acquisitor Plugin
+ * Only for admin role
+ * @query: visualizator
+ * @query: acquisitor
+ */
+exports.visualizations = function(req, res) {
+  var q = {
+    visualizatorPlugin: req.query.visualizator,
+    acquisitorPlugin: req.query.acquisitor
+  };
+
+  VisualizationModel.find(q, function(err, data) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, {response: "ok", data: data});
+  });
+};
+
+/*
+ * Delete visualization
+ * Only for admin role
+ * @param: id
+ */
+exports.destroyVisualization = function(req, res) {
+  VisualizationModel.findByIdAndRemove(req.params.id, function(err, visualization) {
+    if(err) return res.send(500, err);
+    return res.send(204);
+  });
+};
+
 
 // Dashboards
 exports.dashboard = function(req, res) {
@@ -87,7 +117,7 @@ exports.dashboards = function(req, res) {
  * Only for admin role
  * @param: id
  */
-exports.destroy = function(req, res) {
+exports.destroyDashboard = function(req, res) {
   DashboardModel.findByIdAndRemove(req.params.id, function(err, dashboard) {
     if(err) return res.send(500, err);
     return res.send(204);
