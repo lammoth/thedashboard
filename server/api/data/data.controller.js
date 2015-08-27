@@ -1,7 +1,8 @@
 'use strict';
 
 var _ = require('lodash'),
-  config = require('../../config/general'),
+  config = require('../../config/environment'),
+  auth = require('../../auth/auth.service'),
   PluginModel = require('./plugin.model'),
   pluginsConfig = require('../../config/plugins'),
   Plugin = require('../../plugins'),
@@ -26,6 +27,10 @@ var _ = require('lodash'),
 //     }
 //   );
 // };
+
+function isAdmin(user) {
+  return config.userRoles.indexOf(user.role) >= config.userRoles.indexOf('admin');
+}
 
 // Plugins
 // Get plugins info
@@ -52,20 +57,24 @@ exports.visualization = function(req, res) {
 
 /*
  * Return all visualizations filtered by a visualizator and an acquisitor Plugin
- * Only for admin role
- * @query: visualizator
- * @query: acquisitor
+ * Only admin role can get all visualizations
+ * @query: visualizator (optional)
+ * @query: acquisitor (optional)
  */
 exports.visualizations = function(req, res) {
-  var q = {
-    visualizatorPlugin: req.query.visualizator,
-    acquisitorPlugin: req.query.acquisitor
-  };
-
-  VisualizationModel.find(q, function(err, data) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, {response: "ok", data: data});
-  });
+  var q = {};
+  if (req.query.visualizator && req.query.acquisitor) {
+    q.visualizatorPlugin = req.query.visualizator;
+    q.acquisitorPlugin = req.query.acquisitor;
+  }
+  if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
+    VisualizationModel.find(q, function(err, data) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, {response: "ok", data: data});
+    });
+  } else {
+    return res.json(401);
+  }
 };
 
 /*
@@ -96,20 +105,24 @@ exports.dashboard = function(req, res) {
 
 /*
  * Return all dashboards filtered by a visualizator and an acquisitor Plugin
- * Only for admin role
- * @query: visualizator
- * @query: acquisitor
+ * Only admin role can get all dashboards
+ * @query: visualizator (optional)
+ * @query: acquisitor (optional)
  */
 exports.dashboards = function(req, res) {
-  var q = {
-    visualizatorPlugin: req.query.visualizator,
-    acquisitorPlugin: req.query.acquisitor
-  };
-
-  DashboardModel.find(q, function(err, data) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, {response: "ok", data: data});
-  });
+  var q = {};
+  if (req.query.visualizator && req.query.acquisitor) {
+    q.visualizatorPlugin = req.query.visualizator;
+    q.acquisitorPlugin = req.query.acquisitor;
+  }
+  if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
+    DashboardModel.find(q, function(err, data) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, {response: "ok", data: data});
+    });
+  } else {
+    return res.json(401);
+  }
 };
 
 /*

@@ -20,8 +20,6 @@ angular.module('thedashboardApp')
             $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
             $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
             $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-            getDashboards();
-            getVisualizations();
           }
         });
       } else {
@@ -31,8 +29,6 @@ angular.module('thedashboardApp')
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
           $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
           $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-          getDashboards();
-          getVisualizations();
         }
       }
     }
@@ -46,12 +42,9 @@ angular.module('thedashboardApp')
     };
 
     // Dashboards
+    getDashboards();
     function getDashboards() {
-      var q = {
-        visualizator: $scope.plugins.visualizatorActive,
-        acquisitor: $scope.plugins.acquisitorActive
-      };
-      $http.get('api/v1/data/dashboards', {params: q}).success(function(res) {
+      $http.get('api/v1/data/dashboards').success(function(res) {
         if (res.response == 'ok') {
           $scope.dashboards = res.data;
         }
@@ -104,12 +97,9 @@ angular.module('thedashboardApp')
 
 
     // Visualizations
+    getVisualizations();
     function getVisualizations() {
-      var q = {
-        visualizator: $scope.plugins.visualizatorActive,
-        acquisitor: $scope.plugins.acquisitorActive
-      };
-      $http.get('api/v1/data/visualizations', {params: q}).success(function(res) {
+      $http.get('api/v1/data/visualizations').success(function(res) {
         if (res.response == 'ok') {
           $scope.visualizations = res.data;
         }
