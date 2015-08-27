@@ -12,13 +12,14 @@ module.exports = Tasker;
 function Tasker() {
   this.queue = kue.createQueue();
   
-  this.createTask = function(type, broker, task, cb) {
-    var job = this.queue.create(type, {title:'Task job'}).removeOnComplete(true);
+  this.createTask = function(data, broker, fn) {
+    var job = this.queue.create(data.type, {title:'Task job'}).removeOnComplete(true);
+    job.data.data = data;
 
     // TODO: Check errors
     job.on( 'complete', function () {
       console.log( " Job %d complete", job.id );
-      broker.socketEvent({name: type + "-" + job.id, data: {job: job.id}});
+      broker.socketEvent({name: data.type + "-" + job.id, data: {job: job.id}});
     } ).on( 'enqueue', function () {
       console.log( " Job enqueue" );
     } ).on( 'failed', function () {
@@ -28,14 +29,16 @@ function Tasker() {
     } );
 
     job.save(function(err) {
-      if( !err ) return cb(job.id);
+      if( !err ) fn(job.id);
     });
+  };
 
+  this.processTask = function(type, task) {
     this.queue.process(type, 1, function(job, done) {
       console.log("Processing job %d", job.id);
-      task(job.id, done);
+      task(job.id, job.data.data, done);
     });
-  }
+  };
 
   this.getTaskData = function(task, persistor, cb) {
     persistor.getTaskResults(task, cb);

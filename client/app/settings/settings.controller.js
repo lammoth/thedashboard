@@ -196,7 +196,21 @@ angular.module('thedashboardApp')
 
     
   })
-  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket) {
+  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $cacheFactory, $injector, Plugin) {
+    if ($cacheFactory.info().Plugin.size === 0) {
+      var visualizatorPluginPromise = Plugin.broker('getVisualizator');
+      visualizatorPluginPromise.then(function(visualizatorPlugin) {
+        $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+      });
+    } else {
+      var cache = $cacheFactory.get("Plugin");
+      if (cache.get("plugins")) {
+        $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+      }
+    }
+
     // Datasources
     $scope.datasources = [
       {
@@ -247,6 +261,7 @@ angular.module('thedashboardApp')
       }
     ];
 
+    // TODO: Improve this "Pyramid Of Doom"
     $scope.updateDatasources = function() {
       queryService.createTask(
         'query',
@@ -256,6 +271,49 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
+              queryService.updateSetting(
+                data.job,
+                function(taskData) {
+                  if (taskData.response !== 'error') {
+                    // This method must parse the datasources
+                    // Every acquisitor has their own parser
+                    var dataSources = $scope.acquisitorService.parse({
+                      action: "updateDatasources",
+                      data: taskData.data
+                    });
+                    // If exists datasources, we get all fields
+                    if (dataSources.length > 0) {
+                      queryService.createTask(
+                        'query',
+                        'setting',
+                        {action: "fieldsFromDatasources"},
+                        function(dataChildTask) {
+                          if (dataChildTask.response !== 'error') {
+                            createSocket("query-" + dataChildTask.data.job, function(dataChildSocket) {
+                              console.log("Task %d event received", dataChildSocket.job);
+                              queryService.updateSetting(
+                                dataChildSocket.job,
+                                function(taskChildData) {
+                                  if (taskChildData.response !== 'error') {
+                                    // This method must parse the fields
+                                    // Every acquisitor has their own parser
+                                    var fields = $scope.acquisitorService.parse({
+                                      action: "fieldsFromDatasources",
+                                      data: taskChildData.data,
+                                      extra: dataSources
+                                    });
+                                    console.log(fields);
+                                  }
+                                }
+                              );
+                            });
+                          }
+                        }
+                      );
+                    }
+                  }
+                }
+              );
             });
           }
         }

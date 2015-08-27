@@ -17,7 +17,7 @@ function visualizationQuery(parent, queryData, task, cb) {
     // Instantiating Visulazator plugin 
     data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))();
     // In this call, you must transform the frontend JSON to SQL or whatever
-    return parent.acquisitor.queryClient.execQuery(queryData, true);
+    return parent.acquisitor.queryClient.execQuery(queryData);
   })
   .then(function(queryResult) {
     // Passing the Acquisitor results to the Visualizator plugin

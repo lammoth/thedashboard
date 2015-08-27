@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var DatasourceSchema = new Schema({
   name: String,
-  acquisitor: String
+  acquisitor: String,
   fields: [{name: String, type: String}]
 });
 

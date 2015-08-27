@@ -7,22 +7,27 @@ var EngineSystem = require('../../components/engine');
 
 // Creates a task and returns the task id
 exports.task = function(req, res) {
-  var brokerRequestType = req.body.type;
-  var brokerRequestSubType = req.body.subtype;
-  var borkerRequestData = req.body.data;
-  var tasker = req.app.get('tasker');
-  var engine = new EngineSystem(req.app);
+  var brokerRequestType = req.body.type,
+      brokerRequestSubType = req.body.subtype,
+      brokerRequestData = req.body.data,
+      tasker = req.app.get('tasker'),
+      engine = new EngineSystem(req.app);
+
+  var taskData = {
+    type: brokerRequestType,
+    subtype: brokerRequestSubType,
+    data: brokerRequestData
+  };
 
   tasker.createTask(
-    brokerRequestType, 
-    broker, 
-    function(task, promise) {
-      engine.select(brokerRequestType, brokerRequestSubType, borkerRequestData, task, function() {
-        promise();
-      });
-    },
+    taskData,
+    broker,
     function(job) {
-      // TODO: Check errors
+      tasker.processTask(taskData.type, function(task, data, promise) {
+        engine.select(data.type, data.subtype, data.data, task, function() {
+          promise();
+        });
+      });
       return res.json(200, {response: 'ok', data: {job: job}});
     }
   );

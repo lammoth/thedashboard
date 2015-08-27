@@ -12,8 +12,7 @@ function settingQuery(parent, queryData, task, cb) {
 
   switch(queryData.action) {
     case "updateDatasources":
-      parent.acquisitor.queryClient.execQuery(queryData.action, false).then(function(queryResult) {
-        console.log(queryResult);
+      parent.acquisitor.queryClient.execQuery(queryData).then(function(queryResult) {
         // Saving task results in Redis
         return parent.persistor.saveTaskResults(task, queryResult);
       })
@@ -21,6 +20,18 @@ function settingQuery(parent, queryData, task, cb) {
       .then(function(){
         cb();
       });
+      break;
+    case "fieldsFromDatasources":
+      parent.acquisitor.queryClient.execQuery(queryData).then(function(queryResult) {
+        // Saving task results in Redis
+        return parent.persistor.saveTaskResults(task, queryResult);
+      })
+      // Emitting an event in order to update settings data
+      .then(function(){
+        cb();
+      });
+      break;
+    default:
       break;
   }
 }
