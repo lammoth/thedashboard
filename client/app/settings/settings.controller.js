@@ -183,6 +183,7 @@ angular.module('thedashboardApp')
         var settingsPromise = Settings.broker('datasource', 'getDatasources', {acquisitor: acquisitor});
         settingsPromise.then(function(datasources) {
           $scope.datasources = datasources;
+          
         });
       } else {
         var cache = $cacheFactory.get("Settings");
@@ -244,8 +245,7 @@ angular.module('thedashboardApp')
                                       'datasource',
                                       mix,
                                       function(datasourcesData) {
-                                        $scope.datasources = datasourcesData;
-                                        getPlugins();
+                                        $scope.datasources = mix;
                                       }
                                     );
                                   }

@@ -37,10 +37,11 @@ angular.module('thedashboardApp')
       // Returns the datasources
       getDatasources: function(type) {
         ((!settings) ? settings = cache.get("settings") : settings);
-          if (settings[type] || cache.get("settings")[type]) {
-            return settings[type];
-          }
+        if (settings[type] || cache.get("settings")[type]) {
+          return settings[type];
+        } else {
           return {};
+        }
       },
     }
     
