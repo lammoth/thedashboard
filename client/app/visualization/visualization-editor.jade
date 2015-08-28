@@ -9,20 +9,65 @@
                 .panel-body
                   .row
                     .col-xs-12
-                      .form-group
+                      .form-group(style="margin-bottom: 25px;")
                         label.control-label Select datasource         
                         select.form-control.m-b(name='account', ng-model="form.datasource")
                           option(value="t_1") t_1
                           option(value="t_1") t_2
+                    .col-xs-12
+                      .hpanel.hviolet
+                          .panel-heading
+                            .panel-tools
+                              a.showhide
+                                i.fa.fa-chevron-up
+                            | Fields
+                          |             
+                          .panel-body
+                            div.row
+                              div.col-md-6.col-xs-12
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
+                              div.col-md-6.col-xs-12
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
+                                div.checkbox
+                                  label
+                                    input(type="checkbox")
+                                    | Metric
                       .hpanel.horange
                           .panel-heading
                             .panel-tools
                               a.showhide
                                 i.fa.fa-chevron-up
-                            | Graphic data
+                            | Operations
                           |             
                           .panel-body
-                            acquisitor-graphic-options(chart="{{chartType}}")
+                            acquisitor-operations(chart="{{chartType}}")
+                      .hpanel.hred
+                          .panel-heading
+                            .panel-tools
+                              a.showhide
+                                i.fa.fa-chevron-up
+                            | Graph data
+                          |             
+                          .panel-body
+                            visualizator-graphic-data(chart="{{chartType}}")
                       div.pull-right
                         a.btn.btn-info.btn-outline.btn-margin(ng-click="saveVisualization()")
                           i.fa.fa-floppy-o
@@ -30,7 +75,7 @@
                         a.btn.btn-warning2.btn-outline.btn-margin(ng-click="runVisualization()")
                           i.fa.fa-play
                           | &nbsp; Run
-          tab(heading='Options')           
+          tab(heading='Graph options')           
             .tab-content
               .panel-body
                 visualizator-graphic-options

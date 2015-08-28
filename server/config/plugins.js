@@ -48,10 +48,10 @@ var plugins = [
     pluginTitle: 'MySQL',
     active: true,
     config: {
-      address: '10.200.2.53',
+      address: 'localhost',
       database: 'thedashboard',
-      user: 'thedashboard',
-      password: 'thedashboard'
+      user: 'root',
+      password: ''
     }
   },
   {

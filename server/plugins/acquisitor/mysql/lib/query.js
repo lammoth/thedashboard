@@ -16,21 +16,27 @@ function QueryReq(connection) {
 }
 
 // MySQL query executor
-QueryReq.prototype.execQuery = function(data, parsing) {  
-  var deferred = Q.defer();
-  if (!parsing) {
-    switch(data) {
+QueryReq.prototype.execQuery = function(data) {
+  var deferred = Q.defer(),
+      raw = null;
+  // If data object has an "action" property,
+  // the query will be executed in raw mode
+  if (data.action) {
+    switch(data.action) {
       case "updateDatasources":
-        data = "SHOW TABLES;"
+        raw = "SHOW TABLES;";
+        break;
+      case "fieldsFromDatasources":
+        raw = "SELECT * FROM information_schema.columns WHERE table_schema = '" + this.connection.config.database + "';";
         break;
       default:
         break;
     }
   } else {
-    Parser.parse(data)
+    Parser.parse(data);
   }
 
-  this.connection.query(((parsing) ? Parser.query : data), function(err, rows) {
+  this.connection.query(((!data.action) ? Parser.query : raw), function(err, rows) {
     deferred.resolve(rows);
   });
 

@@ -7,7 +7,8 @@ var _ = require('lodash'),
   pluginsConfig = require('../../config/plugins'),
   Plugin = require('../../plugins'),
   VisualizationModel = require('./visualization.model'),
-  DashboardModel = require('./dashboard.model');
+  DashboardModel = require('./dashboard.model'),
+  DatasourceModel = require('./datasource.model');
 
 
 // // Get datasources list
@@ -135,6 +136,14 @@ exports.destroyDashboard = function(req, res) {
     if(err) return res.send(500, err);
     return res.send(204);
   });
+};
+
+
+// Datasources
+exports.datasource = function(req, res) {
+  if (req.method == 'POST') {
+
+  }
 };
 
 
