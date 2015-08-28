@@ -39,6 +39,7 @@ PluginModel.find({}, function(err, plugins) {
     var acquisitors = _.filter(plugins, function(v) {
       return v.name == 'acquisitor'
     });
+    var chartTypes = ['area', 'bar', 'pie'];
 
     Dashboard.find({}).remove(function() {
       var nDashboards = 12;
@@ -65,7 +66,7 @@ PluginModel.find({}, function(err, plugins) {
           name: 'Visualization ' + (i + 1),
           visualizatorPlugin: visualizators[_.random(visualizators.length - 1)].pluginName,
           acquisitorPlugin: acquisitors[_.random(acquisitors.length - 1)].pluginName,
-          graphOptions: {},
+          graphOptions: {chart: chartTypes[_.random(chartTypes.length - 1)]},
           query: {}
         }, function() {
           if (i == nVisualizations - 1) {

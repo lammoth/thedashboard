@@ -4,7 +4,7 @@ angular.module('thedashboardApp')
   .controller('SettingsDashboardCtrl', function ($scope) {
     
   })
-  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http) {
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector) {
     $scope.plugins = {};
 
     // Initializing plugins tab
@@ -20,6 +20,7 @@ angular.module('thedashboardApp')
             $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
             $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
             $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+            $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
           }
         });
       } else {
@@ -29,6 +30,7 @@ angular.module('thedashboardApp')
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
           $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
           $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+          $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
         }
       }
     }
@@ -127,16 +129,6 @@ angular.module('thedashboardApp')
       });
     };
 
-    $scope.showVisualization = function(visualization) {
-      // TODO: show the visualization
-      console.log('Showing visualization: ' + visualization.name);
-    };
-
-    $scope.editVisualization = function(visualization) {
-      // TODO: edit the visualization
-      console.log('Editing visualization: ' + visualization.name);
-    };
-
     $scope.deleteAllVisualizations = function() {
       // TODO: delete all the visualization
       var temp = _.clone($scope.selectedVisualizations);
@@ -154,6 +146,10 @@ angular.module('thedashboardApp')
         $scope.selectedVisualizations.push(visualization);
       }
     };
+
+    $scope.getIcon = function(visualization) {
+      return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
+    }
 
     
   })

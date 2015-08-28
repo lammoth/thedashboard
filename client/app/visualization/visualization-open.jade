@@ -1,0 +1,17 @@
+.row
+  .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+    .hpanel.stats
+        .panel-body.h-200
+          .stats-title.pull-left
+            h3.text-success Visualizations
+          table.table.table-hover.visualizations
+            thead
+            tbody
+              tr(ng-repeat='visualization in visualizations')
+                td
+                  i(ng-class="getIcon(visualization)")
+                  | &nbsp;
+                  | {{visualization.name}}
+                td(width="1%")
+                  a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.graphOptions.chart, id: visualization._id})")
+                    i.glyphicon.glyphicon-eye-open
