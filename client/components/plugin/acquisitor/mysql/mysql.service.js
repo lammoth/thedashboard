@@ -19,10 +19,10 @@ angular.module('thedashboardApp')
               return extractDatasources(JSON.parse(data.data));
             break;
           case "fieldsFromDatasources":
-              return extractFields(JSON.parse(data.data), data.extra);
+              return JSON.parse(data.data);
             break;
           case "composeDatasourcesInfo":
-
+            return mixData(data.extra, data.data);
             break;
           default:
             break;
@@ -43,11 +43,11 @@ angular.module('thedashboardApp')
 
     // Extract fields needed in order to create a
     // proper datasource schema
-    function extractFields(data, datasources) {
+    function mixData(datasources, fields) {
       var dataSourcesData = [];
       _.each(datasources, function(datasource) {
-        var dataToInsert = {datasource: datasource, fields:[]};
-        _.each(data, function(field) {
+        var dataToInsert = {name: datasource, acquisitor: 'mysql', fields:[]};
+        _.each(fields, function(field) {
           if (field.TABLE_NAME == datasource) {
             dataToInsert.fields.push(
               {

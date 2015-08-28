@@ -71,7 +71,6 @@
               .panel-body
                 .row
                   .col-xs-12
-
                     table.table.table-hover.visualizations
                       thead
                         th(colspan="2")
@@ -108,16 +107,31 @@
               .panel-body
                 .row
                   .col-xs-12
-                    table.table.table-hover
-                      thead
-                        th Datasource
-                        th Fields
-                      tbody
-                        tr(ng-repeat='datasource in datasources')
-                          td {{datasource.name}}
-                          td.min(width="1%") 
-                            a.btn.btn-default.btn-xs(ng-click='showDashboard(dashboard)')
-                              i.glyphicon.glyphicon-eye-open
+                    .hpanel.horange
+                      .panel-heading
+                        .panel-tools
+                          a.showhide
+                            i.fa.fa-chevron-up
+                        | Datasources
+                      |             
+                      .panel-body
+                        div.animated-panel.zoomIn(style="animation-delay: 0.1s;", ng-if="datasources.length < 1")
+                          div.hpanel.hbgred
+                            div.panel-body
+                              p No results, try to update the datasources
+                        accordion(close-others="true", ng-if="datasources.length > 0")
+                          div(ng-repeat='datasource in datasources')
+                            accordion-group(heading="{{ datasource.name }}", style="margin-bottom: 5px;")
+                              div.row
+                                div.col-xs-12
+                                  table.table.table-hover
+                                    thead
+                                      th Field name
+                                      th Type
+                                    tbody
+                                      tr(ng-repeat='field in datasource.fields')
+                                        td {{ field.name }}
+                                        td {{ field.type }} 
                   .col-xs-12
                     .pull-right
                       a.btn.btn-info.btn-outline.btn-margin(ng-click="updateDatasources()")
