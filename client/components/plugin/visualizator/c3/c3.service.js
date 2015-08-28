@@ -37,6 +37,19 @@ angular.module('thedashboardApp')
       },
       zoom: function(chart, option) {
         graph.zoom = {enabled: Boolean(parseInt(option))};
+      },
+      getIcon: function(chartType) {
+        switch(chartType) {
+          case 'area':
+            return 'fa fa-area-chart';
+            break;
+          case 'bar':
+            return 'fa fa-bar-chart';
+            break;
+          case 'pie':
+            return 'fa fa-pie-chart'
+            break;
+        }
       }
     };
   });

@@ -5,11 +5,54 @@ angular.module('thedashboardApp')
   })
   .controller('VisualizationNewCtrl', function ($scope, $rootScope) {
     $rootScope.sectionName = "Visualizations";
-    $rootScope.sectionDescription = "Create a new visulaization";
+    $rootScope.sectionDescription = "Create a new visualization";
+  })
+  .controller('VisualizationOpenCtrl', function ($scope, $rootScope, $cacheFactory, Plugin, $http, $injector) {
+    $rootScope.sectionName = "Visualizations";
+    $rootScope.sectionDescription = "Open a visualization";
+    getPlugins();
+    function getPlugins() {
+      $scope.plugins = {};
+      if ($cacheFactory.info().Plugin.size === 0) {
+        var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+        pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+          if (acquisitorPlugins) {      
+            $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+            $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+            $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
+            getVisualizations();
+          }
+        });
+      } else {
+        var cache = $cacheFactory.get("Plugin");
+        if (cache.get("plugins")) {
+          $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+          $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+          $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
+          getVisualizations();
+        }
+      }
+    }
+    
+    function getVisualizations() {
+      var q = {
+        visualizator: $scope.plugins.visualizatorActive,
+        acquisitor: $scope.plugins.acquisitorActive
+      };
+      $http.get('api/v1/data/visualizations', {params: q}).success(function(res) {
+        if (res.response == 'ok') {
+          $scope.visualizations = res.data;
+        }
+      });
+    }
+
+    $scope.getIcon = function(visualization) {
+      return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
+    }
   })
   .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory) {
     $rootScope.sectionName = "Visualizations";
-    $rootScope.sectionDescription = "Edit a visulaization";
+    $rootScope.sectionDescription = "Edit a visualization";
     $scope.chartType = $stateParams.chart;
     $scope.visualizatorService = null;
     $scope.acquisitorService = null;

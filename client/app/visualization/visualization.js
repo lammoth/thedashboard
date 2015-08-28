@@ -27,8 +27,20 @@ angular.module('thedashboardApp')
           label: 'Create'
         }
       })
+      .state('main.visualization.open', {
+        url: '/open',
+        views: {
+          "visualization-child": {
+            templateUrl: 'app/visualization/visualization-open.html',
+            controller: 'VisualizationOpenCtrl',
+          }  
+        },
+        ncyBreadcrumb: {
+          label: 'Open'
+        }
+      })
       .state('main.visualization.editor', {
-        url: '/editor/:chart',
+        url: '/editor/:chart/:id',
         views: {
           "visualization-child": {
             templateUrl: 'app/visualization/visualization-editor.html',

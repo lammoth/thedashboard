@@ -4,7 +4,7 @@ angular.module('thedashboardApp')
   .controller('SettingsDashboardCtrl', function ($scope) {
     
   })
-  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin) {
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector) {
     $scope.plugins = {};
 
     // Initializing plugins tab
@@ -20,6 +20,7 @@ angular.module('thedashboardApp')
             $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
             $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
             $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+            $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
           }
         });
       } else {
@@ -29,6 +30,7 @@ angular.module('thedashboardApp')
           $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
           $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
           $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+          $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
         }
       }
     }
@@ -41,38 +43,15 @@ angular.module('thedashboardApp')
       console.log($scope.plugins.visualizators);
     };
 
-
-
     // Dashboards
-    $scope.dashboards = [
-      {
-        _id: "a000000000000001",
-        name: 'Dashboard one',
-        visualizatorPlugin: 'Visualizator Plugin one',
-        acquisitorPlugin: 'Acquisitor Plugin one',
-        visualizations: [{name: 'Visualization one'}, {name: 'Visualization two'}, {name: 'Visualization three'}],
-        matrix: [],
-        time: new Date()
-      },
-      {
-        _id: "a000000000000002",
-        name: 'Dashboard two',
-        visualizatorPlugin: 'Visualizator Plugin two',
-        acquisitorPlugin: 'Acquisitor Plugin two',
-        visualizations: [],
-        matrix: [],
-        time: new Date()
-      },
-      {
-        _id: "a000000000000003",
-        name: 'Dashboard three',
-        visualizatorPlugin: 'Visualizator Plugin three',
-        acquisitorPlugin: 'Acquisitor Plugin three',
-        visualizations: [{name: 'Visualization one'}, {name: 'Visualization two'}, {name: 'Visualization three'}],
-        matrix: [],
-        time: new Date()
-      }
-    ];
+    getDashboards();
+    function getDashboards() {
+      $http.get('api/v1/data/dashboards').success(function(res) {
+        if (res.response == 'ok') {
+          $scope.dashboards = res.data;
+        }
+      });
+    }
 
     $scope.selectedDashboards = [];
     $scope.toggleAllDashboards = function() {
@@ -81,17 +60,18 @@ angular.module('thedashboardApp')
         $scope.selectedDashboards = [];
       } else {
         // 0/some items selected
-        $scope.selectedDashboards = $scope.dashboards;
+        $scope.selectedDashboards = _.clone($scope.dashboards);
       }
     };
 
     $scope.deleteDashboard = function(dashboard) {
-      // TODO: delete the dashboard
-      var iDasboards = $scope.dashboards.indexOf(dashboard);
-      if (iDasboards > -1) {
-        $scope.dashboards.splice(iDasboards, 1);
-        console.log('Deleted dashboard: >' + dashboard.name);
-      }
+      $http.delete('/api/v1/data/dashboard/' + dashboard._id).success(function() {
+        var iDasboards = $scope.dashboards.indexOf(dashboard);
+        if (iDasboards > -1) {
+          $scope.dashboards.splice(iDasboards, 1);
+          console.log('Deleted dashboard: >' + dashboard.name);
+        }
+      });
     };
 
     $scope.showDashboard = function(dashboard) {
@@ -119,32 +99,14 @@ angular.module('thedashboardApp')
 
 
     // Visualizations
-    $scope.visualizations = [
-      {
-        _id: "b000000000000001",
-        name: 'Visualization one',
-        visualizatorPlugin: 'Visualizator Plugin one',
-        acquisitorPlugin: 'Acquisitor Plugin one',
-        query: {},
-        graphOptions: {}
-      },
-      {
-        _id: "b000000000000002",
-        name: 'Visualization two',
-        visualizatorPlugin: 'Visualizator Plugin two',
-        acquisitorPlugin: 'Acquisitor Plugin two',
-        query: {},
-        graphOptions: {}
-      },
-      {
-        _id: "b000000000000003",
-        name: 'Visualization three',
-        visualizatorPlugin: 'Visualizator Plugin three',
-        acquisitorPlugin: 'Acquisitor Plugin three',
-        query: {},
-        graphOptions: {}
-      }
-    ];
+    getVisualizations();
+    function getVisualizations() {
+      $http.get('api/v1/data/visualizations').success(function(res) {
+        if (res.response == 'ok') {
+          $scope.visualizations = res.data;
+        }
+      });
+    }
 
     $scope.selectedVisualizations = [];
     $scope.toggleAllVisualizations = function() {
@@ -153,27 +115,18 @@ angular.module('thedashboardApp')
         $scope.selectedVisualizations = [];
       } else {
         // 0/some items selected
-        $scope.selectedVisualizations = $scope.visualizations;
+        $scope.selectedVisualizations = _.clone($scope.visualizations);
       }
     };
 
     $scope.deleteVisualization = function(visualization) {
-      // TODO: delete the visualization
-      var iDasboards = $scope.visualizations.indexOf(visualization);
-      if (iDasboards > -1) {
-        $scope.visualizations.splice(iDasboards, 1);
-        console.log('Deleted visualization: >' + visualization.name);
-      }
-    };
-
-    $scope.showVisualization = function(visualization) {
-      // TODO: show the visualization
-      console.log('Showing visualization: ' + visualization.name);
-    };
-
-    $scope.editVisualization = function(visualization) {
-      // TODO: edit the visualization
-      console.log('Editing visualization: ' + visualization.name);
+      $http.delete('/api/v1/data/visualization/' + visualization._id).success(function() {
+        var iVisualization = $scope.visualizations.indexOf(visualization);
+        if (iVisualization > -1) {
+          $scope.visualizations.splice(iVisualization, 1);
+          console.log('Deleted visualization: >' + visualization.name);
+        }
+      });
     };
 
     $scope.deleteAllVisualizations = function() {
@@ -193,6 +146,10 @@ angular.module('thedashboardApp')
         $scope.selectedVisualizations.push(visualization);
       }
     };
+
+    $scope.getIcon = function(visualization) {
+      return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
+    }
 
     
   })
