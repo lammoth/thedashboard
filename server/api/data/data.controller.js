@@ -68,8 +68,18 @@ exports.dashboard = function(req, res) {
 
 // Datasources
 exports.datasource = function(req, res) {
-  if (req.method == 'POST') {
-
+  if (req.method == 'GET') {
+    var reqData = req.params.data;
+    DatasourceModel.find(reqData, function(err, data) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, {response: "ok", data: data});
+    });
+  } else if (req.method == 'POST') {
+    var datasources = req.body.data;
+    DatasourceModel.checkAndUpdate(datasources, function(data, err) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, {response: "ok", data: data});
+    });
   }
 };
 

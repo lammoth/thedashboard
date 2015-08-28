@@ -25,8 +25,8 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
-        // Update any setting data
-        updateSetting: function(task, cb) {
+        // Get any setting data
+        getSetting: function(task, cb) {
           $http.get(apiPrefix + '/broker/task/' + task).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
@@ -36,9 +36,12 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
-        // Create a visualization
-        createVisualization: function() {
-          $http.get(apiPrefix + '/data/visualization/').
+        // Update any setting data
+        updateSetting: function(type, data, cb) {
+          $http.post(
+            apiPrefix + '/data/' + type,
+            {data: data}
+          ).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
               return cb(data);

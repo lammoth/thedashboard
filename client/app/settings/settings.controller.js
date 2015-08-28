@@ -196,70 +196,44 @@ angular.module('thedashboardApp')
 
     
   })
-  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $cacheFactory, $injector, Plugin) {
-    if ($cacheFactory.info().Plugin.size === 0) {
-      var visualizatorPluginPromise = Plugin.broker('getVisualizator');
-      visualizatorPluginPromise.then(function(visualizatorPlugin) {
-        $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
-      });
-    } else {
-      var cache = $cacheFactory.get("Plugin");
-      if (cache.get("plugins")) {
-        $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $cacheFactory, $injector, Plugin, Settings) {
+    getPlugins();
+
+    // Getting the visualizator and the acquisitor
+    function getPlugins() {
+      if ($cacheFactory.info().Plugin.size === 0) {
+        var visualizatorPluginPromise = Plugin.broker('getVisualizator');
+        visualizatorPluginPromise.then(function(visualizatorPlugin) {
+          $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
+          $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+          // Getting the datasources
+          getDatasources(Plugin.getAcquisitor());
+
+        });
+      } else {
+        var cache = $cacheFactory.get("Plugin");
+        if (cache.get("plugins")) {
+          $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+          $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+          // Getting the datasources
+          getDatasources(Plugin.getAcquisitor());
+        }
       }
     }
 
-    // Datasources
-    $scope.datasources = [
-      {
-        _id: "b000000000000001",
-        name: 't_1',
-        engine: 'MySQL',
-        fields: [
-          {
-            name: 'metric',
-            type: 'float'
-          },
-          {
-            name: 'quantity',
-            type: 'float'
-          },
-          {
-            name: 'type',
-            type: 'string'
-          },
-          {
-            name: 'ts',
-            type: 'date'
-          }
-        ]
-      },
-      {
-        _id: "b000000000000002",
-        name: 't_2',
-        engine: 'MySQL',
-        fields: [
-          {
-            name: 'metric',
-            type: 'float'
-          },
-          {
-            name: 'quantity',
-            type: 'float'
-          },
-          {
-            name: 'type',
-            type: 'string'
-          },
-          {
-            name: 'ts',
-            type: 'date'
-          }
-        ]
+    function getDatasources(acquisitor) {
+      if ($cacheFactory.info().Settings.size === 0) {
+        var settingsPromise = Settings.broker('datasource', 'getDatasources', {acquisitor: acquisitor});
+        settingsPromise.then(function(datasources) {
+          $scope.datasources = datasources;
+        });
+      } else {
+        var cache = $cacheFactory.get("Settings");
+        if (cache.get("settings")) {
+          $scope.datasources = Settings.getDatasources('datasource');
+        }
       }
-    ];
+    }
 
     // TODO: Improve this "Pyramid Of Doom"
     $scope.updateDatasources = function() {
@@ -271,7 +245,7 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
-              queryService.updateSetting(
+              queryService.getSetting(
                 data.job,
                 function(taskData) {
                   if (taskData.response !== 'error') {
@@ -291,7 +265,7 @@ angular.module('thedashboardApp')
                           if (dataChildTask.response !== 'error') {
                             createSocket("query-" + dataChildTask.data.job, function(dataChildSocket) {
                               console.log("Task %d event received", dataChildSocket.job);
-                              queryService.updateSetting(
+                              queryService.getSetting(
                                 dataChildSocket.job,
                                 function(taskChildData) {
                                   if (taskChildData.response !== 'error') {
@@ -302,7 +276,21 @@ angular.module('thedashboardApp')
                                       data: taskChildData.data,
                                       extra: dataSources
                                     });
-                                    console.log(fields);
+
+                                    var mix = $scope.acquisitorService.parse({
+                                      action: "composeDatasourcesInfo",
+                                      data: fields,
+                                      extra: dataSources
+                                    });
+
+                                    queryService.updateSetting(
+                                      'datasource',
+                                      mix,
+                                      function(datasourcesData) {
+                                        $scope.datasources = datasourcesData;
+                                        getPlugins();
+                                      }
+                                    );
                                   }
                                 }
                               );

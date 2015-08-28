@@ -17,4 +17,8 @@ router.post('/visualization', controller.visualization);
 // Dashboard routes
 router.post('/dashboard', controller.dashboard);
 
+// Datasource routes
+router.get('/datasource', controller.datasource);
+router.post('/datasource', controller.datasource);
+
 module.exports = router;

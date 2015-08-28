@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: Get API version from somewhere
-
 angular.module('thedashboardApp')
   .factory('Plugin', function Plugin($http, $q, $cacheFactory) {
     var plugins = {};
