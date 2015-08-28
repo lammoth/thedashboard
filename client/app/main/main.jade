@@ -50,8 +50,26 @@ div(ui-view="main")
             |             
             .stats-label.text-color
               span.font-extra-bold.font-uppercase Dev Minion
-              div
-                small.text-muted Evil developer at WT
+              .dropdown
+                a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false')
+                  small.text-muted
+                    | Evil developer at WT
+                    b.caret
+                  |                     
+                ul.dropdown-menu.animated.fadeInRight.m-t-xs
+                  li
+                    a(href='contacts.html') Contacts
+                  |                         
+                  li
+                    a(href='profile.html') Profile
+                  |                         
+                  li
+                    a(href='analytics.html') Analytics
+                  |                         
+                  li.divider
+                  |                         
+                  li
+                    a(href='', ng-click='logout()') Logout
           |         
           ul#side-menu.nav.metismenu
             li
