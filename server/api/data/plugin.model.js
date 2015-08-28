@@ -23,7 +23,6 @@ PluginSchema.statics.getPluginEnabled = function(type, cb) {
 
 PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
   // TODO: Manage errors
-
   this
     .find()
     .exec(function(err, results) {

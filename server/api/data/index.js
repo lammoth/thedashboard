@@ -23,4 +23,8 @@ router.get('/dashboards', auth.isAuthenticated(), controller.dashboards);
 router.post('/dashboard', controller.dashboard);
 router.delete('/dashboard/:id', auth.hasRole('admin'), controller.destroyDashboard);
 
+// Datasource routes
+router.get('/datasource', controller.datasource);
+router.post('/datasource', controller.datasource);
+
 module.exports = router;
