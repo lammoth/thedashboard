@@ -13,4 +13,6 @@ angular.module('thedashboardApp')
       Auth.logout();
       $location.path('/login');
     };
+
+    $scope.user = Auth.getCurrentUser();
   });
