@@ -49,6 +49,19 @@ angular.module('thedashboardApp')
             error(function(err) {
               console.log(err);
             });  
+        },
+        // Delete any setting data
+        deleteSetting: function(type, id, cb) {
+          $http.delete(
+            apiPrefix + '/data/' + type + '/' + id
+          ).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
         }
     };
   });

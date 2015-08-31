@@ -4,7 +4,7 @@ angular.module('thedashboardApp')
   .controller('SettingsDashboardCtrl', function ($scope) {
     
   })
-  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector) {
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector, queryService) {
     $scope.plugins = {};
 
     // Initializing plugins tab
@@ -65,13 +65,15 @@ angular.module('thedashboardApp')
     };
 
     $scope.deleteDashboard = function(dashboard) {
-      $http.delete('/api/v1/data/dashboard/' + dashboard._id).success(function() {
-        var iDasboards = $scope.dashboards.indexOf(dashboard);
-        if (iDasboards > -1) {
-          $scope.dashboards.splice(iDasboards, 1);
-          console.log('Deleted dashboard: >' + dashboard.name);
-        }
-      });
+      queryService.deleteSetting(
+        'dashboard',
+        dashboard._id,
+        function(data) {
+          var index = $scope.dashboards.indexOf(dashboard);
+          if (index > -1) {
+            $scope.dashboards.splice(index, 1);
+          }
+        });
     };
 
     $scope.showDashboard = function(dashboard) {
@@ -80,7 +82,6 @@ angular.module('thedashboardApp')
     };
 
     $scope.deleteAllDashboards = function() {
-      // TODO: delete all the dashboard
       var temp = _.clone($scope.selectedDashboards);
       _.each(temp, function(dashboard) {
         $scope.deleteDashboard(dashboard);
@@ -120,17 +121,18 @@ angular.module('thedashboardApp')
     };
 
     $scope.deleteVisualization = function(visualization) {
-      $http.delete('/api/v1/data/visualization/' + visualization._id).success(function() {
-        var iVisualization = $scope.visualizations.indexOf(visualization);
-        if (iVisualization > -1) {
-          $scope.visualizations.splice(iVisualization, 1);
-          console.log('Deleted visualization: >' + visualization.name);
-        }
-      });
+      queryService.deleteSetting(
+        'visualization',
+        visualization._id,
+        function(data) {
+          var index = $scope.visualizations.indexOf(visualization);
+          if (index > -1) {
+            $scope.visualizations.splice(index, 1);
+          }
+        });
     };
 
     $scope.deleteAllVisualizations = function() {
-      // TODO: delete all the visualization
       var temp = _.clone($scope.selectedVisualizations);
       _.each(temp, function(visualization) {
         $scope.deleteVisualization(visualization);
