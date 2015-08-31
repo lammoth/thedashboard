@@ -16,6 +16,7 @@ angular.module('thedashboardApp')
         })
         .then( function() {
           // Account created, redirect to home
+          angular.element('body').removeClass('blank');
           $location.path('/');
         })
         .catch( function(err) {
@@ -30,5 +31,7 @@ angular.module('thedashboardApp')
         });
       }
     };
+
+    angular.element('body').addClass('blank');
 
   });
