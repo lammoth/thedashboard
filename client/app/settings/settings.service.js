@@ -3,7 +3,6 @@
 angular.module('thedashboardApp')
   .service('Settings', function Plugin($http, $q, $cacheFactory) {
     var cache = $cacheFactory('Settings');
-    var settings = {};
 
     // Get setting data
     function getData(type, cb, extra) {
@@ -13,9 +12,8 @@ angular.module('thedashboardApp')
       $http.get(apiPrefix + '/data/' + type, ((extra) ? extra : {})).
         success(function(data) {
           if (data.response === "error") { return data.data; }
-          settings[type] = data.data;
-          cache.put("settings", settings);
-          deferred.resolve(cb(type));
+          cache.put(type, data.data);
+          return cb(type, deferred);
         }).
         error(function(err) {
           console.log(err);
@@ -24,23 +22,26 @@ angular.module('thedashboardApp')
     }
 
     return {
+      cache: cache,
+
       // Requests broker
       broker: function(type, name, data) {
-        if (!cache.get("settings")) {
+        if (!cache.get(type)) {
           var promise = getData(type, this[name], data);
           return promise;
         } else {
-          return this[name]();
+          return this[name](type);
         }
       },
 
       // Returns the datasources
-      getDatasources: function(type) {
-        ((!settings) ? settings = cache.get("settings") : settings);
-        if (settings[type] || cache.get("settings")[type]) {
-          return settings[type];
+      getDatasources: function(type, deferred) {
+        ((!deferred) ? deferred = $q.defer() : deferred = deferred);
+
+        if (cache.get(type)) {
+          return deferred.resolve(cache.get(type));
         } else {
-          return {};
+          return deferred.resolve({});
         }
       },
     }
