@@ -124,14 +124,15 @@
                             accordion-group(heading="{{ datasource.name }}", style="margin-bottom: 5px;")
                               div.row
                                 div.col-xs-12
-                                  table.table.table-hover
-                                    thead
-                                      th Field name
-                                      th Type
-                                    tbody
-                                      tr(ng-repeat='field in datasource.fields')
-                                        td {{ field.name }}
-                                        td {{ field.type }} 
+                                  div.table-responsive
+                                    table.table.table-hover.table-striped
+                                      thead
+                                        th Field name
+                                        th Type
+                                      tbody
+                                        tr(ng-repeat='field in datasource.fields')
+                                          td {{ field.name }}
+                                          td {{ field.type }} 
                   .col-xs-12
                     .pull-right
                       a.btn.btn-info.btn-outline.btn-margin(ng-click="updateDatasources()")
