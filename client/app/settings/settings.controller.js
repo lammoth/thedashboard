@@ -4,7 +4,7 @@ angular.module('thedashboardApp')
   .controller('SettingsDashboardCtrl', function ($scope) {
     
   })
-  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector, queryService) {
+  .controller('SettingsTabController', function ($scope, $cacheFactory, Plugin, $http, $injector, queryService, Settings) {
     $scope.plugins = {};
 
     // Initializing plugins tab
@@ -44,14 +44,14 @@ angular.module('thedashboardApp')
     };
 
     // Dashboards
-    getDashboards();
-    function getDashboards() {
-      $http.get('api/v1/data/dashboards').success(function(res) {
-        if (res.response == 'ok') {
-          $scope.dashboards = res.data;
-        }
-      });
-    }
+    var dashboardsPromise = Settings.broker(
+      'dashboards',
+      'getData',
+      {}
+    );
+    dashboardsPromise.then(function(dashboards) {
+       $scope.dashboards = dashboards;
+     });
 
     $scope.selectedDashboards = [];
     $scope.toggleAllDashboards = function() {
@@ -100,14 +100,14 @@ angular.module('thedashboardApp')
 
 
     // Visualizations
-    getVisualizations();
-    function getVisualizations() {
-      $http.get('api/v1/data/visualizations').success(function(res) {
-        if (res.response == 'ok') {
-          $scope.visualizations = res.data;
-        }
-      });
-    }
+    var visualizationsPromise = Settings.broker(
+      'visualizations',
+      'getData',
+      {}
+    );
+    visualizationsPromise.then(function(visualizations) {
+       $scope.visualizations = visualizations;
+     });
 
     $scope.selectedVisualizations = [];
     $scope.toggleAllVisualizations = function() {
@@ -181,7 +181,7 @@ angular.module('thedashboardApp')
     }
 
     function getDatasources(acquisitor) {
-      var settingsPromise = Settings.broker('datasource', 'getDatasources', {acquisitor: acquisitor});
+      var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
       settingsPromise.then(function(datasources) {
         console.log(datasources);
         $scope.datasources = datasources;

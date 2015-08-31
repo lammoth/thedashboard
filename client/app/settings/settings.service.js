@@ -5,7 +5,7 @@ angular.module('thedashboardApp')
     var cache = $cacheFactory('Settings');
 
     // Get setting data
-    function getData(type, cb, extra) {
+    function prepareData(type, cb, extra) {
       
       var deferred = $q.defer();
 
@@ -27,22 +27,22 @@ angular.module('thedashboardApp')
       // Requests broker
       broker: function(type, name, data) {
         if (!cache.get(type)) {
-          var promise = getData(type, this[name], data);
+          var promise = prepareData(type, this[name], data);
           return promise;
         } else {
           return this[name](type);
         }
       },
 
-      // Returns the datasources
-      getDatasources: function(type, deferred) {
+      // Returns proper data
+      getData: function(type, deferred) {
         ((!deferred) ? deferred = $q.defer() : deferred = deferred);
-
         if (cache.get(type)) {
-          return deferred.resolve(cache.get(type));
+          deferred.resolve(cache.get(type));
         } else {
-          return deferred.resolve({});
+          deferred.resolve({});
         }
+        return deferred.promise;
       },
     }
     
