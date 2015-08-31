@@ -155,7 +155,7 @@ angular.module('thedashboardApp')
 
     
   })
-  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $cacheFactory, $injector, Plugin, Settings) {
+  .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $injector, $cacheFactory, Plugin, Settings) {
     getPlugins();
 
     // Getting the visualizator and the acquisitor
@@ -181,18 +181,11 @@ angular.module('thedashboardApp')
     }
 
     function getDatasources(acquisitor) {
-      if ($cacheFactory.info().Settings.size === 0) {
-        var settingsPromise = Settings.broker('datasource', 'getDatasources', {acquisitor: acquisitor});
-        settingsPromise.then(function(datasources) {
-          $scope.datasources = datasources;
-          
-        });
-      } else {
-        var cache = $cacheFactory.get("Settings");
-        if (cache.get("settings")) {
-          $scope.datasources = Settings.getDatasources('datasource');
-        }
-      }
+      var settingsPromise = Settings.broker('datasource', 'getDatasources', {acquisitor: acquisitor});
+      settingsPromise.then(function(datasources) {
+        console.log(datasources);
+        $scope.datasources = datasources;
+      });
     }
 
     // TODO: Improve this "Pyramid Of Doom"
