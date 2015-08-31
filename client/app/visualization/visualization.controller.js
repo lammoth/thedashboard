@@ -71,10 +71,31 @@ angular.module('thedashboardApp')
       }
     }
   })
-  .controller('VisualizationEditorTabController', function ($scope, queryService, socket) {
+  .controller('VisualizationEditorTabController', function ($scope, queryService, socket, Settings) {
     $scope.form = {};
+    $scope.form.fields = {};
     $scope.form.groups = [];
     $scope.form.chartType = $scope.$parent.chartType;
+
+    getDatasources();
+
+    function getDatasources(acquisitor) {
+      var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
+      settingsPromise.then(function(datasources) {
+        $scope.datasources = datasources;
+      });
+    }
+
+    $scope.selectFields = function(datasource) {
+      $scope.fields = datasource.fields;
+
+    };
+
+    $scope.updateFields = function(field) { 
+      if (!$scope.form.fields[field]) {
+        delete $scope.form.fields[field];
+      }
+    };
 
     $scope.addAggregation = function() {
       if (!$scope.form.aggregations) {

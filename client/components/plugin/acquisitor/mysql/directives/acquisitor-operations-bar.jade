@@ -13,11 +13,7 @@ accordion(close-others="true")
                       select.form-control.m-b(ng-model="form.aggregations[$index].type", ng-options="aggType.type for aggType in acquisitorService.aggregationTypes track by aggType.type")
                     .form-group
                       label.control-label Field      
-                      select.form-control.m-b(ng-model="form.aggregations[$index].field")
-                        option(value="metric") metric
-                        option(value="quantity") quantity
-                        option(value="type") type
-                        option(value="ts") ts
+                      select.form-control.m-b(ng-model="form.aggregations[$index].field", ng-options="key for (key, value) in form.fields track by key")
       div.col-xs-12(style="margin-top: 10px;")
         a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addAggregation()")
           i.fa.fa-plus-circle
