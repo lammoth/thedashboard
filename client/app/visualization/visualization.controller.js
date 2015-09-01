@@ -51,6 +51,8 @@ angular.module('thedashboardApp')
     }
   })
   .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory) {
+    // PAD: http://piratepad.net/Mo5aCZVETx
+
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Edit a visualization";
     $scope.chartType = $stateParams.chart;
@@ -74,6 +76,7 @@ angular.module('thedashboardApp')
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket, Settings) {
     $scope.form = {};
     $scope.form.fields = {};
+    $scope.form.graph = {};
     $scope.form.chartType = $scope.$parent.chartType;
     $scope.selectedFields = [];
     $scope.groupFields = {fields: [], aggs: []};
@@ -142,7 +145,22 @@ angular.module('thedashboardApp')
         $scope.form.orders = [];
       }
       $scope.form.orders.push({});
-      console.log($scope.form.orders);
+    };
+
+    $scope.addYData = function() {
+      if (!$scope.form.graph.y) {
+        $scope.form.graph.y = [];
+      }
+      $scope.form.graph.y.push({});
+      console.log($scope.form.graph.y);
+    };
+
+    $scope.addXData = function() {
+      if (!$scope.form.graph.x) {
+        $scope.form.graph.x = [];
+      }
+      $scope.form.graph.x.push({});
+      console.log($scope.form.graph.x);
     };
 
     $scope.changeGraphicOptions = function(options, model) {

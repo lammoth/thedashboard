@@ -37,7 +37,7 @@ accordion(close-others="true")
         a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addGroup()")
           i.fa.fa-plus-circle
           | &nbsp; Add new
-  accordion-group(heading="Order")
+  accordion-group(heading="Orders")
     div.row
       div.col-xs-12
         div(ng-if="form.orders.length > 0")
@@ -56,9 +56,9 @@ accordion(close-others="true")
         a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addOrder()")
           i.fa.fa-plus-circle
           | &nbsp; Add new
-  //- accordion-group(heading="Limit data")
-  //-   div.row
-  //-     div.col-xs-12
-  //-       .form-group
-  //-         label.control-label Limit results
-  //-         input.form-control(type="number", ng-model="form.limit")
+  accordion-group(heading="Limit")
+    div.row
+      div.col-xs-12
+        .form-group
+          label.control-label Limit results
+          input.form-control(type="number", ng-model="form.limit")
