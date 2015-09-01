@@ -22,7 +22,7 @@
                     .panel-body
                       .form-group
                         label.control-label Select the acquisition plugin  
-                        select.form-control.m-b(ng-model="plugins.acquisitors", ng-change="acquisitorSelectChange()")
+                        select.form-control.m-b(ng-model="plugins.acquisitorActive", ng-change="acquisitorSelectChange()")
                           option(ng-repeat="acquisitor in plugins.acquisitors track by $index" ng-selected="{{acquisitor.pluginName == plugins.acquisitorActive}}" value="{{acquisitor.pluginName}}") {{acquisitor.pluginTitle}}
                   .hpanel.horange
                     .panel-heading
@@ -34,7 +34,7 @@
                     .panel-body
                       .form-group
                         label.control-label Select the visualization plugin  
-                        select.form-control.m-b(ng-model="plugins.visualizators", ng-change="visualizatorSelectChange()")
+                        select.form-control.m-b(ng-model="plugins.visualizatorActive", ng-change="visualizatorSelectChange()")
                           option(ng-repeat="visualizator in plugins.visualizators track by $index" ng-selected="{{visualizator.pluginName == plugins.visualizatorActive}}" value="{{visualizator.pluginName}}") {{visualizator.pluginTitle}}
           tab(heading='Dashboards')           
             .tab-content

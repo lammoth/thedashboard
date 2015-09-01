@@ -11,28 +11,14 @@ angular.module('thedashboardApp')
     initTabPlugins();
 
     function initTabPlugins() {
-      if ($cacheFactory.info().Plugin.size === 0) {
-        var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
-
-        pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
-          if (acquisitorPlugins) {      
-            $scope.plugins.acquisitors = acquisitorPlugins;
-            $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
-            $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
-            $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-            $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
-          }
-        });
-      } else {
-        var cache = $cacheFactory.get("Plugin");
-        if (cache.get("plugins")) {
-          $scope.plugins.acquisitors = Plugin.getAcquisitorPlugins();
-          $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
-          $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
-          $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-          $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
-        }
-      }
+      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+        $scope.plugins.acquisitors = acquisitorPlugins;
+        $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+        $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
+        $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+        $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
+      });
     }
 
     $scope.acquisitorSelectChange = function() {
@@ -160,24 +146,13 @@ angular.module('thedashboardApp')
 
     // Getting the visualizator and the acquisitor
     function getPlugins() {
-      if ($cacheFactory.info().Plugin.size === 0) {
-        var visualizatorPluginPromise = Plugin.broker('getVisualizator');
-        visualizatorPluginPromise.then(function(visualizatorPlugin) {
-          $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-          $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
-          // Getting the datasources
-          getDatasources(Plugin.getAcquisitor());
-
-        });
-      } else {
-        var cache = $cacheFactory.get("Plugin");
-        if (cache.get("plugins")) {
-          $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
-          $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
-          // Getting the datasources
-          getDatasources(Plugin.getAcquisitor());
-        }
-      }
+      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+        $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
+        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
+        // Getting the datasources
+        getDatasources(Plugin.getAcquisitor());
+      }); 
     }
 
     function getDatasources(acquisitor) {
