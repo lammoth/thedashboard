@@ -13,6 +13,11 @@ angular.module('thedashboardApp')
         {type: 'sum'}
       ],
 
+      orderTypes: [
+        'asc',
+        'desc'
+      ],
+
       parse: function(data) {
         switch(data.action) {
           case "updateDatasources":

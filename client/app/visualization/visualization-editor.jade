@@ -25,8 +25,12 @@
                               div.col-md-12.col-xs-12
                                 div.checkbox(ng-repeat="field in fields")
                                   label
-                                    input(type="checkbox", ng-model="form.fields[field.name]", ng-click="updateFields(field.name)")
+                                    input(type="checkbox", ng-model="form.fields[field.name]", ng-click="updateFields(field)")
                                     | {{ field.name }}
+                                .hpanel.hbgorange(style="margin-bottom: 0px;", ng-show="!fields")
+                                  .panel-body
+                                    .text-center
+                                      small No datasource selected
                       .hpanel.horange
                           .panel-heading
                             .panel-tools

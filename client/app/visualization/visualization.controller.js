@@ -74,8 +74,9 @@ angular.module('thedashboardApp')
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket, Settings) {
     $scope.form = {};
     $scope.form.fields = {};
-    $scope.form.groups = [];
     $scope.form.chartType = $scope.$parent.chartType;
+    $scope.selectedFields = [];
+    $scope.groupFields = {fields: [], aggs: []};
 
     getDatasources();
 
@@ -88,12 +89,18 @@ angular.module('thedashboardApp')
 
     $scope.selectFields = function(datasource) {
       $scope.fields = datasource.fields;
-
     };
 
-    $scope.updateFields = function(field) { 
-      if (!$scope.form.fields[field]) {
-        delete $scope.form.fields[field];
+    $scope.updateFields = function(field) {
+      if (!$scope.form.fields[field.name]) {
+        delete $scope.form.fields[field.name];
+        $scope.selectedFields = _.filter($scope.selectedFields, function(f) {
+          return ((f.name == field.name) ? false : true);
+        });
+        $scope.groupFields.fields = $scope.selectedFields;
+      } else {
+        $scope.selectedFields.push(_.find($scope.fields, {'name': field.name}));
+        $scope.groupFields.fields.push(_.find($scope.fields, {'name': field.name}));
       }
     };
 
@@ -104,6 +111,25 @@ angular.module('thedashboardApp')
       $scope.form.aggregations.push({});
     };
 
+    $scope.updateGroupFields = function() {
+      $scope.groupFields.aggs = addAggToGroupFields();
+    };
+
+    function addAggToGroupFields() {
+      var validAggs = [];
+
+      _.forEach($scope.form.aggregations, function(agg, index) {
+        if (agg.type && agg.field) {
+          validAggs.push({
+            name: "agg" + index,
+            type: agg.field.type
+          });
+        }
+      });
+
+      return validAggs;
+    }
+
     $scope.addGroup = function() {
       if (!$scope.form.groups) {
         $scope.form.groups = [];
@@ -111,12 +137,20 @@ angular.module('thedashboardApp')
       $scope.form.groups.push({});
     };
 
+    $scope.addOrder = function() {
+      if (!$scope.form.orders) {
+        $scope.form.orders = [];
+      }
+      $scope.form.orders.push({});
+      console.log($scope.form.orders);
+    };
+
     $scope.changeGraphicOptions = function(options, model) {
       $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
       if (options.restart) {
         $scope.chart = $scope.$parent.visualizatorService.render();
       }
-    }
+    };
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
