@@ -17,9 +17,10 @@ var DatasourceSchema = new Schema({
 });
 
 DatasourceSchema.statics.checkAndUpdate = function(datasources, cb) {
+  var acquisitor = datasources[0].acquisitor;
   var parent = this;
   this
-    .find()
+    .find({acquisitor: acquisitor})
     .select('-fields._id')
     .exec(function(err, results) {
       if (err) {
