@@ -6,7 +6,7 @@ var _ = require('lodash'),
     Mixed = mongoose.Schema.Types.Mixed;
 
 var DatasourceSchema = new Schema({
-  name: String,
+  name: { type: String, unique: true },
   acquisitor: String,
   fields: [
     {
@@ -17,61 +17,81 @@ var DatasourceSchema = new Schema({
 });
 
 DatasourceSchema.statics.checkAndUpdate = function(datasources, cb) {
-  // TODO: Manage errors
-  var acquisitor = datasources[0].acquisitor;
+  var parent = this;
   this
-    .find({acquisitor: acquisitor})
+    .find()
+    .select('-fields._id')
     .exec(function(err, results) {
-      var datasourcesToUpdate = [];
-      if (err) cb({}, err);
-
-      if (results) {
-        _.forEach(datasources, function(datasource) {
-          var inside = false;
-          _.forEach(results, function(result) {
-            if (result.name == datasource.name) {
-              var insideField = false;
-              _.forEach(datasource.fields, function(field) {
-                _.forEach(result.fields, function(rField) {
-                  if (rField.name == field.name) {
-                    insideField = true;
-                  }
-                });
-              });
-              if (insideField) {
-                inside = true;
-              } else {
-                inside = false;
-              }
-            }
-          });
-
-          if (!inside) {
-            datasourcesToUpdate.push(datasource);
-            inside = false;
-          }
-
-        });
-
-        if (datasourcesToUpdate.length > 0) {
-          saveAll(datasourcesToUpdate);
-          cb();
-        } else {
-          cb();  
-        }
-      } else {
-        saveAll(datasources);
+      if (err) {
+        console.log(err); 
         cb();
       }
+      if (results) {
+        var idsA = results.map( function(x){ return x.name; } );
+        var idsB = datasources.map( function(x){ return x.name; } );
+        
+        // First seek removed and changed datasources.
+        var toUpdate = [];
+        _.forEach(idsA, function(datasource, index) {
+          if (idsB.indexOf(datasource) === -1) {
+            // This old document no longer exists.
+            parent.remove({_id: results[index]._id}, function(err, n) {
+              if (err) {
+                console.error('error removing datasource');
+              }
+            });   
+          } else {
+            // This document exists, now seek changes.
+            var docResult = results[index];
+            var docDataSource = datasources[idsB.indexOf(datasource)];
+            var contains = true;
+            _.forEach(docDataSource.fields, function(dField) {
+              contains = contains && _.some(docResult.fields, dField);
+            });
+            if (!contains) {
+              // There are changes.
+              toUpdate.push(docDataSource);
+            }
+          }
+        });
+        if (toUpdate.length) {
+          updateAll(toUpdate);
+        }
+
+        // Second seek new datasources
+        var toSave = [];
+        _.forEach(idsB, function(datasource, index) {
+          if (idsA.indexOf(datasource) === -1) {
+            toSave.push(datasources[index]);    
+          }
+        });
+        if (toSave.length) {
+          saveAll(toSave);
+        }
+      }
+      cb();
     });
 
   function saveAll(list) {
     _.forEach(list, function(element) {
       var doc = new Datasource(element);
-      doc.markModified('fields');
       doc.save(function(err, result) {
         if (err) console.log(err);
       });
+    });
+  }
+
+  function updateAll(list) {
+    _.forEach(list, function(element) {
+      var doc = new Datasource(element);
+      parent
+        .update(
+          {name: element.name},
+          {fields: element.fields},
+          function(err, datasource) {
+            if (err) console.error(err);
+          }
+        );
     });
   }
 };

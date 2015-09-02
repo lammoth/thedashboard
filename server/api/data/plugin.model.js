@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var PluginSchema = new Schema({
   name: String, 
-  pluginName: String, 
+  pluginName: { type: String, unique: true }, 
   pluginTitle: String, 
   enable: Boolean
 });
@@ -22,35 +22,37 @@ PluginSchema.statics.getPluginEnabled = function(type, cb) {
 
 
 PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
-  // TODO: Manage errors
+  var parent = this;
   this
     .find()
     .exec(function(err, results) {
-      var pluginsToUpdate = [];
-      if (results) {
-        _.forEach(plugins, function(plugin) {
-          var inside = false;
-          _.forEach(results, function(result) {
-            if (result.pluginName == plugin.pluginName) {
-              inside = true;
-            }
-          });
-          if (!inside) {
-            pluginsToUpdate.push(plugin);
-            inside = false;
-          }
-        });
-
-        if (pluginsToUpdate.length > 0) {
-          saveAll(pluginsToUpdate);
-          cb();
-        } else {
-          cb();  
-        }
-      } else {
-        saveAll(plugins);
+      if (err) {
+        console.log(err); 
         cb();
       }
+      if (results) {
+        var idsA = results.map( function(x){ return x.pluginName; } );
+        var idsB = plugins.map( function(x){ return x.pluginName; } );
+        _.forEach(idsA, function(plugin, index) {
+          if (idsB.indexOf(plugin) === -1) {
+            parent.remove({_id: results[index]._id}, function(err, n) {
+              if (err) {
+                console.error('error removing plugin');
+              }
+            });   
+          }
+        });
+        var toSave = [];
+        _.forEach(idsB, function(plugin, index) {
+          if (idsA.indexOf(plugin) === -1) {
+            toSave.push(plugins[index]);    
+          }
+        });
+        if (toSave.length) {
+          saveAll(toSave);
+        }
+      }
+      cb();
     });
 
   function saveAll(list) {
