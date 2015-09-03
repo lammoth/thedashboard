@@ -46,9 +46,13 @@ DatasourceSchema.statics.checkAndUpdate = function(datasources, cb) {
             var docResult = results[index];
             var docDataSource = datasources[idsB.indexOf(datasource)];
             var contains = true;
-            _.forEach(docDataSource.fields, function(dField) {
-              contains = contains && _.some(docResult.fields, dField);
-            });
+            if (docDataSource.fields.length != docResult.fields.length) {
+              contains = false;
+            } else {
+              _.forEach(docDataSource.fields, function(dField) {
+                contains = contains && _.some(docResult.fields, dField);
+              });
+            }
             if (!contains) {
               // There are changes.
               toUpdate.push(docDataSource);
