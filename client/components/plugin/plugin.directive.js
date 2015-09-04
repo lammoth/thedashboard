@@ -100,13 +100,13 @@ angular.module('thedashboardApp')
         if ($cacheFactory.info().Plugin.size === 0) {
           var visualizatorPluginPromise = Plugin.broker('getVisualizator');
           visualizatorPluginPromise.then(function(visualizatorPlugin) {
-            var templateUrl = 'components/plugin/visualizator/' + visualizatorPlugin + '/directives/visualizator-graphic-options.html';
+            var templateUrl = 'components/plugin/visualizator/' + visualizatorPlugin + '/directives/visualizator-graphic-options-' + attrs.chart + '.html';
             compileContent(templateUrl);
           });
         } else {
           var cache = $cacheFactory.get("Plugin");
           if (cache.get("plugins")) {
-            var templateUrl = 'components/plugin/visualizator/' + Plugin.getVisualizator() + '/directives/visualizator-graphic-options.html';
+            var templateUrl = 'components/plugin/visualizator/' + Plugin.getVisualizator() + '/directives/visualizator-graphic-options-' + attrs.chart + '.html';
             compileContent(templateUrl);
           }
         }

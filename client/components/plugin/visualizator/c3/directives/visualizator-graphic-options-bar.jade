@@ -1,0 +1,34 @@
+.row
+  .col-xs-12
+    .form-group
+      label.control-label Allow stacked mode
+      select.form-control.m-b(
+        ng-model="graphicOptions.zoom", 
+        ng-change="changeGraphicOptions({option: 'stacked', restart: true}, graphicOptions.stacked)",
+      )
+        option(value=1) Yes
+        option(value=0) No
+    .form-group
+      label.control-label Allow zoom
+      select.form-control.m-b(
+        ng-model="graphicOptions.zoom", 
+        ng-change="changeGraphicOptions({option: 'zoom', restart: true}, graphicOptions.zoom)",
+      )
+        option(value=1) Yes
+        option(value=0) No
+    .form-group
+      label.control-label Allow grid
+      select.form-control.m-b(
+        ng-model="graphicOptions.transform", 
+        ng-change="changeGraphicOptions({option: 'grid', restart: false}, graphicOptions.grid)",
+      )
+        option(value="area-spline") Yes
+        option(value="area") No
+    .form-group
+      label.control-label Allow rotate
+      select.form-control.m-b(
+        ng-model="graphicOptions.zoom", 
+        ng-change="changeGraphicOptions({option: 'rotate', restart: true}, graphicOptions.rotate)",
+      )
+        option(value=1) Yes
+        option(value=0) No

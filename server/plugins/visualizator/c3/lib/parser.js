@@ -4,7 +4,7 @@ module.exports = Parser;
 
 function Parser() {
   this.parse = function(data, raw, acquisitor, deferred) {
-    // var acquisitorParser = new (require('./parsers' + acquisitor))(data, raw, deferred);
-    deferred.resolve();
+    var acquisitorParser = new (require('./parsers/' + acquisitor))(data, raw, deferred);
+    console.log(acquisitorParser);
   }
 }
