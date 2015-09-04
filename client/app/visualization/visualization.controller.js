@@ -125,7 +125,8 @@ angular.module('thedashboardApp')
         if (agg.type && agg.field) {
           validAggs.push({
             name: "agg" + index,
-            type: agg.field.type
+            type: agg.field.type,
+            scope: "aggregation"
           });
         }
       });
@@ -152,7 +153,6 @@ angular.module('thedashboardApp')
         $scope.form.graph.y = [];
       }
       $scope.form.graph.y.push({});
-      console.log($scope.form.graph.y);
     };
 
     $scope.addXData = function() {
@@ -160,7 +160,6 @@ angular.module('thedashboardApp')
         $scope.form.graph.x = [];
       }
       $scope.form.graph.x.push({});
-      console.log($scope.form.graph.x);
     };
 
     $scope.changeGraphicOptions = function(options, model) {
@@ -171,6 +170,7 @@ angular.module('thedashboardApp')
     };
 
     $scope.runVisualization = function() {
+      console.log($scope.form);
       var chart = $scope.$parent.chart;
       // var query = $scope.$parent.acquisitorService.parse($scope.form);
       queryService.createTask(

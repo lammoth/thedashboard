@@ -13,6 +13,9 @@ function MySQLPlugin(data) {
   // MySQL data needed to stablish the connection
   this.data = data;
 
+  // Plugin name
+  this.name = 'mysql';
+
   // MySQL connection
   this.connection = mysql.createConnection({
     host: this.data.address,

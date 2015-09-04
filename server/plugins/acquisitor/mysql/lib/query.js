@@ -33,6 +33,7 @@ QueryReq.prototype.execQuery = function(data) {
         break;
     }
   } else {
+    // Data is parsed only when the results must be represented
     Parser.parse(data);
   }
 

@@ -22,8 +22,12 @@ function visualizationQuery(parent, queryData, task, cb) {
   .then(function(queryResult) {
     // Passing the Acquisitor results to the Visualizator plugin
     data.VisualizatorPlugin.data = queryResult;
+    // Passing the raw data to the Visualizator plugin
+    data.VisualizatorPlugin.raw = queryData;
+    // Setting the Acquisitor name in the visualizator in order to do a proper parsing
+    data.VisualizatorPlugin.acquisitorParser = parent.acquisitor.name;
     // In this call, you must transform the acquisitor results to C3 valid data
-    // From Parser, you should choose the proper parser (Spark) in order to adapt
+    // From Parser, you should choose the proper parser in order to adapt
     // the results to C3
     return data.VisualizatorPlugin.parser();
   })

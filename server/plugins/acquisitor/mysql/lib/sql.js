@@ -10,12 +10,19 @@ function SQLParser() {
 
 SQLParser.prototype.run = function() {
   inspector = new SQLInspector(this.data, this.query);
+  
+  console.log(this.data);
 
-  // Setting datasource in the Squel object
   inspector.datasource();
+  inspector.fields();  
+  inspector.aggregations();
+  inspector.groups();
+  inspector.orders();
+  inspector.limit();
 
-  // Setting the fields in the Squel object
-  return inspector.fields();
+  console.log(this.query.toString());
+  
+  return this.query.toString();
 };
 
 function SQLInspector(data, query) {
@@ -25,73 +32,69 @@ function SQLInspector(data, query) {
   
   // Set query datasource
   this.datasource = function() {
-    this.query.from(this.data.datasource);
+    if (this.data.datasource) {
+      this.query.from(this.data.datasource.name);
+    }
   };
 
   // Set query fields
-  this.fields = function(fn) {
-    // Extract all aggragations related with x axis
-    _.forEach(this.data.x.aggregations, function(aggregation) {
-      switch(aggregation.type) {
-        case 'count':
-          parent.query.field(aggregation.field);
-          parent.query.field('COUNT(' + aggregation.field + ')');
-          break;
-        case 'avg':
-          parent.query.field(aggregation.field);
-          parent.query.field('AVG(' + aggregation.field + ')');
-          break;
-        case 'sum':
-          parent.query.field(aggregation.field);
-          parent.query.field('SUM(' + aggregation.field + ')');
-          break;
-        case 'timeseries':
-          parent.query.field(aggregation.field);
-          parent.query.group(
-            "YEAR(" + aggregation.field + 
-            "), MONTH(" + aggregation.field + 
-            "), DAY(" + aggregation.field + 
-            "), HOUR(" + aggregation.field + 
-            "), MINUTE(" + aggregation.field + 
-            "), SECOND(" + aggregation.field + ")");
-          break;
-        default:
-          parent.query.field(aggregation.field);
-          break;
-      }
-    });
+  this.fields = function() {
+    if (this.data.fields) {
+      _.forEach(this.data.fields, function(value, key) {
+        parent.query.field(key);
+      });
+    }
+  };
 
-    // Extract all aggragations related with y axis
-    _.forEach(this.data.y.aggregations, function(aggregation) {
-      switch(aggregation.type) {
-        case 'count':
-          parent.query.field(aggregation.field);
-          parent.query.field('COUNT(' + aggregation.field + ')');
-          break;
-        case 'avg':
-          parent.query.field(aggregation.field);
-          parent.query.field('AVG(' + aggregation.field + ')');
-          break;
-        case 'sum':
-          parent.query.field(aggregation.field);
-          parent.query.field('SUM(' + aggregation.field + ')');
-          break;
-        case 'timeseries':
-          parent.query.field(aggregation.field);
-          parent.query.group(
-            "YEAR(" + aggregation.field + 
-            "), MONTH(" + aggregation.field + 
-            "), DAY(" + aggregation.field + 
-            "), HOUR(" + aggregation.field + 
-            "), MINUTE(" + aggregation.field + 
-            "), SECOND(" + aggregation.field + ")");
-          break;
-        default:
-          parent.query.field(aggregation.field);
-          break;
-      }
-    });
-    
-    return parent.query.toString();
-  }
+  // Set query aggregations
+  this.aggregations = function() {
+    if (this.data.aggregations) {
+      _.forEach(this.data.aggregations, function(aggregation, index) {
+        parent.query.field(aggregation.type.type + '(' + aggregation.field.name + ') AS agg' + index);
+      });
+    }
+  };
+
+  // Set query groups
+  this.groups = function() {
+    if (this.data.groups) {
+      _.forEach(this.data.groups, function(group) {
+        if (group.field.scope == 'aggregation') {
+          parent.query.having(group.field.name);
+        } else {
+          switch(group.field.type) {
+            case 'timestamp':
+              parent.query.group(
+                "YEAR(" + group.field.name + 
+                "), MONTH(" + group.field.name + 
+                "), DAY(" + group.field.name + 
+                "), HOUR(" + group.field.name + 
+                "), MINUTE(" + group.field.name + 
+                "), SECOND(" + group.field.name + ")"
+              );
+              break;
+            default:
+              parent.query.group(group.field.name);
+              break;
+          }
+        }
+      });
+    }
+  };
+
+  // Set query orders
+  this.orders = function() {
+    if (this.data.orders) {
+      _.forEach(this.data.orders, function(order) {
+        parent.query.order(order.field.name, ((order.type == 'asc') ? true : false));
+      });
+    }
+  };
+
+  // Set query limit
+  this.limit = function() {
+    if (this.data.limit) {
+      parent.query.limit(this.data.limit);
+    }
+  };  
 }
