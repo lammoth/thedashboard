@@ -66,7 +66,7 @@ var plugins = [
         {topic: 'logstash.collectd'},
         {topic: 'logstash.netflow'}
       ],
-      options: { autoCommit: true, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024*1024 }
+      options: { groupId: 'spark', autoCommit: true, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024*1024 }
     }
   },
   {

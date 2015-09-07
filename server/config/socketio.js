@@ -39,6 +39,9 @@ module.exports = function (socketio, app) {
   //   handshake: true
   // }));
 
+  // Starting system eventor
+  Eventor.init(app);
+
   socketio.on('connection', function (socket) {
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
@@ -50,6 +53,7 @@ module.exports = function (socketio, app) {
     socket.on('disconnect', function () {
       onDisconnect(socket);
       console.info('[%s] DISCONNECTED', socket.address);
+      Eventor.removeSocket(socket);
     });
 
     // Call onConnect.
@@ -60,14 +64,7 @@ module.exports = function (socketio, app) {
     // Set socket in app
     // app.set('socket', socket);
 
-    // Starting system eventor
-    // Eventor.plugin().then(function(data) {
-    //   var eventorPluginData = Eventor.getObject(app.get('plugins'), data);
-    //   var EventorPlugin = new (require(eventorPluginData.path))(socket, eventorPluginData.config);
-    //   EventorPlugin.connect();
-    //   console.log("Eventor loaded at boot");
-    //   app.set('eventor', EventorPlugin);
-    // });
+    Eventor.registerSocket(socket);
 
   });
 };
