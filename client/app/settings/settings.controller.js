@@ -24,15 +24,21 @@ angular.module('thedashboardApp')
     }
 
     $scope.acquisitorSelectChange = function() {
-      console.log($scope.plugins.acquisitors);
+      var name = $scope.plugins.acquisitorActive;
+      Plugin.setPluginEnable('acquisitor', name, function(data) {
+      });
     };
 
     $scope.visulizatorSelectChange = function() {
-      console.log($scope.plugins.visualizators);
+      var name = $scope.plugins.visualizatorActive;
+      Plugin.setPluginEnable('visualizator', name, function(data) {
+      });
     };
 
     $scope.eventorSelectChange = function() {
-      console.log($scope.plugins.eventors);
+      var name = $scope.plugins.eventorActive;
+      Plugin.setPluginEnable('eventor', name, function(data) {
+      });
     };
 
     // Dashboards

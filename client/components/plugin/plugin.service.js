@@ -46,7 +46,7 @@ angular.module('thedashboardApp')
                 return false;
               }
             });
-            deferred.resolve(cache.get('plugins'));
+            deferred.resolve(acquisitorPlugins);
           } else {
             deferred.resolve({})
           }
@@ -112,6 +112,17 @@ angular.module('thedashboardApp')
             return _.result(_.find(plugins, {'name': 'eventor', 'enable': true}), 'pluginName');
           }
           return null;
+      },
+
+      // Set enable only one plugin of the type
+      setPluginEnable: function(type, name, cb) {
+        $http.post(apiPrefix + '/data/plugins/enable/' + type + '/' + name)
+          .success(function(data) {
+            return cb(data);
+          })
+          .error(function(err) {
+            return cb(err);
+          });
       }
     };
   });

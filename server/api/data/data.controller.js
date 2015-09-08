@@ -42,6 +42,16 @@ exports.pluginsInfo = function(req, res) {
   });
 };
 
+// Update plugin
+exports.pluginsSetEnable = function(req, res) {
+  var type = req.params.type;
+  var name = req.params.name;
+  PluginModel.setPluginEnable(type, name, function(err, plugin) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, {response: "ok", data: plugin});
+  });
+};
+
 
 // Visualizations
 exports.visualization = function(req, res) {

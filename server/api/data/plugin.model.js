@@ -20,6 +20,31 @@ PluginSchema.statics.getPluginEnabled = function(type, cb) {
     });
 };
 
+PluginSchema.statics.setPluginEnable = function(type, name, cb) {
+  this
+    .find({name: type})
+    .exec(function(err, plugins) {
+      if (err) {
+        return cb(err);
+      } else {
+        _.forEach(plugins, function(plugin) {
+          if (plugin.pluginName === name) {
+            plugin.enable = true;
+            plugin.save(function(error, doc) {
+              if (error) cb(error);
+              else cb(null, doc);
+            });
+          } else {
+            plugin.enable = false;
+            plugin.save(function(error, doc) {
+              if (error) console.log(error, plugin);
+            });
+          }
+        })
+      }
+    });
+};
+
 
 PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
   var parent = this;
