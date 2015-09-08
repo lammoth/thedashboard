@@ -37,13 +37,6 @@ Persistor.prototype.saveTaskResults = function(task, data) {
 
 Persistor.prototype.getTaskResults = function(task, cb) {
   this.client.get("task:" + task, function(err, result) {
-    // TODO: Only for test purposes
-    // The result should be parsed yet 
-    // var resultArray = [];
-    // _.forEach(result, function(value, key){
-    //   resultArray.push(value.split(","));
-    // });
-    // cb(resultArray);
-    cb(result);
+    cb(JSON.parse(result));
   });
 }

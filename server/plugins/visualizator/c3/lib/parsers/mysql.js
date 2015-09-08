@@ -7,20 +7,18 @@ module.exports = MysqlC3Parser;
 function MysqlC3Parser(data, raw, promise) {
   this.data = data;
   this.raw = raw;
-  this.parse = rawParser(this.data, this.raw, promise);
+  this.promise = promise;
 }
 
-function rawParser(data, raw, promise) {
-  if (raw.chartType) {
-    switch(raw.chartType) {
+MysqlC3Parser.prototype.rawParser = function() {
+  if (this.raw.chartType) {
+    switch(this.raw.chartType) {
       case 'bar':
-        var graph = {};
-        graph.type = bar;
-        promise.resolve();
-        break;
+        var graph = new (require('../graphics/' + this.raw.chartType))(this.data, this.raw, this.promise);
+        graph.dataset();
       default:
         break;
     }
   }
-}
+};
 

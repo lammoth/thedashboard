@@ -11,7 +11,7 @@ angular.module('thedashboardApp')
         graph.data.type = type;
       },
       data: function(data) {
-        graph.data = data;
+        graph = data;
       },
       bind: function(element) {
         graph.bindto = element;
@@ -20,6 +20,7 @@ angular.module('thedashboardApp')
         };
       },
       render: function() {
+        console.log(graph);
         return c3.generate(graph);
       },
       option: function(option, model, chart) {

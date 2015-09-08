@@ -184,16 +184,18 @@ angular.module('thedashboardApp')
               queryService.updateVisualization(
                 data.job,
                 function(taskData) {
-                  var columnsArray = [];
-                  _.forEach(taskData.data, function(td) {
-                    columnsArray.push(td);
-                  });
-                  $scope.$parent.visualizatorService.data(
-                    {
-                      columns: columnsArray
-                    }
-                  );
-                  $scope.$parent.visualizatorService.type($scope.$parent.chartType);
+                  console.log(JSON.stringify(taskData.data));
+                  // var columnsArray = [];
+                  // _.forEach(taskData.data, function(td) {
+                  //   columnsArray.push(td);
+                  // });
+                  // $scope.$parent.visualizatorService.data(
+                  //   {
+                  //     columns: columnsArray
+                  //   }
+                  // );
+                  // $scope.$parent.visualizatorService.type($scope.$parent.chartType);
+                  $scope.$parent.visualizatorService.data(taskData.data);
                   $scope.$parent.visualizatorService.bind('#visualization-chart-editor');
                   $scope.chart = $scope.$parent.visualizatorService.render();
                 }
