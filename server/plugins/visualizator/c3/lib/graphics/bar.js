@@ -11,9 +11,25 @@ function BarC3(data, raw, promise) {
 
 function prepareColumns(raw, data) {
   var barData = [];
+  var timeseriesField = null;
+  _.forEach(raw.datasource.fields, function(field) {
+    if (field.type === 'timestamp') {
+      timeseriesField = field.name;
+    }
+  });
 
   _.forEach(raw.fields, function(value, field) {
-    barData.push([field].concat(_.map(data, field)));
+    if (timeseriesField === field) {
+      var formattedDates = [];
+      var tsArray = _.map(data, field);
+      _.forEach(tsArray, function(ts) {
+        var fDate = new Date(ts);
+        formattedDates.push(fDate.getFullYear() + '-' + fDate.getMonth() + '-' + fDate.getDay() + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds())
+      });
+      barData.push([field].concat(formattedDates));
+    } else {
+      barData.push([field].concat(_.map(data, field)));
+    }
   });
 
   return barData;
@@ -48,7 +64,7 @@ function prepareAxis(raw) {
 BarC3.prototype.dataset = function() {
   this.graph.data = {
     type: 'bar',
-    xFormat: '%Y',
+    xFormat: '%Y-%M-%D %H:%M:%S',
     columns: prepareColumns(this.raw, this.data),
     x: this.raw.graph.x[0].field.name
   }
