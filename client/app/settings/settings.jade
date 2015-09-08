@@ -36,6 +36,19 @@
                         label.control-label Select the visualization plugin  
                         select.form-control.m-b(ng-model="plugins.visualizatorActive", ng-change="visualizatorSelectChange()")
                           option(ng-repeat="visualizator in plugins.visualizators track by $index" ng-selected="{{visualizator.pluginName == plugins.visualizatorActive}}" value="{{visualizator.pluginName}}") {{visualizator.pluginTitle}}
+                  .hpanel.horange
+                    .panel-heading
+                      .panel-tools
+                        a.showhide
+                          i.fa.fa-chevron-up
+                      | Events
+                    |             
+                    .panel-body
+                      .form-group
+                        label.control-label Select the eventor plugin  
+                        select.form-control.m-b(ng-model="plugins.eventorActive", ng-change="eventorSelectChange()")
+                          option(ng-repeat="eventor in plugins.eventors track by $index" ng-selected="{{eventor.pluginName == plugins.eventorActive}}" value="{{eventor.pluginName}}") {{eventor.pluginTitle}}
+
           tab(heading='Dashboards')           
             .tab-content
               .panel-body

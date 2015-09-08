@@ -17,6 +17,8 @@ angular.module('thedashboardApp')
         $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
         $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
         $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+        $scope.plugins.eventors = Plugin.getEventorPlugins();
+        $scope.plugins.eventorActive = Plugin.getEventor();
         $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
       });
     }
@@ -27,6 +29,10 @@ angular.module('thedashboardApp')
 
     $scope.visulizatorSelectChange = function() {
       console.log($scope.plugins.visualizators);
+    };
+
+    $scope.eventorSelectChange = function() {
+      console.log($scope.plugins.eventors);
     };
 
     // Dashboards

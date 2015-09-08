@@ -86,6 +86,32 @@ angular.module('thedashboardApp')
             return _.result(_.find(plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
           }
           return null;
+      },
+
+      // Returns all eventor plugins availables
+      getEventorPlugins: function() {
+        if (cache.get("plugins")) {
+            var plugins = cache.get("plugins");
+            var eventorPlugins = _.filter(plugins, function(plugin) {
+              if (plugin.name === "eventor") {
+                return true;
+              } else {
+                return false;
+              }
+            });
+
+            return eventorPlugins;
+          }
+          return null;
+      },
+
+      // Returns the visualizator plugin active
+      getEventor: function() {
+          if (cache.get("plugins")) {
+            var plugins = cache.get("plugins");
+            return _.result(_.find(plugins, {'name': 'eventor', 'enable': true}), 'pluginName');
+          }
+          return null;
       }
     };
   });
