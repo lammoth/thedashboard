@@ -12,6 +12,13 @@ var Q = require('q');
 module.exports = Acquisitor;
 
 function Acquisitor() {
+  var parent = this;
+  this.app = null;
+
+  this.init = function(app) {
+    parent.app = app;
+    parent.changePlugin();
+  };
 
   this.plugin = function() {
     var deferred = Q.defer();
@@ -38,3 +45,30 @@ Acquisitor.prototype.getObject = function(plugins, data) {
     }
   }));
 };
+
+Acquisitor.prototype.changePlugin = function() {
+  var parent = this;
+  var app = this.app;
+  var acquisitor = app.get('acquisitor');
+  
+  if (acquisitor && acquisitor.isConnected) {
+    app.get('acquisitor').close(function() {
+      usePlugin();
+    });
+  } else {
+    usePlugin();
+  }
+  
+  function usePlugin() {
+    parent.plugin().then(function(data) {
+      if (!data) {
+        console.log('Error >> Not found enabled Acquisitor');
+      }
+      var acquisitorPluginData = parent.getObject(app.get('plugins'), data);
+      var AcquisitorPlugin = new (require(acquisitorPluginData.path))(parent, acquisitorPluginData.config);
+      AcquisitorPlugin.connect();
+      console.log("Acquisitor loaded");
+      app.set('acquisitor', AcquisitorPlugin);
+    });
+  }
+}

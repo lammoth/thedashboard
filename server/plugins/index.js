@@ -73,15 +73,7 @@ Plugin.prototype.load = function(type, app) {
   var parent = this;
   switch(type) {
     case 'acquisitor':
-      Acquisitor.plugin().then(function(data) {
-        var acquisitorPluginData = Acquisitor.getObject(app.get('plugins'), data);
-        var AcquisitorPlugin = new (require(acquisitorPluginData.path))(acquisitorPluginData.config);
-        // This start the acquisitor engine
-        AcquisitorPlugin.connect().then(function() {
-          console.log("Acquisitor loaded at boot");
-          app.set('acquisitor', AcquisitorPlugin);
-        });
-      });
+      Acquisitor.init(app);
       break;
   }
 };

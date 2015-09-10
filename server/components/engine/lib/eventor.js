@@ -14,18 +14,11 @@ module.exports = Eventor;
 function Eventor() {
   var parent = this;
   this.sockets = [];
+  this.app = null;
 
   this.init = function(app) {
-    parent.plugin().then(function(data) {
-      if (!data) {
-        console.log('Error >> Not found enable Eventor');
-      }
-      var eventorPluginData = parent.getObject(app.get('plugins'), data);
-      var EventorPlugin = new (require(eventorPluginData.path))(parent, eventorPluginData.config);
-      EventorPlugin.connect();
-      console.log("Eventor loaded at boot");
-      app.set('eventor', EventorPlugin);
-    });
+    parent.app = app;
+    parent.changePlugin();
   };
 
   this.plugin = function() {
@@ -72,3 +65,32 @@ Eventor.prototype.emit = function(evName, data) {
     socket.emit(evName, data);
   });
 }
+
+
+Eventor.prototype.changePlugin = function() {
+  var parent = this;
+  var app = this.app;
+  var eventor = app.get('eventor');
+  
+  if (eventor && eventor.isConnected) {
+    app.get('eventor').close(function() {
+      usePlugin();
+    });
+  } else {
+    usePlugin();
+  }
+  
+  function usePlugin() {
+    parent.plugin().then(function(data) {
+      if (!data) {
+        console.log('Error >> Not found enabled Eventor');
+      }
+      var eventorPluginData = parent.getObject(app.get('plugins'), data);
+      var EventorPlugin = new (require(eventorPluginData.path))(parent, eventorPluginData.config);
+      EventorPlugin.connect();
+      console.log("Eventor loaded");
+      app.set('eventor', EventorPlugin);
+    });
+  }
+}
+

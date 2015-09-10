@@ -13,3 +13,9 @@ module.exports.plugins = [
   'acquisitor',
   'visualizator'
 ]
+
+// Persistent plugins availables
+module.exports.persistentPlugins = [
+  'acquisitor',
+  'eventor'
+]

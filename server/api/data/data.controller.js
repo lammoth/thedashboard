@@ -8,7 +8,8 @@ var _ = require('lodash'),
   Plugin = require('../../plugins'),
   VisualizationModel = require('./visualization.model'),
   DashboardModel = require('./dashboard.model'),
-  DatasourceModel = require('./datasource.model');
+  DatasourceModel = require('./datasource.model'),
+  persistentPlugins = require('../../config/general').persistentPlugins;
 
 
 // // Get datasources list
@@ -46,10 +47,26 @@ exports.pluginsInfo = function(req, res) {
 exports.pluginsSetEnable = function(req, res) {
   var type = req.params.type;
   var name = req.params.name;
-  PluginModel.setPluginEnable(type, name, function(err, plugin) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, {response: "ok", data: plugin});
-  });
+  if (persistentPlugins.indexOf(type) > -1) {
+    PluginModel.setPluginEnable(type, name, function(err, plugin) {
+      if(err) { return handleError(res, err); }
+      var pluginInUse = req.app.get(type);
+      if(!pluginInUse) {
+        console.log('No ' + type + ' loaded in the app');
+        var engine = new (require('../../components/engine/lib/' + type))();
+        engine.init(req.app);
+      } else if (!pluginInUse[type]) {
+        console.log('Missing ' + type + ' in the plugin: ' + name);
+      } else if (!pluginInUse[type].changePlugin) {
+        console.log('Missing changePlugin function in the ' + type);
+      } else {
+        pluginInUse[type].changePlugin();
+      }
+      return res.json(200, {response: "ok", data: plugin});
+    });
+  } else {
+    return res.json(200, {response: "ok", data: name});
+  }
 };
 
 

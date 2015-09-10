@@ -8,7 +8,13 @@ var mysql = require('mysql'),
 
 module.exports = MySQLPlugin;
 
-function MySQLPlugin(data) {
+function MySQLPlugin(acquisitor, data) {
+
+  // Plugin needs its acquisitor parent
+  this.acquisitor = acquisitor;
+
+  // isConnected true if the plugin is in use
+  this.isConnected = false;
 
   // MySQL data needed to stablish the connection
   this.data = data;
@@ -30,6 +36,7 @@ function MySQLPlugin(data) {
 
 // Return a new MySQL connection
 MySQLPlugin.prototype.connect = function() {
+  this.isConnected = true;
   var deferred = Q.defer();
   var parent = this;
   this.connection.connect(function(err) {
@@ -38,10 +45,18 @@ MySQLPlugin.prototype.connect = function() {
       return;
     }
 
-    console.log('connected as id ' + parent.connection.threadId);
+    console.log('MySQL connected as id ' + parent.connection.threadId);
     parent.queryClient = new Query(parent.connection);
     deferred.resolve();
   });
   
   return deferred.promise;
+};
+
+// Close the MySQL connection
+MySQLPlugin.prototype.close = function(cb) {
+  this.isConnected = false;
+  this.connection.destroy();
+  console.log('MySQL connection closed');
+  cb();
 };

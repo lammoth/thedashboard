@@ -8,12 +8,17 @@ var jdbc = require('jdbc');
 
 module.exports = connect;
 
-var PhoenixPlugin =  function(config) {
+var PhoenixPlugin =  function(acquisitor, config) {
+  // Plugin needs its acquisitor parent
+  this.acquisitor = acquisitor;
+  // isConnected true if the plugin is in use
+  this.isConnected = false;
   this.config = config;
   this.queryClient = null;
 };
 
 PhoenixPlugin.prototype.connect = function(){
+  this.isConnected = true;
 
   var deferred = Q.defer();
   var parent = this;
@@ -57,4 +62,10 @@ PhoenixPlugin.prototype.connect = function(){
   };
 
   return deferred.promise;
+}
+
+PhoenixPlugin.prototype.close = function(cb) {
+  this.isConnected = false;
+  console.log('PhoenixPlugin needs to improve close function.');
+  cb();
 }
