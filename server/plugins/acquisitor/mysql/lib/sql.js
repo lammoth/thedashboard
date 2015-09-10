@@ -21,7 +21,7 @@ SQLParser.prototype.run = function() {
   inspector.limit();
 
   console.log(this.query.toString());
-  
+
   return this.query.toString();
 };
 
@@ -64,14 +64,7 @@ function SQLInspector(data, query) {
         } else {
           switch(group.field.type) {
             case 'timestamp':
-              parent.query.group(
-                "YEAR(" + group.field.name + 
-                "), MONTH(" + group.field.name + 
-                "), DAY(" + group.field.name + 
-                "), HOUR(" + group.field.name + 
-                "), MINUTE(" + group.field.name + 
-                "), SECOND(" + group.field.name + ")"
-              );
+              parent.query.group('CAST(' + group.field.name + ' AS DATE)');
               break;
             default:
               parent.query.group(group.field.name);

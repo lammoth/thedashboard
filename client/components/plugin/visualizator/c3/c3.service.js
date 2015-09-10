@@ -24,12 +24,16 @@ angular.module('thedashboardApp')
         return c3.generate(graph);
       },
       option: function(option, model, chart) {
+        // TODO: Options only will be enabled when data property had been set
         switch(option.option) {
           case "transform":
             this.transform(chart, model);
             break;
           case "zoom":
             this.zoom(chart, model);
+            break;
+          case "stack":
+            this.stack(model);
             break;
         }
       },
@@ -38,6 +42,13 @@ angular.module('thedashboardApp')
       },
       zoom: function(chart, option) {
         graph.zoom = {enabled: Boolean(parseInt(option))};
+      },
+      stack: function(option) {
+        if (Boolean(parseInt(option))) {
+          graph.data.groups = [graph.fields];
+        } else {
+          graph.data.groups = [];
+        }
       },
       getIcon: function(chartType) {
         switch(chartType) {

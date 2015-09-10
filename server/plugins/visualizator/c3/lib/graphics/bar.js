@@ -24,7 +24,8 @@ function prepareColumns(raw, data) {
       var tsArray = _.map(data, field);
       _.forEach(tsArray, function(ts) {
         var fDate = new Date(ts);
-        formattedDates.push(fDate.getFullYear() + '-' + fDate.getMonth() + '-' + fDate.getDay() + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds())
+        // formattedDates.push(fDate.getFullYear() + '-' + fDate.getMonth() + '-' + fDate.getDay() + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds());
+        formattedDates.push(fDate.getFullYear() + '-' + (0 + String(fDate.getMonth())).slice(-2) + '-' + (0 + String(fDate.getDay())).slice(-2) + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds());
       });
       barData.push([field].concat(formattedDates));
     } else {
@@ -36,15 +37,18 @@ function prepareColumns(raw, data) {
 }
 
 function prepareAxis(raw) {
-  var axis = {x: [], y: []};
+  var axis = {x: null, y: null};
   
   if (raw.graph.x) {
     _.forEach(raw.graph.x, function(field) {
       var xData = {};
       if (field.field.type === 'timestamp') {
         xData.type = 'timeseries';
+        xData.tick = {
+          format: '%Y-%m-%d %H:%M:%S'
+        };
       }
-      ((xData) ? axis.x.push(xData) : console.log("No X axis to push"));
+      ((xData) ? axis.x = (xData) : console.log("No X axis to push"));
     });
   }
 
@@ -53,47 +57,55 @@ function prepareAxis(raw) {
       var yData = {};
       if (field.field.type === 'timestamp') {
         yData.type = 'timeseries';
+        yData.tick = {
+          format: '%Y-%m-%d %H:%M:%S'
+        };
       }
-      ((yData) ? axis.y.push(yData) : console.log("No Y axis to push"));
+      ((yData) ? axis.y = (yData) : console.log("No Y axis to push"));
     });
   }
 
   return axis;
 }
 
+function prepareFields(raw) {
+  var fields = [];
+  var timeseriesField = null;
+
+  _.forEach(raw.datasource.fields, function(field) {
+    if (field.type === 'timestamp') {
+      timeseriesField = field.name;
+    }
+  });
+
+  _.forEach(raw.fields, function(value, field) {
+    if (timeseriesField) {
+      if (field != timeseriesField) {
+        fields.push(field);
+      }
+    } else {
+      fields.push(field);
+    }
+  });
+
+  return fields;
+}
+
 BarC3.prototype.dataset = function() {
+  // Data info
   this.graph.data = {
     type: 'bar',
-    xFormat: '%Y-%M-%D %H:%M:%S',
+    xFormat: '%Y-%m-%d %H:%M:%S',
     columns: prepareColumns(this.raw, this.data),
     x: this.raw.graph.x[0].field.name
   }
-
+  
+  // Axis info
   this.graph.axis = prepareAxis(this.raw);
 
+  // Fields info (this is a fake option)
+  this.graph.fields = prepareFields(this.raw);
+
+  // Returns the graph data
   this.promise.resolve(this.graph);
 }
-
-  
-  // _.map(users, 'user');
-  // data: {
-  //       x: 'x',
-  //       type: 'bar',
-  //       xFormat: '%Y',
-  //       columns: [
-  //           ['x', '2012-12-31', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05'],
-  //           ['data1', 30, 200, 100, 400, 150, 250],
-  //           ['data2', 130, 340, 200, 500, 250, 350]
-  //       ]
-  //   },
-  //   axis: {
-  //       x: {
-  //           type: 'timeseries',
-  //           // if true, treat x value as localtime (Default)
-  //           // if false, convert to UTC internally
-  //           localtime: false,
-  //           tick: {
-  //               format: '%Y-%m-%d %H:%M:%S'
-  //           }
-  //       }
-  //   }
