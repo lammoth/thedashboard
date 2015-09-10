@@ -24,8 +24,12 @@ function prepareColumns(raw, data) {
       var tsArray = _.map(data, field);
       _.forEach(tsArray, function(ts) {
         var fDate = new Date(ts);
-        // formattedDates.push(fDate.getFullYear() + '-' + fDate.getMonth() + '-' + fDate.getDay() + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds());
-        formattedDates.push(fDate.getFullYear() + '-' + (0 + String(fDate.getMonth())).slice(-2) + '-' + (0 + String(fDate.getDay())).slice(-2) + ' ' + fDate.getHours() + ':' + fDate.getMinutes() + ':' + fDate.getSeconds());
+        formattedDates.push(
+          fDate.getFullYear() + '-' + 
+          (0 + String(fDate.getMonth())).slice(-2) + '-' 
+          + (0 + String(fDate.getDay())).slice(-2) + ' ' 
+          + fDate.getHours() + ':' + fDate.getMinutes() + ':' 
+          + fDate.getSeconds());
       });
       barData.push([field].concat(formattedDates));
     } else {
@@ -37,7 +41,7 @@ function prepareColumns(raw, data) {
 }
 
 function prepareAxis(raw) {
-  var axis = {x: null, y: null};
+  var axis = {x: [], y: []};
   
   if (raw.graph.x) {
     _.forEach(raw.graph.x, function(field) {
@@ -45,10 +49,11 @@ function prepareAxis(raw) {
       if (field.field.type === 'timestamp') {
         xData.type = 'timeseries';
         xData.tick = {
-          format: '%Y-%m-%d %H:%M:%S'
+          format: '%Y-%m-%d %H:%M:%S',
+          rotate: 75
         };
       }
-      ((xData) ? axis.x = (xData) : console.log("No X axis to push"));
+      ((xData) ? axis.x = xData : console.log("No X axis to push"));
     });
   }
 
@@ -61,7 +66,7 @@ function prepareAxis(raw) {
           format: '%Y-%m-%d %H:%M:%S'
         };
       }
-      ((yData) ? axis.y = (yData) : console.log("No Y axis to push"));
+      ((yData) ? axis.y = yData : console.log("No Y axis to push"));
     });
   }
 
