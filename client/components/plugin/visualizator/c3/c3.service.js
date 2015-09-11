@@ -34,6 +34,9 @@ angular.module('thedashboardApp')
           case "stack":
             this.stack(model);
             break;
+          case "grid":
+            this.grid(model);
+            break;
         }
       },
       transform: function(chart, to) {
@@ -48,6 +51,20 @@ angular.module('thedashboardApp')
         } else {
           graph.data.groups = [];
         }
+      },
+      grid: function(option) {
+        if (Boolean(parseInt(option))) {
+          graph.grid = {
+            x: {show: true},
+            y: {show: true},
+          }
+        } else {
+          graph.grid = {
+            x: {show: false},
+            y: {show: false},
+          }
+        }
+        console.log(graph);
       },
       getIcon: function(chartType) {
         switch(chartType) {

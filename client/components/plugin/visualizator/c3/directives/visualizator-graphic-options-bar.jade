@@ -20,7 +20,7 @@
       label.control-label Allow grid
       select.form-control.m-b(
         ng-model="graphicOptions.grid", 
-        ng-change="changeGraphicOptions({option: 'grid', restart: false}, graphicOptions.grid)",
+        ng-change="changeGraphicOptions({option: 'grid', restart: true}, graphicOptions.grid)",
       )
         option(value="area-spline") Yes
         option(value="area") No
