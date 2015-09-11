@@ -1,33 +1,35 @@
 accordion(close-others="true")
   accordion-group(heading="Y-Axis")
+    //- div.row
+    //-   div.col-xs-12
+    //-     div
+    //-       accordion(close-others="true")
+    //-         div(ng-repeat="y in form.graph.y")
+    //-           accordion-group(heading="{{ 'Y Data ' + $index}}", style="margin-bottom: 5px;")
     div.row
       div.col-xs-12
-        div
-          accordion(close-others="true")
-            div(ng-repeat="y in form.graph.y")
-              accordion-group(heading="{{ 'Y Data ' + $index}}", style="margin-bottom: 5px;")
-                div.row
-                  div.col-xs-12
-                    .form-group
-                      label.control-label Y Data    
-                      select.form-control.m-b(ng-model="form.graph.y[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
-      div.col-xs-12(style="margin-top: 10px;")
-        a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addYData()")
-          i.fa.fa-plus-circle
-          | &nbsp; Add new
+        .form-group
+          label.control-label Y Data    
+          //- select.form-control.m-b(ng-model="form.graph.y[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+          select.form-control.m-b(ng-model="form.graph.y.field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+      //- div.col-xs-12(style="margin-top: 10px;")
+      //-   a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addYData()")
+      //-     i.fa.fa-plus-circle
+      //-     | &nbsp; Add new
   accordion-group(heading="X-Axis")
+    //- div.row
+    //-   div.col-xs-12
+    //-     div
+    //-       accordion(close-others="true")
+    //-         div(ng-repeat="x in form.graph.x")
+    //-           accordion-group(heading="{{ 'X Data ' + $index}}", style="margin-bottom: 5px;")
     div.row
       div.col-xs-12
-        div
-          accordion(close-others="true")
-            div(ng-repeat="x in form.graph.x")
-              accordion-group(heading="{{ 'X Data ' + $index}}", style="margin-bottom: 5px;")
-                div.row
-                  div.col-xs-12
-                    .form-group
-                      label.control-label X Data    
-                      select.form-control.m-b(ng-model="form.graph.x[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
-      div.col-xs-12(style="margin-top: 10px;")
-        a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addXData()")
-          i.fa.fa-plus-circle
-          | &nbsp; Add new
+        .form-group
+          label.control-label X Data    
+          //- select.form-control.m-b(ng-model="form.graph.x[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+          select.form-control.m-b(ng-model="form.graph.x.field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+      //- div.col-xs-12(style="margin-top: 10px;")
+      //-   a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addXData()")
+      //-     i.fa.fa-plus-circle
+      //-     | &nbsp; Add new

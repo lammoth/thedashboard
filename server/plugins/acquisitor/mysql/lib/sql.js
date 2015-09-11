@@ -10,8 +10,6 @@ function SQLParser() {
 
 SQLParser.prototype.run = function() {
   inspector = new SQLInspector(this.data, this.query);
-  
-  console.log(this.data);
 
   inspector.datasource();
   inspector.fields();  
@@ -50,7 +48,8 @@ function SQLInspector(data, query) {
   this.aggregations = function() {
     if (this.data.aggregations) {
       _.forEach(this.data.aggregations, function(aggregation, index) {
-        parent.query.field(aggregation.type.type + '(' + aggregation.field.name + ') AS agg' + index);
+        if (!_.isEmpty(aggregation))
+          parent.query.field(aggregation.type.type + '(' + aggregation.field.name + ') AS agg' + index);
       });
     }
   };
@@ -59,16 +58,18 @@ function SQLInspector(data, query) {
   this.groups = function() {
     if (this.data.groups) {
       _.forEach(this.data.groups, function(group) {
-        if (group.field.scope == 'aggregation') {
-          parent.query.having(group.field.name);
-        } else {
-          switch(group.field.type) {
-            case 'timestamp':
-              parent.query.group('CAST(' + group.field.name + ' AS DATE)');
-              break;
-            default:
-              parent.query.group(group.field.name);
-              break;
+        if (!_.isEmpty(group)) {
+          if (group.field.scope == 'aggregation') {
+            parent.query.having(group.field.name);
+          } else {
+            switch(group.field.type) {
+              case 'timestamp':
+                parent.query.group('CAST(' + group.field.name + ' AS DATE)');
+                break;
+              default:
+                parent.query.group(group.field.name);
+                break;
+            }
           }
         }
       });
@@ -79,7 +80,8 @@ function SQLInspector(data, query) {
   this.orders = function() {
     if (this.data.orders) {
       _.forEach(this.data.orders, function(order) {
-        parent.query.order(order.field.name, ((order.type == 'asc') ? true : false));
+        if (!_.isEmpty(order))
+          parent.query.order(order.field.name, ((order.type == 'asc') ? true : false));
       });
     }
   };

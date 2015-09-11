@@ -20,7 +20,6 @@ angular.module('thedashboardApp')
         };
       },
       render: function() {
-        console.log(graph);
         return c3.generate(graph);
       },
       option: function(option, model, chart) {

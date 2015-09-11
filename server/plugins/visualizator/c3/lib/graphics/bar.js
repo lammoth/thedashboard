@@ -41,33 +41,62 @@ function prepareColumns(raw, data) {
 }
 
 function prepareAxis(raw) {
-  var axis = {x: [], y: []};
+  // var axis = {x: [], y: []};
+  var axis = { x:{}, y:{} };
   
   if (raw.graph.x) {
-    _.forEach(raw.graph.x, function(field) {
-      var xData = {};
-      if (field.field.type === 'timestamp') {
-        xData.type = 'timeseries';
-        xData.tick = {
-          format: '%Y-%m-%d %H:%M:%S',
-          rotate: 75
-        };
-      }
-      ((xData) ? axis.x = xData : console.log("No X axis to push"));
-    });
+
+    // TODO: When will exist more X axis
+    // _.forEach(raw.graph.x, function(field) {
+    //   var xData = {};
+    //   if (field.field.type === 'timestamp') {
+    //     xData.type = 'timeseries';
+    //     xData.tick = {
+    //       format: '%Y-%m-%d %H:%M:%S',
+    //       rotate: 75
+    //     };
+    //   }
+    //   ((xData) ? axis.x = xData : console.log("No X axis to push"));
+    // });
+
+    var xData = {};
+
+    if (raw.graph.x.field.type === 'timestamp') {
+      xData.type = 'timeseries';
+      xData.tick = {
+        format: '%Y-%m-%d %H:%M:%S',
+        rotate: 75
+      };
+    }
+
+    ((xData) ? axis.x = xData : console.log("No X axis to push"));
   }
 
   if (raw.graph.y) {
-    _.forEach(raw.graph.y, function(field) {
-      var yData = {};
-      if (field.field.type === 'timestamp') {
-        yData.type = 'timeseries';
-        yData.tick = {
-          format: '%Y-%m-%d %H:%M:%S'
-        };
-      }
-      ((yData) ? axis.y = yData : console.log("No Y axis to push"));
-    });
+
+    // TODO: When will exist more Y axis
+    // _.forEach(raw.graph.y, function(field) {
+    //   var yData = {};
+    //   if (field.field.type === 'timestamp') {
+    //     yData.type = 'timeseries';
+    //     yData.tick = {
+    //       format: '%Y-%m-%d %H:%M:%S'
+    //     };
+    //   }
+    //   ((yData) ? axis.y = yData : console.log("No Y axis to push"));
+    // });
+
+    var yData = {};
+
+    if (raw.graph.y.field.type === 'timestamp') {
+      yData.type = 'timeseries';
+      yData.tick = {
+        format: '%Y-%m-%d %H:%M:%S',
+        rotate: 75
+      };
+    }
+
+    ((yData) ? axis.y = yData : console.log("No Y axis to push"));
   }
 
   return axis;
@@ -101,12 +130,15 @@ BarC3.prototype.dataset = function() {
   this.graph.data = {
     type: 'bar',
     xFormat: '%Y-%m-%d %H:%M:%S',
-    columns: prepareColumns(this.raw, this.data),
-    x: this.raw.graph.x[0].field.name
+    columns: prepareColumns(this.raw, this.data)
   }
   
+  if (this.raw.graph.x)
+    this.graph.data.x = this.raw.graph.x.field.name;
+
   // Axis info
-  this.graph.axis = prepareAxis(this.raw);
+  if (this.raw.graph.x || this.raw.graph.y)
+    this.graph.axis = prepareAxis(this.raw);
 
   // Fields info (this is a fake option)
   this.graph.fields = prepareFields(this.raw);
