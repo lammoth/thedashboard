@@ -1,5 +1,3 @@
-var ParserEngine = new (require('./sql'))();
-
 module.exports = Parser;
 
 function Parser() {
@@ -10,6 +8,7 @@ function Parser() {
 }
 
 Parser.prototype.parse = function(data) {
+  var ParserEngine = new (require('./sql'))();
   this.data = data;
   ParserEngine.data = this.data;
   this.query = ParserEngine.run();
