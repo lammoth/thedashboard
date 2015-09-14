@@ -72,15 +72,10 @@ exports.pluginsSetEnable = function(req, res) {
 
 // Visualizations
 exports.visualization = function(req, res) {
-  if (req.method == 'GET') {
-    
-  } else if (req.method == 'POST') {
-    // TODO: Check if request is correct
-    VisualizationModel.create(req.body, function(err, data) {
-      if(err) { return handleError(res, err); }
-      return res.json(201, {response: "ok", data: data});
-    });
-  }
+  VisualizationModel.create(req.body.data, function(err, data) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, {response: "ok", data: data});
+  });
 };
 
 /*

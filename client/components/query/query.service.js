@@ -15,7 +15,7 @@ angular.module('thedashboardApp')
             });
         },
         // Update a visualization with the data returned by a task
-        updateVisualization: function(task, cb) {
+        getVisualizationTaskData: function(task, cb) {
           $http.get(apiPrefix + '/broker/task/' + task).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
@@ -62,6 +62,20 @@ angular.module('thedashboardApp')
             error(function(err) {
               console.log(err);
             });  
-        }
+        },
+        // Save visualization data
+        saveVisualization: function(type, data, cb) {
+          $http.post(
+            apiPrefix + '/data/' + type,
+            {data: data}
+          ).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
+        },
     };
   });

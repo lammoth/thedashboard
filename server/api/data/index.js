@@ -15,7 +15,7 @@ router.post('/plugins/enable/:type/:name', controller.pluginsSetEnable);
 
 // Visualization routes
 router.get('/visualizations', auth.isAuthenticated(), controller.visualizations);
-router.post('/visualization', controller.visualization);
+router.post('/visualizations', controller.visualization);
 router.delete('/visualization/:id', auth.hasRole('admin'), controller.destroyVisualization);
 
 

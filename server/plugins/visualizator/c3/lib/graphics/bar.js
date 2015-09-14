@@ -43,7 +43,6 @@ function prepareColumns(raw, data) {
 function prepareAxis(raw, graphData, data) {
   // var axis = {x: [], y: []};
   var axis = { x:{}, y:{} };
-  console.log(raw.graph);
   
   if (raw.graph.x) {
 

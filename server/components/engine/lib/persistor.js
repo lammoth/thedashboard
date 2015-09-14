@@ -35,6 +35,23 @@ Persistor.prototype.saveTaskResults = function(task, data) {
   return deferred.promise;
 }
 
+Persistor.prototype.saveVisualization = function(data) {
+  var deferred = Q.defer();
+  var parent = this;
+  
+  this.client.mset(
+    'visuaization:' + data.id,
+    JSON.stringify(data.data),
+    function(err, response) {
+      if (!err) {
+        deferred.resolve();
+      }
+    }
+  );
+
+  return deferred.promise;
+}
+
 Persistor.prototype.getTaskResults = function(task, cb) {
   this.client.get("task:" + task, function(err, result) {
     cb(JSON.parse(result));

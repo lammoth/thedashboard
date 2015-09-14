@@ -50,7 +50,7 @@ angular.module('thedashboardApp')
       return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
     }
   })
-  .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory) {
+  .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory, $modal) {
     // PAD: http://piratepad.net/Mo5aCZVETx
 
     $rootScope.sectionName = "Visualizations";
@@ -72,14 +72,32 @@ angular.module('thedashboardApp')
         $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
       }
     }
+
+    // Modal section
+    $scope.animationsEnabled = true;
+
+    $scope.open = function() {
+
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'ModalVisualizationSaveContent.html',
+        controller: 'ModalSaveInstanceController'
+      });
+
+      modalInstance.result.then(function (data) {
+        // TODO: Shit, this must be improved
+        $scope.$broadcast('test', data);
+      });
+    };
+
   })
   .controller('VisualizationEditorTabController', function ($scope, queryService, socket, Settings) {
     $scope.form = {};
     $scope.form.fields = {};
-    $scope.form.graph = {};
+    // $scope.form.graph = {};
     $scope.form.chartType = $scope.$parent.chartType;
-    $scope.selectedFields = [];
-    $scope.groupFields = {fields: [], aggs: []};
+    // $scope.selectedFields = [];
+    // $scope.groupFields = {fields: [], aggs: []};
 
     getDatasources();
 
@@ -94,80 +112,80 @@ angular.module('thedashboardApp')
       $scope.fields = datasource.fields;
     };
 
-    $scope.updateFields = function(field) {
-      if (!$scope.form.fields[field.name]) {
-        delete $scope.form.fields[field.name];
-        $scope.selectedFields = _.filter($scope.selectedFields, function(f) {
-          return ((f.name == field.name) ? false : true);
-        });
-        $scope.groupFields.fields = $scope.selectedFields;
-      } else {
-        $scope.selectedFields.push(_.find($scope.fields, {'name': field.name}));
-        $scope.groupFields.fields.push(_.find($scope.fields, {'name': field.name}));
-      }
-    };
+    // $scope.updateFields = function(field) {
+    //   if (!$scope.form.fields[field.name]) {
+    //     delete $scope.form.fields[field.name];
+    //     $scope.selectedFields = _.filter($scope.selectedFields, function(f) {
+    //       return ((f.name == field.name) ? false : true);
+    //     });
+    //     $scope.groupFields.fields = $scope.selectedFields;
+    //   } else {
+    //     $scope.selectedFields.push(_.find($scope.fields, {'name': field.name}));
+    //     $scope.groupFields.fields.push(_.find($scope.fields, {'name': field.name}));
+    //   }
+    // };
 
-    $scope.addAggregation = function() {
-      if (!$scope.form.aggregations) {
-        $scope.form.aggregations = [];
-      }
-      $scope.form.aggregations.push({});
-    };
+    // $scope.addAggregation = function() {
+    //   if (!$scope.form.aggregations) {
+    //     $scope.form.aggregations = [];
+    //   }
+    //   $scope.form.aggregations.push({});
+    // };
 
-    $scope.updateGroupFields = function() {
-      $scope.groupFields.aggs = addAggToGroupFields();
-    };
+    // $scope.updateGroupFields = function() {
+    //   $scope.groupFields.aggs = addAggToGroupFields();
+    // };
 
-    function addAggToGroupFields() {
-      var validAggs = [];
+    // function addAggToGroupFields() {
+    //   var validAggs = [];
 
-      _.forEach($scope.form.aggregations, function(agg, index) {
-        if (agg.type && agg.field) {
-          validAggs.push({
-            name: "agg" + index,
-            type: agg.field.type,
-            scope: "aggregation"
-          });
-        }
-      });
+    //   _.forEach($scope.form.aggregations, function(agg, index) {
+    //     if (agg.type && agg.field) {
+    //       validAggs.push({
+    //         name: "agg" + index,
+    //         type: agg.field.type,
+    //         scope: "aggregation"
+    //       });
+    //     }
+    //   });
 
-      return validAggs;
-    }
+    //   return validAggs;
+    // }
 
-    $scope.addGroup = function() {
-      if (!$scope.form.groups) {
-        $scope.form.groups = [];
-      }
-      $scope.form.groups.push({});
-    };
+    // $scope.addGroup = function() {
+    //   if (!$scope.form.groups) {
+    //     $scope.form.groups = [];
+    //   }
+    //   $scope.form.groups.push({});
+    // };
 
-    $scope.addOrder = function() {
-      if (!$scope.form.orders) {
-        $scope.form.orders = [];
-      }
-      $scope.form.orders.push({});
-    };
+    // $scope.addOrder = function() {
+    //   if (!$scope.form.orders) {
+    //     $scope.form.orders = [];
+    //   }
+    //   $scope.form.orders.push({});
+    // };
 
-    $scope.addYData = function() {
-      if (!$scope.form.graph.y) {
-        $scope.form.graph.y = [];
-      }
-      $scope.form.graph.y.push({});
-    };
+    // $scope.addYData = function() {
+    //   if (!$scope.form.graph.y) {
+    //     $scope.form.graph.y = [];
+    //   }
+    //   $scope.form.graph.y.push({});
+    // };
 
-    $scope.addXData = function() {
-      if (!$scope.form.graph.x) {
-        $scope.form.graph.x = [];
-      }
-      $scope.form.graph.x.push({});
-    };
+    // $scope.addXData = function() {
+    //   if (!$scope.form.graph.x) {
+    //     $scope.form.graph.x = [];
+    //   }
+    //   $scope.form.graph.x.push({});
+    // };
 
-    $scope.changeGraphicOptions = function(options, model) {
-      $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
-      if (options.restart) {
-        $scope.chart = $scope.$parent.visualizatorService.render();
-      }
-    };
+    // $scope.changeGraphicOptions = function(options, model) {
+    //   $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
+    //   if (options.restart) {
+    //     $scope.chart = $scope.$parent.visualizatorService.render();
+    //   }
+    // };
 
     $scope.runVisualization = function() {
       console.log($scope.form);
@@ -181,7 +199,7 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
-              queryService.updateVisualization(
+              queryService.getVisualizationTaskData(
                 data.job,
                 function(taskData) {
                   // console.log(JSON.stringify(taskData.data));
@@ -211,4 +229,30 @@ angular.module('thedashboardApp')
       });
     }
 
+    // TODO: Shit, this must be improved
+    $scope.$on('test', function(event, visualizationName) {
+      queryService.saveVisualization(
+        'visualizations',
+        {
+          name: visualizationName,
+          type: $scope.form.datasource.name,
+          query: "query",
+          json: $scope.form,
+          visualizatorPlugin: "visualizator",
+          acquisitorPlugin: "acquisitor"
+        },
+        function(){}
+      );
+    });
+
+  })
+  .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
+
+    $scope.save = function() {
+      $modalInstance.close($scope.visualizationName);
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
   });

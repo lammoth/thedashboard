@@ -37,6 +37,9 @@ angular.module('thedashboardApp')
           case "grid":
             this.grid(model);
             break;
+          case "rotate":
+            this.rotate(model);
+            break;
         }
       },
       transform: function(chart, to) {
@@ -64,7 +67,25 @@ angular.module('thedashboardApp')
             y: {show: false},
           }
         }
-        console.log(graph);
+      },
+      rotate: function(option) {
+        if (graph.axis) {
+          if (Boolean(parseInt(option))) {
+            graph.axis.rotated = true;
+          } else {
+            graph.axis.rotated = true;
+          }
+        } else {
+          if (Boolean(parseInt(option))) {
+            graph.grid = {
+              rotated: true
+            }
+          } else {
+            graph.grid = {
+              rotated: false
+            }
+          }
+        }
       },
       getIcon: function(chartType) {
         switch(chartType) {

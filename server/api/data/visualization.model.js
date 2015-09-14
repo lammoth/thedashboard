@@ -6,10 +6,11 @@ var mongoose = require('mongoose'),
 
 var VisualizationSchema = new Schema({
   name: String,
-  query: Mixed,
+  type: String,
+  query: String,
+  json: Mixed,
   visualizatorPlugin: String,
-  acquisitorPlugin: String,
-  graphOptions: Mixed
+  acquisitorPlugin: String
 });
 
 module.exports = mongoose.model('Visualization', VisualizationSchema);

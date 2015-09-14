@@ -1,3 +1,21 @@
+div.modal.fade.in
+  div.modal-dialog
+    script(type="text/ng-template" id="ModalVisualizationSaveContent.html")
+      div.modal-content
+        div.color-line
+      div.modal-header.text-center
+        h3.modal-title Save visualization
+      div.modal-body
+        div.row
+          div.col-xs-12
+            .form-group
+              label.control-label Visualization name
+              input.form-control(type="text", ng-model="visualizationName")
+      div.modal-footer
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
+          i.fa.fa-floppy-o
+          | &nbsp; Save 
 .row
   .col-xs-12.col-md-4.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
     .hpanel
@@ -50,7 +68,7 @@
                           .panel-body
                             visualizator-graphic-data(chart="{{chartType}}")
                       div.pull-right
-                        a.btn.btn-info.btn-outline.btn-margin(ng-click="saveVisualization()")
+                        a.btn.btn-info.btn-outline.btn-margin(ng-click="open()")
                           i.fa.fa-floppy-o
                           | &nbsp; Save 
                         a.btn.btn-warning2.btn-outline.btn-margin(ng-click="runVisualization()")
