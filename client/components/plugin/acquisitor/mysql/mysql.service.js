@@ -3,6 +3,8 @@
 angular.module('thedashboardApp')
   .service('mysqlAcquisitor', function () {
     return {
+      name: 'mysql',
+      
       aggregationTypes: [
         {type: 'avg'},
         {type: 'count'},

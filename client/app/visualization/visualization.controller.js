@@ -86,20 +86,29 @@ angular.module('thedashboardApp')
 
       modalInstance.result.then(function (data) {
         // TODO: Shit, this must be improved
-        $scope.$broadcast('test', data);
+        $scope.$broadcast('saveVisualization', data);
       });
     };
 
   })
-  .controller('VisualizationEditorTabController', function ($scope, queryService, socket, Settings) {
+  .controller('VisualizationEditorTabController', function ($scope, $timeout, $stateParams, queryService, socket, Settings) {
     $scope.form = {};
     $scope.form.fields = {};
-    // $scope.form.graph = {};
     $scope.form.chartType = $scope.$parent.chartType;
-    // $scope.selectedFields = [];
-    // $scope.groupFields = {fields: [], aggs: []};
+    var query = null;
 
     getDatasources();
+
+    if ($stateParams.id) {
+      var settingsPromise = Settings.broker('visualizations', 'getData', {});
+      settingsPromise.then(function(visualizations) {
+        $scope.currentVisualization = _.first(visualizations);
+        // TODO: Improve this operation, it's a shit, maybe stablish a kind of callback in the directive
+        $timeout(function() {
+          $scope.$broadcast('currentVisualizationSetted', _.first(visualizations));
+        }, 100);
+      });
+    }
 
     function getDatasources(acquisitor) {
       var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
@@ -112,83 +121,8 @@ angular.module('thedashboardApp')
       $scope.fields = datasource.fields;
     };
 
-    // $scope.updateFields = function(field) {
-    //   if (!$scope.form.fields[field.name]) {
-    //     delete $scope.form.fields[field.name];
-    //     $scope.selectedFields = _.filter($scope.selectedFields, function(f) {
-    //       return ((f.name == field.name) ? false : true);
-    //     });
-    //     $scope.groupFields.fields = $scope.selectedFields;
-    //   } else {
-    //     $scope.selectedFields.push(_.find($scope.fields, {'name': field.name}));
-    //     $scope.groupFields.fields.push(_.find($scope.fields, {'name': field.name}));
-    //   }
-    // };
-
-    // $scope.addAggregation = function() {
-    //   if (!$scope.form.aggregations) {
-    //     $scope.form.aggregations = [];
-    //   }
-    //   $scope.form.aggregations.push({});
-    // };
-
-    // $scope.updateGroupFields = function() {
-    //   $scope.groupFields.aggs = addAggToGroupFields();
-    // };
-
-    // function addAggToGroupFields() {
-    //   var validAggs = [];
-
-    //   _.forEach($scope.form.aggregations, function(agg, index) {
-    //     if (agg.type && agg.field) {
-    //       validAggs.push({
-    //         name: "agg" + index,
-    //         type: agg.field.type,
-    //         scope: "aggregation"
-    //       });
-    //     }
-    //   });
-
-    //   return validAggs;
-    // }
-
-    // $scope.addGroup = function() {
-    //   if (!$scope.form.groups) {
-    //     $scope.form.groups = [];
-    //   }
-    //   $scope.form.groups.push({});
-    // };
-
-    // $scope.addOrder = function() {
-    //   if (!$scope.form.orders) {
-    //     $scope.form.orders = [];
-    //   }
-    //   $scope.form.orders.push({});
-    // };
-
-    // $scope.addYData = function() {
-    //   if (!$scope.form.graph.y) {
-    //     $scope.form.graph.y = [];
-    //   }
-    //   $scope.form.graph.y.push({});
-    // };
-
-    // $scope.addXData = function() {
-    //   if (!$scope.form.graph.x) {
-    //     $scope.form.graph.x = [];
-    //   }
-    //   $scope.form.graph.x.push({});
-    // };
-
-    // $scope.changeGraphicOptions = function(options, model) {
-    //   $scope.$parent.visualizatorService.option(options, model, $scope.chart); 
-    //   if (options.restart) {
-    //     $scope.chart = $scope.$parent.visualizatorService.render();
-    //   }
-    // };
-
     $scope.runVisualization = function() {
-      console.log($scope.form);
+      // console.log($scope.form);
       var chart = $scope.$parent.chart;
       // var query = $scope.$parent.acquisitorService.parse($scope.form);
       queryService.createTask(
@@ -203,7 +137,8 @@ angular.module('thedashboardApp')
                 data.job,
                 function(taskData) {
                   // console.log(JSON.stringify(taskData.data));
-                  $scope.$parent.visualizatorService.data(taskData.data);
+                  query = taskData.data.query;
+                  $scope.$parent.visualizatorService.data(taskData.data.visualization);
                   $scope.$parent.visualizatorService.bind('#visualization-chart-editor');
                   $scope.chart = $scope.$parent.visualizatorService.render();
                 }
@@ -214,13 +149,13 @@ angular.module('thedashboardApp')
       );
     };
 
-    $scope.saveVisualization = function() {
-      console.log($scope.form);
-      console.log($scope.$parent.visualizatorService.hasGraph);
-      if ($scope.$parent.visualizatorService.hasGraph) {
-        console.log($scope.chart);
-      }
-    };
+    // $scope.saveVisualization = function() {
+    //   console.log($scope.form);
+    //   console.log($scope.$parent.visualizatorService.hasGraph);
+    //   if ($scope.$parent.visualizatorService.hasGraph) {
+    //     console.log($scope.chart);
+    //   }
+    // };
 
     function createSocket(name, cb) {
       console.log("Creating socket %s", name);
@@ -230,16 +165,16 @@ angular.module('thedashboardApp')
     }
 
     // TODO: Shit, this must be improved
-    $scope.$on('test', function(event, visualizationName) {
+    $scope.$on('saveVisualization', function(event, visualizationName) {
       queryService.saveVisualization(
         'visualizations',
         {
           name: visualizationName,
           type: $scope.form.datasource.name,
-          query: "query",
+          query: query,
           json: $scope.form,
-          visualizatorPlugin: "visualizator",
-          acquisitorPlugin: "acquisitor"
+          visualizatorPlugin: $scope.$parent.visualizatorService.name,
+          acquisitorPlugin: $scope.$parent.acquisitorService.name
         },
         function(){}
       );
@@ -247,7 +182,6 @@ angular.module('thedashboardApp')
 
   })
   .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
-
     $scope.save = function() {
       $modalInstance.close($scope.visualizationName);
     };

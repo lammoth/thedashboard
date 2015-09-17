@@ -8,6 +8,7 @@ function visualizationQuery(parent, queryData, task, cb) {
   var data = {
     visualizatorPluginObj: null,
     VisualizatorPlugin: null,
+    query: null,
   };
 
   // Getting the visualizator plugin
@@ -21,7 +22,9 @@ function visualizationQuery(parent, queryData, task, cb) {
   })
   .then(function(queryResult) {
     // Passing the Acquisitor results to the Visualizator plugin
-    data.VisualizatorPlugin.data = queryResult;
+    data.VisualizatorPlugin.data = queryResult.rows;
+    // Setting query
+    data.query = queryResult.query
     // Passing the raw data to the Visualizator plugin
     data.VisualizatorPlugin.raw = queryData;
     // Setting the Acquisitor name in the visualizator in order to do a proper parsing
@@ -33,7 +36,10 @@ function visualizationQuery(parent, queryData, task, cb) {
   })
   // Saving task results in Redis
   .then(function(visualizatorData) {
-    return parent.persistor.saveTaskResults(task, visualizatorData);
+    return parent.persistor.saveTaskResults(task, {
+      visualization: visualizatorData,
+      query: data.query
+    });
   })
   // Emitting an event in order to refresh the web visualization
   .then(function(){

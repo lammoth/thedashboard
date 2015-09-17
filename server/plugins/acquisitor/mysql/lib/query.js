@@ -38,7 +38,10 @@ QueryReq.prototype.execQuery = function(data) {
   }
 
   this.connection.query(((!data.action) ? Parser.query : raw), function(err, rows) {
-    deferred.resolve(rows);
+    deferred.resolve({
+      rows: rows,
+      query: ((!data.action) ? Parser.query : raw)
+    });
   });
 
   return deferred.promise;

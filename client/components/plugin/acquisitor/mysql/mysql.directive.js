@@ -4,8 +4,13 @@ angular.module('thedashboardApp')
   .directive('acquisitorOperationsBarMysql', function () {
     return {
       restrict: 'E',
+      priority: -1000,
       scope: false,
       link: function (scope, element, attrs) {
+
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          // TODO: Add a function in order to set the visualization info
+        });
 
         scope.selectedFields = [];
         scope.groupFields = {fields: [], aggs: []};

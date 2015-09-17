@@ -113,7 +113,7 @@
                           td.text-center(width="1%") {{visualization.acquisitorPlugin}}
                           td.text-center(width="1%") {{visualization.visualizatorPlugin}}
                           td.min(width="1%") 
-                            a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.graphOptions.chart, id: visualization._id})")
+                            a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.json.chartType, id: visualization._id})")
                               i.glyphicon.glyphicon-eye-open
                           td.min(width="1%") 
                             a.btn.btn-danger.btn-xs(ng-click='deleteVisualization(visualization)')

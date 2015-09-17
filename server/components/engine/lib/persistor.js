@@ -40,7 +40,7 @@ Persistor.prototype.saveVisualization = function(data) {
   var parent = this;
   
   this.client.mset(
-    'visuaization:' + data.id,
+    'visualization:' + data.id,
     JSON.stringify(data.data),
     function(err, response) {
       if (!err) {

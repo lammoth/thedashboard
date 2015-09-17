@@ -32,6 +32,7 @@ angular.module('thedashboardApp')
         scope.changeGraphicOptions = function(options, model) {
           scope.$parent.$parent.visualizatorService.option(options, model, scope.chart); 
           if (options.restart) {
+            // TODO: Improve this reference to the grandfather making a service or something similar
             scope.chart = scope.$parent.$parent.visualizatorService.render();
           }
         };

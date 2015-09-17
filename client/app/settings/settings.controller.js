@@ -148,7 +148,7 @@ angular.module('thedashboardApp')
     };
 
     $scope.getIcon = function(visualization) {
-      return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
+      return $scope.visualizatorService.getIcon(visualization.json.chartType);
     }
 
     
@@ -170,7 +170,6 @@ angular.module('thedashboardApp')
     function getDatasources(acquisitor) {
       var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
       settingsPromise.then(function(datasources) {
-        console.log(datasources);
         $scope.datasources = datasources;
       });
     }

@@ -5,6 +5,8 @@ angular.module('thedashboardApp')
     var graph = {};
 
     return {
+      name: 'c3',
+      
       hasGraph: ((!_.isEmpty(graph)) ? graph : null),
 
       type: function(type) {
