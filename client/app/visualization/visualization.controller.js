@@ -7,7 +7,7 @@ angular.module('thedashboardApp')
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Create a new visualization";
   })
-  .controller('VisualizationOpenCtrl', function ($scope, $rootScope, $cacheFactory, Plugin, $http, $injector) {
+  .controller('VisualizationOpenCtrl', function ($scope, $rootScope, $cacheFactory, Plugin, $http, $injector, Settings) {
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Open a visualization";
     getPlugins();
@@ -39,15 +39,14 @@ angular.module('thedashboardApp')
         visualizator: $scope.plugins.visualizatorActive,
         acquisitor: $scope.plugins.acquisitorActive
       };
-      $http.get('api/v1/data/visualizations', {params: q}).success(function(res) {
-        if (res.response == 'ok') {
-          $scope.visualizations = res.data;
-        }
+      var settingsPromise = Settings.broker('visualizations', 'getData', {});
+      settingsPromise.then(function(visualizations) {
+        $scope.visualizations = visualizations;
       });
     }
 
     $scope.getIcon = function(visualization) {
-      return $scope.visualizatorService.getIcon(visualization.graphOptions.chart)
+      return $scope.visualizatorService.getIcon(visualization.json.chartType)
     }
   })
   .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory, $modal) {
@@ -103,12 +102,13 @@ angular.module('thedashboardApp')
       var settingsPromise = Settings.broker('visualizations', 'getData', {});
       settingsPromise.then(function(visualizations) {
         $scope.currentVisualization = _.first(visualizations);
-        // TODO: Improve this operation, it's a shit, maybe stablish a kind of callback in the directive
-        $timeout(function() {
-          $scope.$broadcast('currentVisualizationSetted', _.first(visualizations));
-        }, 100);
       });
     }
+
+    // Dumb method to emit an event to the directives in order to set a default visualization data
+    $scope.$on('visualizatorDirectiveReady', function(event, data) {
+      $scope.$broadcast('currentVisualizationSetted', $scope.currentVisualization);
+    });
 
     function getDatasources(acquisitor) {
       var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
@@ -122,9 +122,7 @@ angular.module('thedashboardApp')
     };
 
     $scope.runVisualization = function() {
-      // console.log($scope.form);
       var chart = $scope.$parent.chart;
-      // var query = $scope.$parent.acquisitorService.parse($scope.form);
       queryService.createTask(
         'query',
         'visualization',
@@ -149,14 +147,6 @@ angular.module('thedashboardApp')
       );
     };
 
-    // $scope.saveVisualization = function() {
-    //   console.log($scope.form);
-    //   console.log($scope.$parent.visualizatorService.hasGraph);
-    //   if ($scope.$parent.visualizatorService.hasGraph) {
-    //     console.log($scope.chart);
-    //   }
-    // };
-
     function createSocket(name, cb) {
       console.log("Creating socket %s", name);
       socket.socket.on(name, function(data) {
@@ -166,18 +156,20 @@ angular.module('thedashboardApp')
 
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
-      queryService.saveVisualization(
-        'visualizations',
-        {
-          name: visualizationName,
-          type: $scope.form.datasource.name,
-          query: query,
-          json: $scope.form,
-          visualizatorPlugin: $scope.$parent.visualizatorService.name,
-          acquisitorPlugin: $scope.$parent.acquisitorService.name
-        },
-        function(){}
-      );
+      if ($scope.$parent.visualizatorService.hasGraph) {
+        queryService.saveVisualization(
+          'visualizations',
+          {
+            name: visualizationName,
+            type: $scope.form.datasource.name,
+            query: query,
+            json: $scope.form,
+            visualizatorPlugin: $scope.$parent.visualizatorService.name,
+            acquisitorPlugin: $scope.$parent.acquisitorService.name
+          },
+          function(){}
+        );
+      }
     });
 
   })

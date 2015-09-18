@@ -3,7 +3,7 @@
     .hpanel.stats
         .panel-body.h-200
           .stats-title.pull-left
-            h3.text-success Visualizations
+            h3.text-success Visualizations availables
           table.table.table-hover.visualizations
             thead
             tbody
@@ -13,5 +13,5 @@
                   | &nbsp;
                   | {{visualization.name}}
                 td(width="1%")
-                  a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.graphOptions.chart, id: visualization._id})")
+                  a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.json.chartType, id: visualization._id})")
                     i.glyphicon.glyphicon-eye-open

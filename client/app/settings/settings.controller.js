@@ -47,9 +47,10 @@ angular.module('thedashboardApp')
       'getData',
       {}
     );
+    
     dashboardsPromise.then(function(dashboards) {
-       $scope.dashboards = dashboards;
-     });
+      $scope.dashboards = dashboards;
+    });
 
     $scope.selectedDashboards = [];
     $scope.toggleAllDashboards = function() {

@@ -2,18 +2,18 @@
 
 angular.module('thedashboardApp')
   .directive('acquisitorOperationsBarMysql', function () {
+    var currentVisualization = null;
     return {
       restrict: 'E',
-      priority: -1000,
       scope: false,
       link: function (scope, element, attrs) {
+
+        scope.selectedFields = [];
+        scope.groupFields = {fields: [], aggs: []};
 
         scope.$on('currentVisualizationSetted', function(event, visualization) {
           // TODO: Add a function in order to set the visualization info
         });
-
-        scope.selectedFields = [];
-        scope.groupFields = {fields: [], aggs: []};
 
         scope.updateFields = function(field) {
           if (!scope.form.fields[field.name]) {
@@ -68,6 +68,9 @@ angular.module('thedashboardApp')
           }
           scope.form.orders.push({});
         };
+
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
       }
     };
   });
