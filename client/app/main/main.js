@@ -23,5 +23,29 @@ angular.module('thedashboardApp')
         ncyBreadcrumb: {
           label: 'Dashboards'
         }
+      })
+      .state('main.dashboard-create', {
+        url: 'dashboard/create',
+        views: {
+          "section-view": {
+            templateUrl: 'app/main/dashboard-create.html',
+            controller: 'DashboardCreateCtrl'
+          }
+        },
+        ncyBreadcrumb: {
+          label: 'Create'
+        }
+      })
+      .state('main.dashboard-open', {
+        url: 'dashboard/open',
+        views: {
+          "section-view": {
+            templateUrl: 'app/main/dashboard-open.html',
+            controller: 'DashboardOpenCtrl'
+          }
+        },
+        ncyBreadcrumb: {
+          label: 'Open'
+        }
       });
   });

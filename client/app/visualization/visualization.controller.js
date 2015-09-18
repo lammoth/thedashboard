@@ -35,10 +35,6 @@ angular.module('thedashboardApp')
     }
     
     function getVisualizations() {
-      var q = {
-        visualizator: $scope.plugins.visualizatorActive,
-        acquisitor: $scope.plugins.acquisitorActive
-      };
       var settingsPromise = Settings.broker('visualizations', 'getData', {});
       settingsPromise.then(function(visualizations) {
         $scope.visualizations = visualizations;

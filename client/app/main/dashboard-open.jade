@@ -1,0 +1,15 @@
+.row
+  .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+    .hpanel.stats
+        .panel-body.h-200
+          .stats-title.pull-left
+            h3.text-success Dashboards availables
+          table.table.table-hover.visualizations
+            thead
+            tbody
+              tr(ng-repeat='dashboard in dashboards')
+                td
+                  {{ dashboard.name }}
+                td(width="1%")
+                  a.btn.btn-default.btn-xs
+                    i.glyphicon.glyphicon-eye-open
