@@ -1,13 +1,25 @@
 .row
   nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
-    button(mfb-button, icon="ion-checkmark", label="Save", ng-click="")
-    button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="")
-  .col-xs-12.col-md-offset-4.col-md-4.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
-    .hpanel
-      .panel-body
-        .text-center
-              h2.m-b-xs Create a new dashboard
-              .m
-                i.fa.fa-desktop.fa-4x
-              p.small
-                | To add a visualization, click in the bottom button
+    button(mfb-button, icon="ion-checkmark", label="Save", ng-click="saveVisualization()")
+    button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="addVisualization()")
+  .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
+    .text-center
+      h2.m-b-xs Create a new dashboard
+        .m
+          i.fa.fa-desktop.fa-2x
+      p
+        | To add a visualization, click in the bottom button
+  .col-xs-12
+    div(gridster="gridsterOpts")
+      ul
+        li(gridster-item="item", ng-repeat="item in items")
+          .hpanel
+            .panel-heading.hbuilt
+              .panel-tools
+                a.showhide
+                  i.fa.fa-chevron-up
+                |                     
+                a.closebox
+                  i.fa.fa-times
+              | Example
+            .panel-body

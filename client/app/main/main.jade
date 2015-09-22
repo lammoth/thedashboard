@@ -56,7 +56,7 @@ div(ui-view="main")
                     | Technical leader at WT
                     b.caret
                   |                     
-                ul.dropdown-menu.animated.fadeInRight.m-t-xs
+                ul.dropdown-menu.animated.flipInX.m-t-xs
                   li
                     a(href='contacts.html') Contacts
                   |                         
@@ -73,23 +73,28 @@ div(ui-view="main")
           |         
           ul#side-menu.nav.metismenu
             li
-              a(ui-sref='main.dashboard')
+              a(ui-sref='main.home')
+                span.nav-label Home
+                span.arrow
+                  i.fa.fa-tachometer
+            li
+              a
                 span.nav-label Dashboards
                 span.arrow
                   i.fa.fa-desktop
               |                 
               ul.nav.nav-second-level
                 li
-                  a(ui-sref='main.dashboard-create') Create
+                  a(ui-sref='main.dashboard.create') Create
                     span.arrow
                       i.fa.fa-plus-square-o
                 |                     
                 li
-                  a(ui-sref='main.dashboard-open') Open
+                  a(ui-sref='main.dashboard.open') Open
                     span.arrow
                       i.fa.fa-folder-open-o
             li
-              a(href='#')
+              a
                 span.nav-label Visualizations
                 span.arrow
                   i.fa.fa-eye

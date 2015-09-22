@@ -12,7 +12,7 @@ angular.module('thedashboardApp')
           label: 'Home'
         }
       })
-      .state('main.dashboard', {
+      .state('main.home', {
         url: '',
         views: {
           "section-view": {
@@ -21,13 +21,25 @@ angular.module('thedashboardApp')
           }
         },
         ncyBreadcrumb: {
+          label: 'Home'
+        }
+      })
+      .state('main.dashboard', {
+        url: 'dashboard',
+        views: {
+          "section-view": {
+            templateUrl: 'app/main/dashboard.html',
+            controller: 'DashboardCtrl',
+          }
+        },
+        ncyBreadcrumb: {
           label: 'Dashboards'
         }
       })
-      .state('main.dashboard-create', {
-        url: 'dashboard/create',
+      .state('main.dashboard.create', {
+        url: '/create',
         views: {
-          "section-view": {
+          "dashboard-child": {
             templateUrl: 'app/main/dashboard-create.html',
             controller: 'DashboardCreateCtrl'
           }
@@ -36,10 +48,10 @@ angular.module('thedashboardApp')
           label: 'Create'
         }
       })
-      .state('main.dashboard-open', {
-        url: 'dashboard/open',
+      .state('main.dashboard.open', {
+        url: '/open',
         views: {
-          "section-view": {
+          "dashboard-child": {
             templateUrl: 'app/main/dashboard-open.html',
             controller: 'DashboardOpenCtrl'
           }
