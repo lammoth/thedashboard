@@ -96,8 +96,7 @@ angular.module('thedashboardApp')
       });
 
       modalInstance.result.then(function (data) {
-        // TODO: Shit, this must be improved
-        $scope.$broadcast('saveVisualization', data);
+
       });
     };
   })
