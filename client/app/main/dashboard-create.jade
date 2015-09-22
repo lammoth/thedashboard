@@ -1,17 +1,13 @@
 .row
+  nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
+    button(mfb-button, icon="ion-checkmark", label="Save", ng-click="")
+    button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="")
   .col-xs-12.col-md-offset-4.col-md-4.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
-    //- .hpanel.hbggreen
-    //-   .panel-body
-    //-     .text-center
-    //-       i.fa.fa-desktop.fa-5x
-    //-       h3 Create a new dashboard                     
-    //-       small
-    //-         | To add a visualization, click the "Add visualization" button
     .hpanel
       .panel-body
         .text-center
               h2.m-b-xs Create a new dashboard
               .m
-                i.fa.fa-desktop.fa-5x
+                i.fa.fa-desktop.fa-4x
               p.small
-                | To add a visualization, click the "Add visualization" button
+                | To add a visualization, click in the bottom button

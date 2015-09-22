@@ -9,7 +9,8 @@ angular.module('thedashboardApp', [
   'ui.router',
   'ui.bootstrap',
   'ncy-angular-breadcrumb',
-  'gridster'
+  'gridster',
+  'ng-mfb'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

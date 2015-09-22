@@ -46,14 +46,14 @@ div(ui-view="main")
       #navigation
           .profile-picture
             a(href='#')
-              img.img-circle.m-b.img-responsive(src='http://2.bp.blogspot.com/-lAgk-xiE54I/VDDQrGfWutI/AAAAAAAAAVw/tLtKD1btZY0/s1600/1159701_Minions_Fundo_1385027751.png', alt='logo')
+              img.img-circle.m-b.img-responsive(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAMXAAAAJDYwZjYyYTYzLWY1OTUtNDMwZi05NjY2LTJiMzY1NzhlY2MzZQ.jpg', alt='logo')
             |             
             .stats-label.text-color
               span.font-extra-bold.font-uppercase {{ user.name }}
               .dropdown
                 a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false')
                   small.text-muted
-                    | Evil developer at WT
+                    | Technical leader at WT
                     b.caret
                   |                     
                 ul.dropdown-menu.animated.fadeInRight.m-t-xs
@@ -88,17 +88,6 @@ div(ui-view="main")
                   a(ui-sref='main.dashboard-open') Open
                     span.arrow
                       i.fa.fa-folder-open-o
-                |                     
-                li
-                  a Save
-                    span.arrow
-                      i.fa.fa-floppy-o
-                |                     
-                li
-                  a Add visualization
-                    span.arrow
-                      i.fa.fa-cube
-            |             
             li
               a(href='#')
                 span.nav-label Visualizations
