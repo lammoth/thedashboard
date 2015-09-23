@@ -12,6 +12,7 @@ var plugins = [
     pluginName: 'phoenix',
     pluginTitle: 'Phoenix',
     active: true,
+    delay: [10, 20, 30, 60],
     config: {
       url: 'jdbc:phoenix:10.128.19.58',
       libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),

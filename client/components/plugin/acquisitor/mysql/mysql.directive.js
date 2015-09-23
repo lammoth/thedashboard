@@ -15,6 +15,7 @@ angular.module('thedashboardApp')
           // TODO: Add a function in order to set the visualization info
         });
 
+        // This function is captured by the acquisitor directive but it's emitted by main editor view
         scope.updateFields = function(field) {
           if (!scope.form.fields[field.name]) {
             delete scope.form.fields[field.name];
@@ -23,7 +24,7 @@ angular.module('thedashboardApp')
             });
             scope.groupFields.fields = scope.selectedFields;
           } else {
-            scope.selectedFields.push(_.find(scope.fields, {'name': field.name}));
+            // scope.selectedFields.push(_.find(scope.fields, {'name': field.name}));
             scope.groupFields.fields.push(_.find(scope.fields, {'name': field.name}));
           }
         };
@@ -45,7 +46,7 @@ angular.module('thedashboardApp')
           _.forEach(scope.form.aggregations, function(agg, index) {
             if (agg.type && agg.field) {
               validAggs.push({
-                name: "agg" + index,
+                name: ((agg.name) ? agg.name : "agg" + index),
                 type: agg.field.type,
                 scope: "aggregation"
               });

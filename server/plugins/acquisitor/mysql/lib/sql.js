@@ -49,7 +49,7 @@ function SQLInspector(data, query) {
     if (this.data.aggregations) {
       _.forEach(this.data.aggregations, function(aggregation, index) {
         if (!_.isEmpty(aggregation))
-          parent.query.field(aggregation.type.type + '(' + aggregation.field.name + ') AS agg' + index);
+          parent.query.field(aggregation.type.type + '(' + aggregation.field.name + ') AS ' + ((aggregation.name) ? '"' + aggregation.name + '"' : 'agg' + index));
       });
     }
   };

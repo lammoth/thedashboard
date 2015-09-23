@@ -14,7 +14,10 @@ acquisitor-operations-bar-mysql
                         select.form-control.m-b(ng-model="form.aggregations[$index].type", ng-options="aggType.type for aggType in acquisitorService.aggregationTypes track by aggType.type", ng-change="updateGroupFields()")
                       .form-group
                         label.control-label Field      
-                        select.form-control.m-b(ng-model="form.aggregations[$index].field", ng-options="aggField.name for aggField in selectedFields track by aggField.name", ng-change="updateGroupFields()")
+                        select.form-control.m-b(ng-model="form.aggregations[$index].field", ng-options="aggField.name for aggField in form.datasource.fields track by aggField.name", ng-change="updateGroupFields()")
+                      .form-group
+                        label.control-label Name
+                        input.form-control.m-b(type="text", placeholder="Aggregation 1", ng-model="form.aggregations[$index].name", ng-change="updateGroupFields()")
         div.col-xs-12(style="margin-top: 10px;")
           a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addAggregation()")
             i.fa.fa-plus-circle
@@ -30,10 +33,7 @@ acquisitor-operations-bar-mysql
                     div.col-xs-12
                       .form-group
                         label.control-label Group by      
-                        select.form-control.m-b(ng-model="form.groups[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
-                      //- .form-group(ng-show="form.groups[$index].field.type == 'timestamp'")
-                      //-   label.control-label Group
-                      //-   select.form-control.m-b(ng-model="form.groups[$index].type", ng-options="aggType.type for aggType in acquisitorService.aggregationTypes track by aggType.type")
+                        select.form-control.m-b(ng-model="form.groups[$index].field", ng-options="field.name for field in fields = form.datasource.fields.concat(groupFields.aggs) track by field.name")
         div.col-xs-12(style="margin-top: 10px;")
           a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addGroup()")
             i.fa.fa-plus-circle
@@ -49,7 +49,7 @@ acquisitor-operations-bar-mysql
                     div.col-xs-12
                       .form-group
                         label.control-label Order by      
-                        select.form-control.m-b(ng-model="form.orders[$index].field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+                        select.form-control.m-b(ng-model="form.orders[$index].field", ng-options="field.name for field in fields = form.datasource.fields.concat(groupFields.aggs) track by field.name")
                       .form-group
                         label.control-label Type
                         select.form-control.m-b(ng-model="form.orders[$index].type", ng-options="orderType for orderType in acquisitorService.orderTypes track by orderType")

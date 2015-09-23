@@ -11,15 +11,16 @@ function BarC3(data, raw, promise) {
 
 function prepareColumns(raw, data) {
   var barData = [];
-  var timeseriesField = null;
+  var timeseriesFields = [];
   _.forEach(raw.datasource.fields, function(field) {
     if (field.type === 'timestamp') {
-      timeseriesField = field.name;
+      timeseriesFields.push(field.name);
     }
   });
 
   _.forEach(raw.fields, function(value, field) {
-    if (timeseriesField === field) {
+    if (_.include(timeseriesFields, field)) {
+    // if (timeseriesField === field) {
       var formattedDates = [];
       var tsArray = _.map(data, field);
       _.forEach(tsArray, function(ts) {
@@ -34,6 +35,25 @@ function prepareColumns(raw, data) {
       barData.push([field].concat(formattedDates));
     } else {
       barData.push([field].concat(_.map(data, field)));
+    }
+  });
+
+  _.forEach(raw.aggregations, function(agg) {
+    if (agg.field.type === 'timestamp') {
+      var formattedDates = [];
+      var tsArray = _.map(data, agg.name);
+      _.forEach(tsArray, function(ts) {
+        var fDate = new Date(ts);
+        formattedDates.push(
+          fDate.getFullYear() + '-' + 
+          (0 + String(fDate.getMonth())).slice(-2) + '-' 
+          + (0 + String(fDate.getDay())).slice(-2) + ' ' 
+          + fDate.getHours() + ':' + fDate.getMinutes() + ':' 
+          + fDate.getSeconds());
+      });
+      barData.push([agg.name].concat(formattedDates));
+    } else {
+      barData.push([agg.name].concat(_.map(data, agg.name)));
     }
   });
 
@@ -134,6 +154,12 @@ function prepareFields(raw) {
       fields.push(field);
     }
   });
+
+  if (!_.isEmpty(raw.aggregations)) {
+    _.forEach(raw.aggregations, function(agg) {
+      fields.push(agg.name);
+    });
+  }
 
   return fields;
 }
