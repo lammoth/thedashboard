@@ -1,9 +1,32 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal) {
+  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector) {
+    $scope.dashboardVisualizations = [];
     $rootScope.sectionName = "Home";
     $rootScope.sectionDescription = "Active dashboard";
+
+    getPlugins();
+
+    function getPlugins() {
+      $scope.plugins = {};
+
+      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+
+      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+        $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
+        $scope.plugins.visualizatorActive = Plugin.getVisualizator();
+        $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
+        getVisualizations();
+      });
+    }
+
+    function getVisualizations() {
+      var settingsPromise = Settings.broker('visualizations', 'getData', {});
+      settingsPromise.then(function(visualizations) {
+        $scope.visualizations = visualizations;
+      });
+    }
 
     $scope.items = [];
 
@@ -72,14 +95,7 @@ angular.module('thedashboardApp')
       var spacingTop = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-top').replace('px', ''));
       var spacingBottom = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-bottom').replace('px', ''));
       return heading + spacingTop + spacingBottom;
-    } 
-
-    $scope.addVisualization = function() {
-      console.log("Adding a visualization");
-      $scope.items.push(
-        {sizeX: 12, sizeY: 1, row: 0, col: 0}
-      );
-    };
+    }
 
     $scope.saveVisualization = function() {
       console.log("Saving a visualization");
@@ -88,25 +104,41 @@ angular.module('thedashboardApp')
     // Modal section
     $scope.animationsEnabled = true;
 
-    $scope.open = function() {
+    $scope.openVisualizationModal = function() {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
-        templateUrl: 'ModalVisualizationSaveContent.html',
-        controller: 'ModalSaveInstanceController'
+        templateUrl: 'ModalVisualizationOpenContent.html',
+        controller: 'ModalOpenInstanceController',
+        resolve: {
+          visualizations: function() {
+            return $scope.visualizations;
+          },
+          visualizatorService: function() {
+            return $scope.visualizatorService;
+          }
+        }
       });
 
-      modalInstance.result.then(function (data) {
-
+      modalInstance.result.then(function (visualization) {
+        $scope.dashboardVisualizations.push(visualization);
+        console.log($scope.dashboardVisualizations);
       });
     };
   })
-  .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
-    $scope.save = function() {
-      $modalInstance.close($scope.visualizationName);
+  .controller('ModalOpenInstanceController', function ($scope, $modalInstance, visualizations, visualizatorService) {
+    $scope.visualizations = visualizations;
+    $scope.visualizatorService = visualizatorService;
+
+    $scope.addVisualization = function(visualization) {
+      $scope.cancel(visualization);
     };
 
-    $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
+    $scope.getIcon = function(visualization) {
+      return $scope.visualizatorService.getIcon(visualization.json.chartType);
+    };
+
+    $scope.cancel = function(visualization) {
+      $modalInstance.close(visualization);
     };
   })
   .controller('DashboardOpenCtrl', function ($scope, $rootScope, Settings) {
@@ -117,7 +149,8 @@ angular.module('thedashboardApp')
       $scope.dashboards = dashboards;
     });
   })
-  .controller('DashboardCreateCtrl', function ($scope, $rootScope, Settings) {
+  .controller('DashboardCreateCtrl', function ($scope, $rootScope) {
+    // TODO: Plugin service was refactorized, check changes!
     $rootScope.sectionName = "Dashboards";
     $rootScope.sectionDescription = "Create a dashboard";
   });

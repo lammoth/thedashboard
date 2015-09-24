@@ -35,7 +35,7 @@ exports.task = function(req, res) {
 
 
 // Returns task results 
-exports.result = function(req, res) {
+exports.taskResult = function(req, res) {
   var tasker = req.app.get('tasker');
   var persistor = req.app.get('persistor');
   var engine = new EngineSystem(req.app);
@@ -50,6 +50,19 @@ exports.result = function(req, res) {
       return res.json(200, {response: 'ok', data: data});
     }
   );
+};
+
+
+// Get or set time preferences 
+exports.time = function(req, res) {
+  var persistor = req.app.get('persistor');
+
+  if (req.method == 'GET') {
+
+  } else if (req.method == 'POST') {
+    var from = req.body.from;
+    var to = req.body.to;
+  }
 };
 
 

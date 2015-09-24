@@ -1,7 +1,31 @@
+div.modal.fade.in
+  div.modal-dialog
+    script(type="text/ng-template" id="ModalVisualizationOpenContent.html")
+      div.modal-content
+        div.color-line
+      div.modal-header.text-center
+        h3.modal-title Add visualization
+      div.modal-body
+        div.row
+          div.col-xs-12
+            table.table.table-hover.visualizations
+              thead
+              tbody
+                tr(ng-repeat='visualization in visualizations')
+                  td
+                    i(ng-class="getIcon(visualization)")
+                    | &nbsp;
+                    | {{ visualization.name }}
+                  td(width="1%")
+                    a.btn.btn-default.btn-xs(ng-click="addVisualization(visualization)")
+                      i.fa.fa-plus
+      div.modal-footer
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+
 .row
   nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
     button(mfb-button, icon="ion-checkmark", label="Save", ng-click="saveVisualization()")
-    button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="addVisualization()")
+    button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="openVisualizationModal()")
   .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
     .text-center
       h2.m-b-xs Create a new dashboard

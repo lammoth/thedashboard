@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('HeaderController', function ($scope, TimeFilter) {
+  .controller('HeaderController', function ($scope, TimeFilter, queryService) {
   	TimeFilter.registerObserver('quick', updateQuick);
     TimeFilter.registerObserver('absolute', updateAbsolute);
     function updateQuick() {

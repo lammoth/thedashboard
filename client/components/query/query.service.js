@@ -25,6 +25,17 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
+        // Set time preferences on Redis
+        setTime: function(timeData, cb) {
+          $http.post(apiPrefix + '/broker/time', {from: timeData.from, to: timeData.to}).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });
+        },
         // Get any setting data
         getSetting: function(task, cb) {
           $http.get(apiPrefix + '/broker/task/' + task).
