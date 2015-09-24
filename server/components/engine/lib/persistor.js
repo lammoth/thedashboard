@@ -41,7 +41,7 @@ Persistor.prototype.saveVisualization = function(data) {
   
   this.client.mset(
     'visualization:' + data.id,
-    JSON.stringify(data.data),
+    JSON.stringify(data),
     function(err, response) {
       if (!err) {
         deferred.resolve();

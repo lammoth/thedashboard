@@ -6,9 +6,9 @@ angular.module('thedashboardApp')
 
     return {
       name: 'c3',
-      
-      hasGraph: ((!_.isEmpty(graph)) ? graph : null),
-
+      hasGraph: function() {
+        return ((!_.isEmpty(graph)) ? graph : null);
+      },
       type: function(type) {
         graph.data.type = type;
       },

@@ -152,7 +152,7 @@ angular.module('thedashboardApp')
 
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
-      if ($scope.$parent.visualizatorService.hasGraph) {
+      if ($scope.$parent.visualizatorService.hasGraph()) {
         queryService.saveVisualization(
           'visualizations',
           {
@@ -161,7 +161,8 @@ angular.module('thedashboardApp')
             query: query,
             json: $scope.form,
             visualizatorPlugin: $scope.$parent.visualizatorService.name,
-            acquisitorPlugin: $scope.$parent.acquisitorService.name
+            acquisitorPlugin: $scope.$parent.acquisitorService.name,
+            graph: $scope.$parent.visualizatorService.hasGraph()
           },
           function(){}
         );

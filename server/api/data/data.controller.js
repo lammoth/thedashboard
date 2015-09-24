@@ -74,7 +74,22 @@ exports.pluginsSetEnable = function(req, res) {
 exports.visualization = function(req, res) {
   VisualizationModel.create(req.body.data, function(err, data) {
     if(err) { return handleError(res, err); }
-    return res.json(201, {response: "ok", data: data});
+    var persistor = req.app.get('persistor');
+    var persistorData = {
+      graph: req.body.data.graph,
+      type: req.body.data.json.chartType,
+      ds: req.body.data.json.datasource.name,
+      // TODO: Check if name is unique
+      id: req.body.data.name,
+      time: {
+        to: null,
+        from: null
+      },
+      query: req.body.data.query
+    }
+    persistor.saveVisualization(persistorData).then(function() {
+      return res.json(201, {response: "ok", data: data});
+    });
   });
 };
 
