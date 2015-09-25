@@ -88,5 +88,21 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
+        // This method check if the persistor contains some data
+        // that can be used in the visualization, if not, execute
+        // the visualization query and returns the current info
+        checkAndAddVisualization: function(type, data, cb) {
+          $http.post(
+            apiPrefix + '/data/' + type,
+            {data: data}
+          ).
+            success(function(data) {
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
+        },
     };
   });

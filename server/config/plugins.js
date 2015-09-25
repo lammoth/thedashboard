@@ -11,8 +11,7 @@ var plugins = [
     name: 'acquisitor',
     pluginName: 'phoenix',
     pluginTitle: 'Phoenix',
-    active: true,
-    delay: [10, 20, 30, 60],
+    active: true, 
     config: {
       url: 'jdbc:phoenix:10.128.19.58',
       libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
@@ -62,7 +61,14 @@ var plugins = [
       address: 'localhost',
       database: 'thedashboard',
       user: 'root',
-      password: ''
+      password: '',
+      // Waiting seconds to listen new events
+      realtime_delay: [10, 20, 30, 60],
+      // Error margin to use data saved in the persistor (in hours)
+      data_delay: {
+        from: [1, 2, 3, 5, 10, 24],
+        to: [1, 2, 3, 5, 10, 24]
+      }
     }
   },
   {

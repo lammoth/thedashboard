@@ -5,7 +5,8 @@ var _ = require('lodash'),
   Visualizator = require('./lib/visualizator'),
   Persistor = require('./lib/persistor'),
   visualizationQuery = require('./lib/queries/visualization'),
-  settingQuery = require('./lib/queries/setting');
+  settingQuery = require('./lib/queries/setting'),
+  checkQuery = require('./lib/queries/check');
  
 
 module.exports = Engine;
@@ -27,6 +28,9 @@ Engine.prototype.select = function(type, subtype, data, task, cb) {
       break;
     case 'setting':
       settingQuery(this, data, task, cb);
+      break;
+    case 'check':
+      checkQuery(this, data, task, cb);
       break;
   }
 };

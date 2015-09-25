@@ -6,7 +6,8 @@
 
 var redis = require('redis'),
   _ = require('lodash'),
-  Q = require('q');
+  Q = require('q'),
+  timeUtil = require('./utils/time');
 
 module.exports = Persistor;
 
@@ -33,7 +34,7 @@ Persistor.prototype.saveTaskResults = function(task, data) {
   );
 
   return deferred.promise;
-}
+};
 
 Persistor.prototype.saveVisualization = function(data) {
   var deferred = Q.defer();
@@ -50,10 +51,24 @@ Persistor.prototype.saveVisualization = function(data) {
   );
 
   return deferred.promise;
-}
+};
 
 Persistor.prototype.getTaskResults = function(task, cb) {
   this.client.get("task:" + task, function(err, result) {
     cb(JSON.parse(result));
   });
-}
+};
+
+Persistor.prototype.getVisualizationResults = function(data, cb) {
+  var deferred = Q.defer();
+  var TimeUtilInstance = new timeUtil();
+  // TODO: Get a real value to set "Margin of Error"
+  // For test purposes the ME has been established to 10 hours
+  this.client.get("visualization:" + data.name, function(err, result) {
+    var visualization = JSON.parse(result);
+    deferred.resolve(
+      ((TimeUtilInstance.check(data.time.to, visualization.time.to, 'hours', 10) && TimeUtilInstance.check(data.time.from, visualization.time.from, 'hours', 10)) ? result : false)
+    );
+  });
+  return deferred.promise;
+};
