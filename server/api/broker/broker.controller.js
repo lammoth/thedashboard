@@ -24,7 +24,7 @@ exports.task = function(req, res) {
     broker,
     function(job) {
       tasker.processTask(taskData.type, function(task, data, promise) {
-        engine.select(data.type, data.subtype, data.data, task, function() {
+        engine.select(data.type, data.subtype, data.data, task, function(engineData) {
           promise();
         });
       });

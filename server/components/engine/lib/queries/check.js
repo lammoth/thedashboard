@@ -1,14 +1,29 @@
-var visualizationQuery = require('./visualization');
+var visualizationQuery = require('./visualization'),
+  Q = require('q');
 
 module.exports = checkQuery;
 
 
 function checkQuery(parent, queryData, task, cb) {
-  parent.persistor.getVisualizationResults(queryData).then(function(persistorData) {
+  // Check if the visualization can be reused
+  // If not, execute the visualization query routine
+  parent.persistor.getVisualizationResults(queryData.redis).then(function(persistorData) {
     if (persistorData) {
-      cb();
+      return parent.persistor.saveTaskResults(task, {
+        visualization: persistorData.graph,
+        query: persistorData.query
+      });
     } else {
-      visualizationQuery(parent, queryData, task, cb);
+      var deferred = Q.defer();
+      deferred.resolve({visualization: true});
+      return deferred.promise;
+    }
+  })
+  .then(function(dataPersistor) {
+    if (dataPersistor) {
+      visualizationQuery(parent, queryData.mongo.data, task, cb);
+    } else {
+      cb();
     }
   });
 }

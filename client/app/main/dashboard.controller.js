@@ -122,23 +122,38 @@ angular.module('thedashboardApp')
 
       modalInstance.result.then(function (visualization) {
         $scope.dashboardVisualizations.push(visualization);
-        console.log($scope.hideMenu);
-        console.log($scope.dashboardVisualizations);
         
         queryService.createTask(
           'query',
           'check',
           {
-            name: visualization.name,
-            time: {
-              from: null,
-              to: null
+            redis: {
+              name: visualization.name,
+              time: {
+                from: null,
+                to: null
+              }
+            },
+            mongo: {
+              data: visualization.json
             }
           },
           function(data) {
             if (data.response !== 'error') {
               createSocket("query-" + data.data.job, function(data) {
                 console.log("Task %d event received", data.job);
+                queryService.getVisualizationTaskData(
+                  data.job,
+                  function(taskData) {
+                    // console.log(JSON.stringify(taskData.data));
+                    // $scope.items.push({ sizeX: 6, sizeY: 3, row: 0, col: 0});
+                    // query = taskData.data.query;
+                    $scope.visualizatorService.data(taskData.data.visualization);
+                    $scope.visualizatorService.bind('#test');
+                    console.log($scope.visualizatorService.hasGraph());
+                    var chart = $scope.visualizatorService.render();
+                  }
+                );
               });
             }
           }

@@ -23,16 +23,18 @@ div.modal.fade.in
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
 
 .row
-  nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
+  nav(mfb-menu, position="br", menu-state="hideMenu", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
     button(mfb-button, icon="ion-checkmark", label="Save", ng-click="saveVisualization()")
     button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="openVisualizationModal()")
-  .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
-    .text-center
-      h2.m-b-xs Create a new dashboard
-        .m
-          i.fa.fa-desktop.fa-2x
-      p
-        | To add a visualization, click in the bottom button
+  .col-xs-12
+    #test
+  //- .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
+  //-   .text-center
+  //-     h2.m-b-xs Create a new dashboard
+  //-       .m
+  //-         i.fa.fa-desktop.fa-2x
+  //-     p
+  //-       | To add a visualization, click in the bottom button
   .col-xs-12
     div(gridster="gridsterOpts")
       ul
