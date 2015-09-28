@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector) {
+  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector, socket, queryService) {
     $scope.dashboardVisualizations = [];
     $rootScope.sectionName = "Home";
     $rootScope.sectionDescription = "Active dashboard";
@@ -105,6 +105,7 @@ angular.module('thedashboardApp')
     $scope.animationsEnabled = true;
 
     $scope.openVisualizationModal = function() {
+      $scope.hideMenu = 'closed';
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'ModalVisualizationOpenContent.html',
@@ -121,9 +122,37 @@ angular.module('thedashboardApp')
 
       modalInstance.result.then(function (visualization) {
         $scope.dashboardVisualizations.push(visualization);
+        console.log($scope.hideMenu);
         console.log($scope.dashboardVisualizations);
+        
+        queryService.createTask(
+          'query',
+          'check',
+          {
+            name: visualization.name,
+            time: {
+              from: null,
+              to: null
+            }
+          },
+          function(data) {
+            if (data.response !== 'error') {
+              createSocket("query-" + data.data.job, function(data) {
+                console.log("Task %d event received", data.job);
+              });
+            }
+          }
+        );
       });
     };
+
+    function createSocket(name, cb) {
+      console.log("Creating socket %s", name);
+      socket.socket.on(name, function(data) {
+        cb(data);
+      });
+    }
+
   })
   .controller('ModalOpenInstanceController', function ($scope, $modalInstance, visualizations, visualizatorService) {
     $scope.visualizations = visualizations;

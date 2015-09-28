@@ -59,7 +59,7 @@ Persistor.prototype.getTaskResults = function(task, cb) {
   });
 };
 
-Persistor.prototype.getVisualizationResults = function(data, cb) {
+Persistor.prototype.getVisualizationResults = function(data) {
   var deferred = Q.defer();
   var TimeUtilInstance = new timeUtil();
   // TODO: Get a real value to set "Margin of Error"
@@ -67,7 +67,13 @@ Persistor.prototype.getVisualizationResults = function(data, cb) {
   this.client.get("visualization:" + data.name, function(err, result) {
     var visualization = JSON.parse(result);
     deferred.resolve(
-      ((TimeUtilInstance.check(data.time.to, visualization.time.to, 'hours', 10) && TimeUtilInstance.check(data.time.from, visualization.time.from, 'hours', 10)) ? result : false)
+      (
+        (
+          TimeUtilInstance.check(data.time.to, visualization.time.to, 'hours', 10) && 
+          TimeUtilInstance.check(data.time.from, visualization.time.from, 'hours', 10)
+        ) 
+        ? result : false
+      )
     );
   });
   return deferred.promise;

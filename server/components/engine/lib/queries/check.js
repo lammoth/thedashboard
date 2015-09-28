@@ -4,7 +4,7 @@ module.exports = checkQuery;
 
 
 function checkQuery(parent, queryData, task, cb) {
-  parent.persistor.getVisualizationResults().then(function(persistorData) {
+  parent.persistor.getVisualizationResults(queryData).then(function(persistorData) {
     if (persistorData) {
       cb();
     } else {
