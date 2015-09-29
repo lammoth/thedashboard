@@ -129,10 +129,8 @@ exports.destroyVisualization = function(req, res) {
 
 
 // Dashboards
-exports.dashboard = function(req, res) {
-  if (req.method == 'GET') {
-    
-  } else if (req.method == 'POST') {
+exports.createDashboard = function(req, res) {
+  if (req.method == 'POST') {
     // TODO: Check if request is correct
     DashboardModel.create(req.body, function(err, data) {
       if(err) { return handleError(res, err); }
@@ -147,7 +145,7 @@ exports.dashboard = function(req, res) {
  * @query: visualizator (optional)
  * @query: acquisitor (optional)
  */
-exports.dashboards = function(req, res) {
+exports.getDashboards = function(req, res) {
   var q = {};
   if (req.query.visualizator && req.query.acquisitor) {
     q.visualizatorPlugin = req.query.visualizator;

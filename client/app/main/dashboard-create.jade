@@ -1,6 +1,6 @@
 div.modal.fade.in
   div.modal-dialog
-    script(type="text/ng-template" id="ModalVisualizationOpenContent.html")
+    script(type="text/ng-template", id="ModalVisualizationOpenContent")
       div.modal-content
         div.color-line
       div.modal-header.text-center
@@ -21,20 +21,53 @@ div.modal.fade.in
                       i.fa.fa-plus
       div.modal-footer
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+    script(type="text/ng-template", id="ModalVisualizationSaveContent")
+      div.modal-content
+        div.color-line
+      div.modal-header.text-center
+        h3.modal-title Save dashboard
+      div.modal-body
+        div.row
+          div.col-xs-12
+            .form-group
+              label.control-label Dashboard name
+              input.form-control(type="text", ng-model="dashboardName")
+      div.modal-footer
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancelSaveDashboard()") Close
+        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="saveDashboard()")
+          i.fa.fa-floppy-o
+          | &nbsp; Save 
+//- div.modal.fade.in
+//-   div.modal-dialog
+//-     script(type="text/ng-template", id="ModalVisualizationSaveContent")
+//-       div.modal-content
+//-         div.color-line
+//-       div.modal-header.text-center
+//-         h3.modal-title Save dashboard
+//-       div.modal-body
+//-         div.row
+//-           div.col-xs-12
+//-             .form-group
+//-               label.control-label Dashboard name
+//-               input.form-control(type="text", ng-model="dashboardName")
+//-       div.modal-footer
+//-         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancelSaveDashboard()") Close
+//-         button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="saveDashboard()")
+//-           i.fa.fa-floppy-o
+//-           | &nbsp; Save 
 
 .row
-  nav(mfb-menu, position="br", menu-state="hideMenu", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round" toggling-method="click")
-    button(mfb-button, icon="ion-checkmark", label="Save", ng-click="saveVisualization()")
+  nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round", toggling-method="click")
+    button(mfb-button, icon="ion-checkmark", label="Save", ng-click="openVisualizationSaveModal()")
     button(mfb-button, icon="ion-plus", label="Add visualization", ng-click="openVisualizationModal()")
-  .col-xs-12
-    #test
-  //- .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
-  //-   .text-center
-  //-     h2.m-b-xs Create a new dashboard
-  //-       .m
-  //-         i.fa.fa-desktop.fa-2x
-  //-     p
-  //-       | To add a visualization, click in the bottom button
+  
+  .col-xs-12.col-md-offset-4.col-md-4(ng-if="items.length < 1")
+    .text-center
+      h2.m-b-xs Create a new dashboard
+        .m
+          i.fa.fa-desktop.fa-2x
+      p
+        | To add a visualization, click in the bottom button
   .col-xs-12
     div(gridster="gridsterOpts")
       ul
@@ -49,3 +82,5 @@ div.modal.fade.in
                   i.fa.fa-times
               | Example
             .panel-body
+              div(id="{{ item.id }}")
+

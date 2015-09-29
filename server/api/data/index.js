@@ -20,9 +20,9 @@ router.delete('/visualization/:id', auth.hasRole('admin'), controller.destroyVis
 
 
 // Dashboard routes
-router.get('/dashboards', auth.isAuthenticated(), controller.dashboards);
-router.post('/dashboard', controller.dashboard);
-router.delete('/dashboard/:id', auth.hasRole('admin'), controller.destroyDashboard);
+router.get('/dashboards', auth.isAuthenticated(), controller.getDashboards);
+router.post('/dashboards', controller.createDashboard);
+router.delete('/dashboards/:id', auth.hasRole('admin'), controller.destroyDashboard);
 
 // Datasource routes
 router.get('/datasource', controller.datasource);

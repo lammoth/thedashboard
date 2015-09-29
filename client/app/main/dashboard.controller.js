@@ -97,18 +97,26 @@ angular.module('thedashboardApp')
       return heading + spacingTop + spacingBottom;
     }
 
-    $scope.saveVisualization = function() {
-      console.log("Saving a visualization");
-    };
-
     // Modal section
     $scope.animationsEnabled = true;
 
-    $scope.openVisualizationModal = function() {
-      $scope.hideMenu = 'closed';
-      var modalInstance = $modal.open({
+    $scope.openVisualizationSaveModal = function() {
+      var modalSaveInstance = $modal.open({
         animation: $scope.animationsEnabled,
-        templateUrl: 'ModalVisualizationOpenContent.html',
+        templateUrl: 'ModalVisualizationSaveContent',
+        controller: 'ModalSaveInstanceController'
+      });
+
+      modalSaveInstance.result.then(function(data) {
+        // TODO: Shit, this must be improved
+        console.log(data);
+      });
+    };
+
+    $scope.openVisualizationModal = function() {
+      var modalAddInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'ModalVisualizationOpenContent',
         controller: 'ModalOpenInstanceController',
         resolve: {
           visualizations: function() {
@@ -120,9 +128,9 @@ angular.module('thedashboardApp')
         }
       });
 
-      modalInstance.result.then(function (visualization) {
+      modalAddInstance.result.then(function(visualization) {
         $scope.dashboardVisualizations.push(visualization);
-        
+        $scope.items.push({ sizeX: 12, sizeY: 3, row: 0, col: 0, id: visualization.name});
         queryService.createTask(
           'query',
           'check',
@@ -142,15 +150,11 @@ angular.module('thedashboardApp')
             if (data.response !== 'error') {
               createSocket("query-" + data.data.job, function(data) {
                 console.log("Task %d event received", data.job);
-                queryService.getVisualizationTaskData(
+                queryService.getTaskData(
                   data.job,
                   function(taskData) {
-                    // console.log(JSON.stringify(taskData.data));
-                    // $scope.items.push({ sizeX: 6, sizeY: 3, row: 0, col: 0});
-                    // query = taskData.data.query;
                     $scope.visualizatorService.data(taskData.data.visualization);
-                    $scope.visualizatorService.bind('#test');
-                    console.log($scope.visualizatorService.hasGraph());
+                    $scope.visualizatorService.bind('#' + visualization.name);
                     var chart = $scope.visualizatorService.render();
                   }
                 );
@@ -172,7 +176,6 @@ angular.module('thedashboardApp')
   .controller('ModalOpenInstanceController', function ($scope, $modalInstance, visualizations, visualizatorService) {
     $scope.visualizations = visualizations;
     $scope.visualizatorService = visualizatorService;
-
     $scope.addVisualization = function(visualization) {
       $scope.cancel(visualization);
     };
@@ -183,6 +186,17 @@ angular.module('thedashboardApp')
 
     $scope.cancel = function(visualization) {
       $modalInstance.close(visualization);
+    };
+  })
+  .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
+    $scope.saveDashboard = function() {
+      console.log("********************");
+      console.log($scope.dashboardName);
+      $modalInstance.close($scope.dashboardName);
+    };
+
+    $scope.cancelSaveDashboard = function() {
+      $modalInstance.dismiss('cancel');
     };
   })
   .controller('DashboardOpenCtrl', function ($scope, $rootScope, Settings) {

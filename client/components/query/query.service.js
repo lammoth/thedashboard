@@ -14,8 +14,8 @@ angular.module('thedashboardApp')
               console.log(err);
             });
         },
-        // Update a visualization with the data returned by a task
-        getVisualizationTaskData: function(task, cb) {
+        // Get the data returned by a task
+        getTaskData: function(task, cb) {
           $http.get(apiPrefix + '/broker/task/' + task).
             success(function(data) {
               if (data.response === "error") { return cb(data); }
@@ -74,24 +74,8 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
-        // Save visualization data
-        saveVisualization: function(type, data, cb) {
-          $http.post(
-            apiPrefix + '/data/' + type,
-            {data: data}
-          ).
-            success(function(data) {
-              if (data.response === "error") { return cb(data); }
-              return cb(data);
-            }).
-            error(function(err) {
-              console.log(err);
-            });  
-        },
-        // This method check if the persistor contains some data
-        // that can be used in the visualization, if not, execute
-        // the visualization query and returns the current info
-        checkAndAddVisualization: function(type, data, cb) {
+        // Save a data like visualizations, dashboards, etc
+        saveData: function(type, data, cb) {
           $http.post(
             apiPrefix + '/data/' + type,
             {data: data}

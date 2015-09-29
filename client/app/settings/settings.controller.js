@@ -65,7 +65,7 @@ angular.module('thedashboardApp')
 
     $scope.deleteDashboard = function(dashboard) {
       queryService.deleteSetting(
-        'dashboard',
+        'dashboards',
         dashboard._id,
         function(data) {
           var index = $scope.dashboards.indexOf(dashboard);

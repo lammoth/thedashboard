@@ -127,7 +127,7 @@ angular.module('thedashboardApp')
           if (data.response !== 'error') {
             createSocket("query-" + data.data.job, function(data) {
               console.log("Task %d event received", data.job);
-              queryService.getVisualizationTaskData(
+              queryService.getTaskData(
                 data.job,
                 function(taskData) {
                   // console.log(JSON.stringify(taskData.data));
@@ -153,7 +153,7 @@ angular.module('thedashboardApp')
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
       if ($scope.$parent.visualizatorService.hasGraph()) {
-        queryService.saveVisualization(
+        queryService.saveData(
           'visualizations',
           {
             name: visualizationName,
