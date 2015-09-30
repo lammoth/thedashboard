@@ -100,19 +100,6 @@ angular.module('thedashboardApp')
     // Modal section
     $scope.animationsEnabled = true;
 
-    $scope.openVisualizationSaveModal = function() {
-      var modalSaveInstance = $modal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: 'ModalVisualizationSaveContent',
-        controller: 'ModalSaveInstanceController'
-      });
-
-      modalSaveInstance.result.then(function(data) {
-        // TODO: Shit, this must be improved
-        console.log(data);
-      });
-    };
-
     $scope.openVisualizationModal = function() {
       var modalAddInstance = $modal.open({
         animation: $scope.animationsEnabled,
@@ -165,6 +152,18 @@ angular.module('thedashboardApp')
       });
     };
 
+    $scope.openVisualizationSaveModal = function() {
+      var modalSaveInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'ModalDashboardSaveContent',
+        controller: 'ModalSaveDashboardInstanceController'
+      });
+
+      modalSaveInstance.result.then(function(data) {
+        console.log(data);
+      });
+    };
+
     function createSocket(name, cb) {
       console.log("Creating socket %s", name);
       socket.socket.on(name, function(data) {
@@ -172,6 +171,19 @@ angular.module('thedashboardApp')
       });
     }
 
+  })
+  .controller('DashboardOpenCtrl', function ($scope, $rootScope, Settings) {
+    $rootScope.sectionName = "Dashboards";
+    $rootScope.sectionDescription = "Open a dashboard";
+    var settingsPromise = Settings.broker('dashboards', 'getData', {});
+    settingsPromise.then(function(dashboards) {
+      $scope.dashboards = dashboards;
+    });
+  })
+  .controller('DashboardCreateCtrl', function ($scope, $rootScope, $modal) {
+    // TODO: Plugin service was refactorized, check changes!
+    $rootScope.sectionName = "Dashboards";
+    $rootScope.sectionDescription = "Create a dashboard";
   })
   .controller('ModalOpenInstanceController', function ($scope, $modalInstance, visualizations, visualizatorService) {
     $scope.visualizations = visualizations;
@@ -188,27 +200,12 @@ angular.module('thedashboardApp')
       $modalInstance.close(visualization);
     };
   })
-  .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
-    $scope.saveDashboard = function() {
-      console.log("********************");
-      console.log($scope.dashboardName);
+  .controller('ModalSaveDashboardInstanceController', function ($scope, $modalInstance) {
+    $scope.save = function() {
       $modalInstance.close($scope.dashboardName);
     };
 
-    $scope.cancelSaveDashboard = function() {
+    $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
-  })
-  .controller('DashboardOpenCtrl', function ($scope, $rootScope, Settings) {
-    $rootScope.sectionName = "Dashboards";
-    $rootScope.sectionDescription = "Open a dashboard";
-    var settingsPromise = Settings.broker('dashboards', 'getData', {});
-    settingsPromise.then(function(dashboards) {
-      $scope.dashboards = dashboards;
-    });
-  })
-  .controller('DashboardCreateCtrl', function ($scope, $rootScope) {
-    // TODO: Plugin service was refactorized, check changes!
-    $rootScope.sectionName = "Dashboards";
-    $rootScope.sectionDescription = "Create a dashboard";
   });

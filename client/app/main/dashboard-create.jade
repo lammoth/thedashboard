@@ -21,7 +21,7 @@ div.modal.fade.in
                       i.fa.fa-plus
       div.modal-footer
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
-    script(type="text/ng-template", id="ModalVisualizationSaveContent")
+    script(type="text/ng-template" id="ModalDashboardSaveContent")
       div.modal-content
         div.color-line
       div.modal-header.text-center
@@ -33,28 +33,10 @@ div.modal.fade.in
               label.control-label Dashboard name
               input.form-control(type="text", ng-model="dashboardName")
       div.modal-footer
-        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancelSaveDashboard()") Close
-        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="saveDashboard()")
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
           i.fa.fa-floppy-o
           | &nbsp; Save 
-//- div.modal.fade.in
-//-   div.modal-dialog
-//-     script(type="text/ng-template", id="ModalVisualizationSaveContent")
-//-       div.modal-content
-//-         div.color-line
-//-       div.modal-header.text-center
-//-         h3.modal-title Save dashboard
-//-       div.modal-body
-//-         div.row
-//-           div.col-xs-12
-//-             .form-group
-//-               label.control-label Dashboard name
-//-               input.form-control(type="text", ng-model="dashboardName")
-//-       div.modal-footer
-//-         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancelSaveDashboard()") Close
-//-         button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="saveDashboard()")
-//-           i.fa.fa-floppy-o
-//-           | &nbsp; Save 
 
 .row
   nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round", toggling-method="click")
