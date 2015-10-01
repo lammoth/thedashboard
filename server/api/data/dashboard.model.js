@@ -7,9 +7,9 @@ var DashboardSchema = new Schema({
   name: String,
   visualizatorPlugin: String,
   acquisitorPlugin: String,
-  visualizations: [{ type: Schema.Types.ObjectId, ref: 'visualization'}],
+  visualizations: [{ type: Schema.Types.ObjectId, ref: 'Visualization'}],
   matrix: [],
-  time: Date
+  time: Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('Dashboard', DashboardSchema);

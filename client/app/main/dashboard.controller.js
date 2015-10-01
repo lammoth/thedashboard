@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector, socket, queryService) {
+  .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector, socket, queryService, TimeFilter) {
     $scope.dashboardVisualizations = [];
     $rootScope.sectionName = "Home";
     $rootScope.sectionDescription = "Active dashboard";
@@ -116,7 +116,7 @@ angular.module('thedashboardApp')
       });
 
       modalAddInstance.result.then(function(visualization) {
-        $scope.dashboardVisualizations.push(visualization);
+        $scope.dashboardVisualizations.push(visualization._id);
         $scope.items.push({ sizeX: 12, sizeY: 3, row: 0, col: 0, id: visualization.name});
         queryService.createTask(
           'query',
@@ -127,7 +127,8 @@ angular.module('thedashboardApp')
               time: {
                 from: null,
                 to: null
-              }
+              },
+              id: visualization._id
             },
             mongo: {
               data: visualization.json
@@ -160,7 +161,24 @@ angular.module('thedashboardApp')
       });
 
       modalSaveInstance.result.then(function(data) {
-        console.log(data);
+        // TODO: Check if dashboard is ready to be saved (unique name, etc)
+        if (!_.isEmpty($scope.dashboardVisualizations)) {
+          queryService.saveData(
+            'dashboards',
+            {
+              name: data,
+              visualizatorPlugin: $scope.plugins.visualizatorActive,
+              acquisitorPlugin: $scope.plugins.acquisitorActive,
+              visualizations: $scope.dashboardVisualizations,
+              matrix: $scope.items,
+              time: {
+                from: TimeFilter.from(),
+                to: TimeFilter.to()
+              }
+            },
+            function(){}
+          );
+        }
       });
     };
 

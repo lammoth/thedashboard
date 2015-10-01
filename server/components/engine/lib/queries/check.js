@@ -11,7 +11,8 @@ function checkQuery(parent, queryData, task, cb) {
     if (persistorData) {
       return parent.persistor.saveTaskResults(task, {
         visualization: persistorData.graph,
-        query: persistorData.query
+        query: persistorData.query,
+        id: persistorData.id
       });
     } else {
       var deferred = Q.defer();

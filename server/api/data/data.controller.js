@@ -80,7 +80,8 @@ exports.visualization = function(req, res) {
       type: req.body.data.json.chartType,
       ds: req.body.data.json.datasource.name,
       // TODO: Check if name is unique
-      id: req.body.data.name,
+      name: req.body.data.name,
+      id: data._id,
       time: {
         to: null,
         from: null
@@ -132,7 +133,7 @@ exports.destroyVisualization = function(req, res) {
 exports.createDashboard = function(req, res) {
   if (req.method == 'POST') {
     // TODO: Check if request is correct
-    DashboardModel.create(req.body, function(err, data) {
+    DashboardModel.create(req.body.data, function(err, data) {
       if(err) { return handleError(res, err); }
       return res.json(201, {response: "ok", data: data});
     });
