@@ -2,6 +2,8 @@
 
 angular.module('thedashboardApp')
   .controller('DashboardCtrl', function ($scope, $rootScope, Settings, $modal, Plugin, $injector, socket, queryService, TimeFilter) {
+    var charts = {};
+    var currentRow = 0;
     $scope.dashboardVisualizations = [];
     $rootScope.sectionName = "Home";
     $rootScope.sectionDescription = "Active dashboard";
@@ -84,16 +86,16 @@ angular.module('thedashboardApp')
     // Is used to know the height that should have the chart.
     // VERY IMPORTANT: all charts need to call this when its size is declared.
     function getHeight(chart_id) {
-      var el = angular.element('#_'+chart_id)[0];
+      var el = angular.element('#_' + chart_id)[0];
       var size = el.clientHeight - getRemainingHeight(chart_id);
       return size;
     }
 
     // This function return the remaining height between container and chart.
     function getRemainingHeight(chart_id) {
-      var heading = angular.element('#_'+chart_id + ' .panel-heading')[0].clientHeight;
-      var spacingTop = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-top').replace('px', ''));
-      var spacingBottom = parseInt(angular.element('#_'+chart_id + ' .panel-body').css('padding-bottom').replace('px', ''));
+      var heading = angular.element('#_' + chart_id + ' .panel-heading')[0].clientHeight;
+      var spacingTop = parseInt(angular.element('#_' + chart_id + ' .panel-body').css('padding-top').replace('px', ''));
+      var spacingBottom = parseInt(angular.element('#_' + chart_id + ' .panel-body').css('padding-bottom').replace('px', ''));
       return heading + spacingTop + spacingBottom;
     }
 
@@ -117,7 +119,9 @@ angular.module('thedashboardApp')
 
       modalAddInstance.result.then(function(visualization) {
         $scope.dashboardVisualizations.push(visualization._id);
-        $scope.items.push({ sizeX: 12, sizeY: 3, row: 0, col: 0, id: visualization.name});
+        $scope.items.push({ sizeX: 12, sizeY: 3, row: currentRow, col: 0, id: visualization._id, name: visualization.name});
+        currentRow += 1;
+
         queryService.createTask(
           'query',
           'check',
@@ -142,8 +146,11 @@ angular.module('thedashboardApp')
                   data.job,
                   function(taskData) {
                     $scope.visualizatorService.data(taskData.data.visualization);
-                    $scope.visualizatorService.bind('#' + visualization.name);
+                    $scope.visualizatorService.onresize = function(){resize(visualization._id)};
+                    $scope.visualizatorService.bind('#vis-' + visualization._id);
                     var chart = $scope.visualizatorService.render();
+                    charts[visualization._id] = chart;
+                    resize(visualization._id);
                   }
                 );
               });

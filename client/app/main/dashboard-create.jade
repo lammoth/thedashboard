@@ -53,7 +53,7 @@ div.modal.fade.in
   .col-xs-12
     div(gridster="gridsterOpts")
       ul
-        li(gridster-item="item", ng-repeat="item in items")
+        li(gridster-item="item", ng-repeat="item in items", id="_{{ item.id }}")
           .hpanel
             .panel-heading.hbuilt
               .panel-tools
@@ -62,7 +62,7 @@ div.modal.fade.in
                 |                     
                 a.closebox
                   i.fa.fa-times
-              | Example
+              | {{ item.name }}
             .panel-body
-              div(id="{{ item.id }}")
+              div(id="vis-{{ item.id }}")
 

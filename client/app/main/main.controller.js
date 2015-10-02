@@ -195,7 +195,7 @@ angular.module('thedashboardApp')
           height: getHeight('scatter')
         }
       });
-    }, 1000);
+    }, 500);
 
 
     // This function use resize method of the c3js charts to modify its sizes.
