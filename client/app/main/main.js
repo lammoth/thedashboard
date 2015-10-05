@@ -49,7 +49,7 @@ angular.module('thedashboardApp')
         }
       })
       .state('main.dashboard.open', {
-        url: '/open',
+        url: '/open/:id',
         views: {
           "dashboard-child": {
             templateUrl: 'app/main/dashboard-open.html',

@@ -1,5 +1,5 @@
 .row
-  .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;')
+  .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.7s; -webkit-animation-delay: 0.7s;', ng-if="selectedDashboard")
     .hpanel.stats
         .panel-body.h-200
           .stats-title.pull-left
@@ -11,5 +11,5 @@
                 td
                   {{ dashboard.name }}
                 td(width="1%")
-                  a.btn.btn-default.btn-xs
+                  a.btn.btn-default.btn-xs(ui-sref="main.dashboard.open({id: dashboard._id})")
                     i.glyphicon.glyphicon-eye-open

@@ -197,13 +197,81 @@ angular.module('thedashboardApp')
     }
 
   })
-  .controller('DashboardOpenCtrl', function ($scope, $rootScope, Settings) {
+  .controller('DashboardOpenCtrl', function ($scope, $rootScope, $stateParams, Settings, DashboardService) {
     $rootScope.sectionName = "Dashboards";
     $rootScope.sectionDescription = "Open a dashboard";
-    var settingsPromise = Settings.broker('dashboards', 'getData', {});
-    settingsPromise.then(function(dashboards) {
-      $scope.dashboards = dashboards;
-    });
+
+    // Boolean to set if a dashboard must be shown
+    $scope.selectedDashboard = true;
+
+    if ($stateParams.id) {
+      $scope.selectedDashboard = false;
+      DashboardService.loadDashboardVisualizations($stateParams.id);
+    } else {
+      var settingsPromise = Settings.broker('dashboards', 'getData', {});
+      settingsPromise.then(function(dashboards) {
+        $scope.dashboards = dashboards;
+      });  
+    }
+    
+    
+
+
+
+    // var currentRow = 0;
+
+    // $scope.openDashboard = function(dashboard) {
+    //   console.log(dashboard);
+    //   if (dashboard.visualizations.length > 0)
+    //     _.forEach(dashboard.visualizations, function(visualization) {
+    //       addVisualization(visualization);
+    //     });
+    // };
+
+    // function addVisualization(visualization) {
+    //   // modalAddInstance.result.then(function(visualization) {
+    //     // $scope.dashboardVisualizations.push(visualization._id);
+    //     $scope.items.push({ sizeX: 12, sizeY: 3, row: currentRow, col: 0, id: visualization._id, name: visualization.name});
+    //     currentRow += 1;
+
+    //     queryService.createTask(
+    //       'query',
+    //       'check',
+    //       {
+    //         redis: {
+    //           name: visualization.name,
+    //           time: {
+    //             from: null,
+    //             to: null
+    //           },
+    //           id: visualization._id
+    //         },
+    //         mongo: {
+    //           data: visualization.json
+    //         }
+    //       },
+    //       function(data) {
+    //         if (data.response !== 'error') {
+    //           createSocket("query-" + data.data.job, function(data) {
+    //             console.log("Task %d event received", data.job);
+    //             queryService.getTaskData(
+    //               data.job,
+    //               function(taskData) {
+    //                 $scope.visualizatorService.data(taskData.data.visualization);
+    //                 $scope.visualizatorService.onresize = function(){resize(visualization._id)};
+    //                 $scope.visualizatorService.bind('#vis-' + visualization._id);
+    //                 var chart = $scope.visualizatorService.render();
+    //                 charts[visualization._id] = chart;
+    //                 resize(visualization._id);
+    //               }
+    //             );
+    //           });
+    //         }
+    //       }
+    //     );
+    //   // });
+    // // };
+    // }
   })
   .controller('DashboardCreateCtrl', function ($scope, $rootScope, $modal) {
     // TODO: Plugin service was refactorized, check changes!

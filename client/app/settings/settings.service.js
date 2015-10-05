@@ -6,10 +6,13 @@ angular.module('thedashboardApp')
 
     // Get setting data
     function prepareData(type, cb, extra) {
-      
       var deferred = $q.defer();
 
-      $http.get(apiPrefix + '/data/' + type, ((extra) ? extra : {})).
+      $http.get(
+        apiPrefix + '/data/' + type,
+        {
+          params: ((extra) ? extra : {})
+        }).
         success(function(data) {
           if (data.response === "error") { return data.data; }
           cache.put(type, data.data);

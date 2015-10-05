@@ -147,16 +147,26 @@ exports.createDashboard = function(req, res) {
  * @query: acquisitor (optional)
  */
 exports.getDashboards = function(req, res) {
-  var q = {};
-  if (req.query.visualizator && req.query.acquisitor) {
-    q.visualizatorPlugin = req.query.visualizator;
-    q.acquisitorPlugin = req.query.acquisitor;
-  }
-  if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
-    DashboardModel.find(q, function(err, data) {
-      if(err) { return handleError(res, err); }
-      return res.json(201, {response: "ok", data: data});
-    });
+  if (isAdmin(req.user)) {
+    console.log(req.query);
+    if (!req.query) {
+      DashboardModel
+        .find()
+        .populate('visualizations')
+        .exec(function(err, data) {
+          if(err) { return handleError(res, err); }
+          return res.json(201, {response: "ok", data: data});
+        });
+    } else {
+      console.log("**********************");
+      DashboardModel
+      .findOne(req.query)
+      .populate('visualizations')
+      .exec(function(err, data) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, {response: "ok", data: data});
+      });
+    }
   } else {
     return res.json(401);
   }
