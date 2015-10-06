@@ -148,8 +148,7 @@ exports.createDashboard = function(req, res) {
  */
 exports.getDashboards = function(req, res) {
   if (isAdmin(req.user)) {
-    console.log(req.query);
-    if (!req.query) {
+    if (_.isEmpty(req.query)) {
       DashboardModel
         .find()
         .populate('visualizations')
@@ -158,7 +157,6 @@ exports.getDashboards = function(req, res) {
           return res.json(201, {response: "ok", data: data});
         });
     } else {
-      console.log("**********************");
       DashboardModel
       .findOne(req.query)
       .populate('visualizations')

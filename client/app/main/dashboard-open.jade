@@ -13,3 +13,18 @@
                 td(width="1%")
                   a.btn.btn-default.btn-xs(ui-sref="main.dashboard.open({id: dashboard._id})")
                     i.glyphicon.glyphicon-eye-open
+  .col-xs-12(ng-if="!selectedDashboard")
+    div(gridster="gridsterOpts")
+      ul
+        li(gridster-item="item", ng-repeat="item in items", id="_{{ item.id }}")
+          .hpanel
+            .panel-heading.hbuilt
+              .panel-tools
+                a.showhide
+                  i.fa.fa-chevron-up
+                |                     
+                a.closebox
+                  i.fa.fa-times
+              | {{ item.name }}
+            .panel-body
+              div(id="vis-{{ item.id }}")
