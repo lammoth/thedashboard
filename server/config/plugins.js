@@ -13,29 +13,17 @@ var plugins = [
     pluginTitle: 'Phoenix',
     active: true, 
     config: {
-      url: 'jdbc:phoenix:10.128.19.58',
-      libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
-      driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
-      auth: {
-        user: 'desarrollo',
-        password: '46ef56263520e531be309552de761d8f'
+      jdbc: {
+        url: 'jdbc:phoenix:10.128.19.60',
+        minpoolsize: 10,
+        maxpoolsize: 100,
+        user: '',
+        password: ''
       },
-      pool: {
-        maxConnections: 10,
-        minConnections: 3,
-        idleTimeoutMillis: 30000,
-        verboseLog: true
-      },
-      datasources: [
-        {
-          ds: 'logstash.netflow',
-          fields: [
-            { name: '', type: ''},
-            { name: '', type: ''},
-            { name: '', type: ''},
-          ]
-        }
-      ]
+      java: {
+        libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
+        driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
+      }
     }
   },
   {

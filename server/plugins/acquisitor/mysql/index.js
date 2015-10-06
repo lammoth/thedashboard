@@ -1,5 +1,5 @@
 /**
- * Spark acquisition engine
+ * MySQL acquisition engine
  */
 
 var mysql = require('mysql'),
