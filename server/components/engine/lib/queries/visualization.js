@@ -24,7 +24,7 @@ function visualizationQuery(parent, queryData, task, cb) {
     // Passing the Acquisitor results to the Visualizator plugin
     data.VisualizatorPlugin.data = queryResult.rows;
     // Setting query
-    data.query = queryResult.query
+    data.query = queryResult.query;
     // Passing the raw data to the Visualizator plugin
     data.VisualizatorPlugin.raw = queryData;
     // Setting the Acquisitor name in the visualizator in order to do a proper parsing

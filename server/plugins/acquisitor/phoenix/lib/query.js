@@ -18,8 +18,8 @@ function QueryReq(connection) {
 
 // Phoenix query executor
 QueryReq.prototype.execQuery = function(data) {
-  var parent = this;
-  var deferred = Q.defer();
+  var parent = this,
+    deferred = Q.defer();
   // If data object has an "action" property,
   // the query will be executed in raw mode
   if (data.action) {
@@ -55,7 +55,12 @@ QueryReq.prototype.execQuery = function(data) {
   } else {
     // Data is parsed only when the results must be represented
     Parser.parse(data);
-    makeQuery(Parser.query);
+    makeQuery(Parser.query).then(function(results) {
+      deferred.resolve({
+        rows: results,
+        query: ((!data.action) ? Parser.query : raw)
+      });
+    });
   }
 
   function reserveConnection(cb) {
@@ -96,7 +101,6 @@ QueryReq.prototype.execQuery = function(data) {
         if (err) {
           console.log(err);
         } else {
-          console.log(table);
           statement.executeQuery('SELECT * from "' + table + '" LIMIT 1',
                                 function(err, resultset) {
             if (err) {
@@ -127,36 +131,28 @@ QueryReq.prototype.execQuery = function(data) {
   }
 
   function makeQuery(query) {
+    var deferred = Q.defer();
     reserveConnection(function(connection) {
       Benchmark.startBenchmark();
       connection.createStatement(function(err, statement) {
         if (err) {
           console.log(err);
         } else {
-          // statement.executeQuery(query,
-          statement.executeQuery('SELECT * from "logstash.netflow" LIMIT 1',
-          // statement.executeQuery('SELECT * from SYSTEM.CATALOG',
-                                function(err, resultset) {
+          statement.executeQuery(query, function(err, resultset) {
             if (err) {
               console.log(err);
             } else {
               Benchmark.stopBenchmark();
               console.log(Benchmark.result()/1000);
-              // console.log(resultset);
-              // getFields(resultset);
-              // resultset.toObjArray(function(err, results) {
-              //   // console.log(_.map(results, "DATA_TYPE"));
-              //   console.log(results[5]);
-              // });
-              // console.log(resultset._rs);
-              resultset.toObject(function(err, results) {
-                console.log(resultset._types[93]);
+              resultset.toObjArray(function(err, results) {
+                deferred.resolve(results);
               });
             }
           });
         }
       });
     });
+    return deferred.promise;
   }
 
   return deferred.promise;

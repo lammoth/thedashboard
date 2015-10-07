@@ -11,6 +11,8 @@ var Q = require('q'),
 module.exports = PhoenixPlugin;
 
 function PhoenixPlugin(acquisitor, config) {
+  // Plugin name
+  this.name = 'phoenix';
   // Plugin needs its acquisitor parent
   this.acquisitor = acquisitor;
   // isConnected true if the plugin is in use
