@@ -31,7 +31,7 @@ PhoenixPlugin.prototype.connect = function() {
 
   var deferred = Q.defer();
   var parent = this;
-  
+
   this.connection.initialize(function(err) {
     if (err) {
       console.error('Phoenix error connecting: ' + err);
@@ -39,7 +39,7 @@ PhoenixPlugin.prototype.connect = function() {
     } else {
       console.log('Phoenix acquisitor plugin connected');
       parent.queryClient = new Query(parent.connection);
-      parent.queryClient.execQuery();
+      // parent.queryClient.execQuery();
       deferred.resolve();
     }
   });

@@ -195,6 +195,7 @@ angular.module('thedashboardApp')
                       action: "updateDatasources",
                       data: taskData.data
                     });
+                    console.log(dataSources);
                     // If exists datasources, we get all fields
                     if (dataSources.length > 0) {
                       queryService.createTask(

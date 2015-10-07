@@ -23,10 +23,10 @@ angular.module('thedashboardApp')
       parse: function(data) {
         switch(data.action) {
           case "updateDatasources":
-              return extractDatasources(data.data.rows);
+            return extractDatasources(data.data.rows);
             break;
           case "fieldsFromDatasources":
-              return data.data.rows;
+            return data.data.rows;
             break;
           case "composeDatasourcesInfo":
             return mixData(data.extra, data.data);
