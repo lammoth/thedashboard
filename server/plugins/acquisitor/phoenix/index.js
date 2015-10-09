@@ -41,7 +41,6 @@ PhoenixPlugin.prototype.connect = function() {
     } else {
       console.log('Phoenix acquisitor plugin connected');
       parent.queryClient = new Query(parent.connection);
-      // parent.queryClient.execQuery();
       deferred.resolve();
     }
   });

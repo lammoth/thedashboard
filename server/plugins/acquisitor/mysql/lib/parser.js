@@ -13,3 +13,20 @@ Parser.prototype.parse = function(data) {
   ParserEngine.data = this.data;
   this.query = ParserEngine.run();
 };
+
+
+Parser.prototype.types = function(type) {
+  var matchedType;
+  switch(type) {
+    case 'varchar':
+      matchedType = 'varchar';
+      break;
+    case 'timestamp':
+      matchedType = 'timestamp';
+      break;
+    default:
+      break;
+  }
+
+  return matchedType;
+};

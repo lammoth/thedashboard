@@ -2,18 +2,22 @@ var _ = require('lodash');
 
 module.exports = BarC3;
 
-function BarC3(data, raw, promise) {
+function BarC3(data, raw, promise, types) {
   this.graph = {};
   this.data = data;
   this.raw = raw;
+  this.types = types;
   this.promise = promise;
 }
 
-function prepareColumns(raw, data) {
+function prepareColumns(raw, data, types) {
   var barData = [];
   var timeseriesFields = [];
   _.forEach(raw.datasource.fields, function(field) {
-    if (field.type === 'timestamp') {
+    // It's neccesary check the data type of acquisitor
+    // e.g.: MySQL - timestamp
+    // e.g.: Phoenix - Timestamp
+    if (types(field.type) === 'timestamp') {
       timeseriesFields.push(field.name);
     }
   });
@@ -39,7 +43,7 @@ function prepareColumns(raw, data) {
   });
 
   _.forEach(raw.aggregations, function(agg) {
-    if (agg.field.type === 'timestamp') {
+    if (types(agg.field.type) === 'timestamp') {
       var formattedDates = [];
       var tsArray = _.map(data, agg.name);
       _.forEach(tsArray, function(ts) {
@@ -60,7 +64,7 @@ function prepareColumns(raw, data) {
   return barData;
 }
 
-function prepareAxis(raw, graphData, data) {
+function prepareAxis(raw, graphData, data, types) {
   // var axis = {x: [], y: []};
   var axis = { x:{}, y:{} };
   
@@ -79,7 +83,7 @@ function prepareAxis(raw, graphData, data) {
     //   ((xData) ? axis.x = xData : console.log("No X axis to push"));
     // });
 
-    if (raw.graph.x.field.type === 'timestamp') {
+    if (types(raw.graph.x.field.type) === 'timestamp') {
       var xData = {};
       xData.type = 'timeseries';
       xData.tick = {
@@ -87,7 +91,7 @@ function prepareAxis(raw, graphData, data) {
         rotate: 75
       };
       ((xData) ? axis.x = xData : console.log("No X axis to push"));
-    } else if (raw.graph.x.field.type === 'varchar') {
+    } else if (types(raw.graph.x.field.type) === 'varchar') {
       var xData = {};
       xData.type = 'category';
       xData.categories = _.map(data, raw.graph.x.field.name);
@@ -113,7 +117,7 @@ function prepareAxis(raw, graphData, data) {
     //   ((yData) ? axis.y = yData : console.log("No Y axis to push"));
     // });
 
-    if (raw.graph.y.field.type === 'timestamp') {
+    if (types(raw.graph.y.field.type) === 'timestamp') {
       var yData = {};
       yData.type = 'timeseries';
       yData.tick = {
@@ -121,7 +125,7 @@ function prepareAxis(raw, graphData, data) {
         rotate: 75
       };
       ((yData) ? axis.y = yData : console.log("No Y axis to push"));
-    } else if (raw.graph.y.field.type === 'varchar') {
+    } else if (types(raw.graph.y.field.type) === 'varchar') {
       var yData = {};
       yData.type = 'category';
       yData.categories = _.map(data, raw.graph.y.field.name);
@@ -135,12 +139,12 @@ function prepareAxis(raw, graphData, data) {
   return axis;
 }
 
-function prepareFields(raw) {
+function prepareFields(raw, types) {
   var fields = [];
   var timeseriesField = null;
 
   _.forEach(raw.datasource.fields, function(field) {
-    if (field.type === 'timestamp') {
+    if (types(field.type) === 'timestamp') {
       timeseriesField = field.name;
     }
   });
@@ -169,7 +173,7 @@ BarC3.prototype.dataset = function() {
   this.graph.data = {
     type: 'bar',
     xFormat: '%Y-%m-%d %H:%M:%S',
-    columns: prepareColumns(this.raw, this.data)
+    columns: prepareColumns(this.raw, this.data, this.types)
   }
   
   if (this.raw.graph.x)
@@ -177,10 +181,10 @@ BarC3.prototype.dataset = function() {
 
   // Axis info
   if (this.raw.graph.x || this.raw.graph.y)
-    this.graph.axis = prepareAxis(this.raw, this.graph.data, this.data);
+    this.graph.axis = prepareAxis(this.raw, this.graph.data, this.data, this.types);
 
   // Fields info (this is a fake option)
-  this.graph.fields = prepareFields(this.raw);
+  this.graph.fields = prepareFields(this.raw, this.types);
 
   // Returns the graph data
   this.promise.resolve(this.graph);

@@ -63,7 +63,7 @@ function SQLInspector(data, query) {
             parent.query.having(group.field.name);
           } else {
             switch(group.field.type) {
-              case 'timestamp':
+              case 'Timestamp':
                 parent.query.group('CAST(' + group.field.name + ' AS DATE)');
                 break;
               default:
@@ -81,7 +81,7 @@ function SQLInspector(data, query) {
     if (this.data.orders) {
       _.forEach(this.data.orders, function(order) {
         if (!_.isEmpty(order))
-          parent.query.order(order.field.name, ((order.type == 'asc') ? true : false));
+          parent.query.order('"' + order.field.name + '"', ((order.type == 'asc') ? true : false));
       });
     }
   };

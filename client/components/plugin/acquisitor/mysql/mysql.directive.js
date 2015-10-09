@@ -45,6 +45,7 @@ angular.module('thedashboardApp')
 
           _.forEach(scope.form.aggregations, function(agg, index) {
             if (agg.type && agg.field) {
+              scope.form.aggregations[index].name = ((agg.name) ? agg.name : "agg" + index);
               validAggs.push({
                 name: ((agg.name) ? agg.name : "agg" + index),
                 type: agg.field.type,

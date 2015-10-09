@@ -1,0 +1,122 @@
+##################
+# Phoenix output #
+##################
+
+# Aggregation
+
+[ { DOMAIN: 'Apple.com',
+    AGG0: { [Number: 33342] longValue: '33342' } },
+  { DOMAIN: 'Google.com',
+    AGG0: { [Number: 33310] longValue: '33310' } },
+  { DOMAIN: 'Salesforce.com',
+    AGG0: { [Number: 33348] longValue: '33348' } } ]
+
+# Timestamp aggregation and group
+
+[ { fsw: '2015-10-07 16:36:48.999', app: 'domain' },
+  { fsw: '2015-10-07 16:37:07.999', app: 'domain' },
+  { fsw: '2015-10-07 16:37:27.999', app: 'domain' },
+  { fsw: '2015-10-07 16:37:37.999', app: 'domain' },
+  { fsw: '2015-10-07 16:37:48.999', app: 'domain' },
+  { fsw: '2015-10-07 16:38:27.999', app: 'domain' },
+  { fsw: '2015-10-07 16:37:48.999', app: 'iscsi-target' },
+  { fsw: '2015-10-07 16:37:27.999', app: 'ntp' },
+  { fsw: '2015-10-07 16:36:33.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:36:34.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:36:40.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:36:47.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:36:48.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:02.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:06.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:17.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:26.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:37.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:45.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:37:46.0', app: 'ssl' },
+  { fsw: '2015-10-07 16:38:01.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:38:15.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:38:16.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:38:26.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:38:42.999', app: 'ssl' },
+  { fsw: '2015-10-07 16:36:29.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:36:39.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:37:07.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:37:37.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:37:43.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:37:46.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:37:55.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:38:35.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:38:38.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:38:55.999', app: 'unknown' },
+  { fsw: '2015-10-07 16:36:29.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:36:40.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:36:48.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:01.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:17.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:18.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:26.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:27.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:41.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:49.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:00.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:01.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:05.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:06.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:18.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:26.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:27.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:38:42.999', app: 'web-browsing' },
+  { fsw: '2015-10-07 16:37:19.999', app: 'xmpp-client' } ]
+
+# Phoenix data post treatment
+
+[ { APP: 'afs3-fileserver', AGG0: 4500 },
+  { APP: 'cisco-sccp', AGG0: 14136 },
+  { APP: 'datametrics', AGG0: 2600 },
+  { APP: 'dircproxy', AGG0: 2299 },
+  { APP: 'domain', AGG0: 2576840 },
+  { APP: 'fido', AGG0: 5116 },
+  { APP: 'git', AGG0: 122922 },
+  { APP: 'gnunet', AGG0: 152 },
+  { APP: 'http-alt', AGG0: 6131 },
+  { APP: 'imaps', AGG0: 1873529 },
+  { APP: 'ipsec-nat-t', AGG0: 220904025 },
+  { APP: 'isakmp', AGG0: 1349 },
+  { APP: 'iscsi-target', AGG0: 661200 },
+  { APP: 'microsoft-ds', AGG0: 701844 },
+  { APP: 'netbios-dgm', AGG0: 34994 },
+  { APP: 'netbios-ns', AGG0: 2085658 },
+  { APP: 'netbios-ssn', AGG0: 247180 },
+  { APP: 'ntp', AGG0: 2420888 },
+  { APP: 'nut', AGG0: 1043 },
+  { APP: 'sane-port', AGG0: 3425 },
+  { APP: 'sip', AGG0: 412164 },
+  { APP: 'smtp', AGG0: 6729 },
+  { APP: 'snmp', AGG0: 26333 },
+  { APP: 'ssh', AGG0: 5304 },
+  { APP: 'ssl', AGG0: 1798106149 },
+  { APP: 'telnet', AGG0: 8560 },
+  { APP: 'tfido', AGG0: 2282 },
+  { APP: 'tftp', AGG0: 6044 },
+  { APP: 'unknown', AGG0: 1838660428 },
+  { APP: 'web-browsing', AGG0: 1193407515 },
+  { APP: 'x11-7', AGG0: 2565 },
+  { APP: 'xmpp-client', AGG0: 1097220 } ]
+
+
+################
+# MySQL output #
+################
+
+# Aggregation and aggrupation
+
+[ { app: 'domain', rere: 16197 },
+  { app: 'imaps', rere: 302 },
+  { app: 'microsoft-ds', rere: 276 },
+  { app: 'ntp', rere: 3496 },
+  { app: 'snmp', rere: 77 },
+  { app: 'ssl', rere: 8590580 },
+  { app: 'unknown', rere: 166944 },
+  { app: 'web-browsing', rere: 1761744 },
+  { app: 'xmpp-client', rere: 6718 } ]
+

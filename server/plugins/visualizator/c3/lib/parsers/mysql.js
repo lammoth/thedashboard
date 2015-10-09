@@ -1,4 +1,5 @@
-var _ = require('lodash');
+var _ = require('lodash'),
+  typesFn = new (require('../../../../acquisitor/mysql/lib/parser'))();
 
 
 module.exports = MysqlC3Parser;
@@ -14,7 +15,7 @@ MysqlC3Parser.prototype.rawParser = function() {
   if (this.raw.chartType) {
     switch(this.raw.chartType) {
       case 'bar':
-        var graph = new (require('../graphics/' + this.raw.chartType))(this.data, this.raw, this.promise);
+        var graph = new (require('../graphics/' + this.raw.chartType))(this.data, this.raw, this.promise, typesFn.types);
         graph.dataset();
       default:
         break;
@@ -22,3 +23,8 @@ MysqlC3Parser.prototype.rawParser = function() {
   }
 };
 
+// Sometimes it's necessary treat data
+// This method, prepare the content to the visualizator
+MysqlC3Parser.prototype.preTreatment = function() {
+  return new Error("NOT IMPLEMENTED");
+};
