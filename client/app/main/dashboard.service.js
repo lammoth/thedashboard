@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .service('DashboardService', function DashBoadService($http, socket, $q, queryService, Settings) {
+  .service('DashboardService', function DashBoardService($http, socket, $q, queryService, Settings) {
     var items = [];
     var currentRow = 0;
     var charts = {};

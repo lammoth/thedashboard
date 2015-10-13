@@ -33,3 +33,11 @@ visualizator-graphic-options-bar-c3
         )
           option(value=1) Yes
           option(value=0) No
+      .form-group
+        label.control-label Allow X axis text rotate
+        select.form-control.m-b(
+          ng-model="graphicOptions.rotateXText", 
+          ng-change="changeGraphicOptions({option: 'rotateXText', restart: true}, graphicOptions.rotateXText)",
+        )
+          option(value=1) Yes
+          option(value=0) No

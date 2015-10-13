@@ -42,6 +42,9 @@ angular.module('thedashboardApp')
           case "rotate":
             this.rotate(model);
             break;
+          case "rotateXText":
+            this.rotateText(model, 'x');
+            break;
         }
       },
       transform: function(chart, to) {
@@ -85,6 +88,20 @@ angular.module('thedashboardApp')
           } else {
             graph.grid = {
               rotated: false
+            }
+          }
+        }
+      },
+      rotateText: function(option, axis) {
+        if (axis == 'x') {
+          if (graph.axis.x) {
+            if (Boolean(parseInt(option))) {
+              graph.axis.x.tick = {
+                rotate: 75,
+                multiline: false
+              };
+            } else {
+              delete graph.axis.x.tick;
             }
           }
         }

@@ -54,6 +54,11 @@ angular.module('thedashboardApp')
     $scope.visualizatorService = null;
     $scope.acquisitorService = null;
 
+    // Loads a preset visualization
+    if ($stateParams.id) {
+      
+    }
+
     if ($cacheFactory.info().Plugin.size === 0) {
       var visualizatorPluginPromise = Plugin.broker('getVisualizator');
       visualizatorPluginPromise.then(function(visualizatorPlugin) {
@@ -71,7 +76,7 @@ angular.module('thedashboardApp')
     // Modal section
     $scope.animationsEnabled = true;
 
-    $scope.open = function() {
+    $scope.saveVisualizationModal = function() {
 
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,

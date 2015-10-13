@@ -36,6 +36,10 @@ angular.module('thedashboardApp')
           scope.form.aggregations.push({});
         };
 
+        scope.deleteElement = function(list, index) {
+          list.splice(index, 1);
+        }
+
         scope.updateGroupFields = function() {
           scope.groupFields.aggs = addAggToGroupFields();
         };

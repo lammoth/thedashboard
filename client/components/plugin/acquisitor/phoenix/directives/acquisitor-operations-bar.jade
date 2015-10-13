@@ -18,6 +18,9 @@ acquisitor-operations-bar-phoenix
                       .form-group
                         label.control-label Name
                         input.form-control.m-b(type="text", placeholder="Aggregation 1", ng-model="form.aggregations[$index].name", ng-change="updateGroupFields()")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.aggregations, $index)")
+                        i.fa.fa-trash-o
+                        | &nbsp; Delete
         div.col-xs-12(style="margin-top: 10px;")
           a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addAggregation()")
             i.fa.fa-plus-circle
@@ -34,6 +37,9 @@ acquisitor-operations-bar-phoenix
                       .form-group
                         label.control-label Group by      
                         select.form-control.m-b(ng-model="form.groups[$index].field", ng-options="field.name for field in fields = form.datasource.fields.concat(groupFields.aggs) track by field.name")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.groups, $index)")
+                          i.fa.fa-trash-o
+                          | &nbsp; Delete
         div.col-xs-12(style="margin-top: 10px;")
           a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addGroup()")
             i.fa.fa-plus-circle
@@ -53,6 +59,9 @@ acquisitor-operations-bar-phoenix
                       .form-group
                         label.control-label Type
                         select.form-control.m-b(ng-model="form.orders[$index].type", ng-options="orderType for orderType in acquisitorService.orderTypes track by orderType")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.orders, $index)")
+                        i.fa.fa-trash-o
+                        | &nbsp; Delete
         div.col-xs-12
           a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addOrder()")
             i.fa.fa-plus-circle
