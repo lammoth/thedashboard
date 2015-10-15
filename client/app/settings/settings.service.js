@@ -15,8 +15,8 @@ angular.module('thedashboardApp')
         }).
         success(function(data) {
           if (data.response === "error") { return data.data; }
-          cache.put(type, data.data);
-          return cb(type, deferred);
+          ((extra) ? cache.put(type + JSON.stringify(extra), data.data) : cache.put(type, data.data));
+          return cb(((extra) ? type + JSON.stringify(extra) : type), deferred);
         }).
         error(function(err) {
           console.log(err);
@@ -29,11 +29,12 @@ angular.module('thedashboardApp')
 
       // Requests broker
       broker: function(type, name, data) {
-        if (!cache.get(type)) {
+        var element = ((data) ? type + JSON.stringify(data) : type);
+        if (!cache.get(element)) {
           var promise = prepareData(type, this[name], data);
           return promise;
         } else {
-          return this[name](type);
+          return ((data) ? this[name](type + JSON.stringify(data)) : this[name](type));
         }
       },
 

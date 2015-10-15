@@ -52,6 +52,8 @@ var plugins = [
       password: '',
       // Waiting seconds to listen new events
       realtime_delay: [10, 20, 30, 60],
+      // Listen events ratio
+      listen_ratio: [1,2,3,4,5],
       // Error margin to use data saved in the persistor (in hours)
       data_delay: {
         from: [1, 2, 3, 5, 10, 24],

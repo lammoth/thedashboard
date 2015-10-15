@@ -11,7 +11,7 @@
                 td
                   i(ng-class="getIcon(visualization)")
                   | &nbsp;
-                  | {{visualization.name}}
+                  | {{ visualization.name }}
                 td(width="1%")
                   a.btn.btn-default.btn-xs(ui-sref="main.visualization.editor({chart: visualization.json.chartType, id: visualization._id})")
                     i.glyphicon.glyphicon-eye-open

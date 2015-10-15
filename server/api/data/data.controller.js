@@ -101,16 +101,35 @@ exports.visualization = function(req, res) {
  * @query: acquisitor (optional)
  */
 exports.visualizations = function(req, res) {
-  var q = {};
-  if (req.query.visualizator && req.query.acquisitor) {
-    q.visualizatorPlugin = req.query.visualizator;
-    q.acquisitorPlugin = req.query.acquisitor;
-  }
-  if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
-    VisualizationModel.find(q, function(err, data) {
-      if(err) { return handleError(res, err); }
-      return res.json(201, {response: "ok", data: data});
-    });
+  // var q = {};
+  // if (req.query.visualizator && req.query.acquisitor) {
+  //   q.visualizatorPlugin = req.query.visualizator;
+  //   q.acquisitorPlugin = req.query.acquisitor;
+  // }
+  // if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
+  //   VisualizationModel.find(q, function(err, data) {
+  //     if(err) { return handleError(res, err); }
+  //     return res.json(201, {response: "ok", data: data});
+  //   });
+  // } else {
+  //   return res.json(401);
+  // }
+  if (isAdmin(req.user)) {
+    if (_.isEmpty(req.query)) {
+      VisualizationModel
+        .find()
+        .exec(function(err, data) {
+          if(err) { return handleError(res, err); }
+          return res.json(201, {response: "ok", data: data});
+        });
+    } else {
+      VisualizationModel
+      .findOne(req.query)
+      .exec(function(err, data) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, {response: "ok", data: data});
+      });
+    }
   } else {
     return res.json(401);
   }

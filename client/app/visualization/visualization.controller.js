@@ -10,28 +10,17 @@ angular.module('thedashboardApp')
   .controller('VisualizationOpenCtrl', function ($scope, $rootScope, $cacheFactory, Plugin, $http, $injector, Settings) {
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Open a visualization";
+    
     getPlugins();
+
     function getPlugins() {
       $scope.plugins = {};
-      if ($cacheFactory.info().Plugin.size === 0) {
-        var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
-        pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
-          if (acquisitorPlugins) {      
-            $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
-            $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-            $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
-            getVisualizations();
-          }
-        });
-      } else {
-        var cache = $cacheFactory.get("Plugin");
-        if (cache.get("plugins")) {
-          $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
-          $scope.plugins.visualizatorActive = Plugin.getVisualizator();
-          $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
-          getVisualizations();
-        }
-      }
+    
+      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+        $scope.visualizatorService = Plugin.getVisualizatorInstance();
+        getVisualizations();
+      });
     }
     
     function getVisualizations() {
@@ -42,36 +31,19 @@ angular.module('thedashboardApp')
     }
 
     $scope.getIcon = function(visualization) {
-      return $scope.visualizatorService.getIcon(visualization.json.chartType)
+      return $scope.visualizatorService.getIcon(visualization.json.chartType);
     }
   })
   .controller('VisualizationEditorCtrl', function ($scope, $rootScope, $stateParams, Plugin, $injector, $cacheFactory, $modal) {
-    // PAD: http://piratepad.net/Mo5aCZVETx
-
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Edit a visualization";
     $scope.chartType = $stateParams.chart;
-    $scope.visualizatorService = null;
-    $scope.acquisitorService = null;
 
-    // Loads a preset visualization
-    if ($stateParams.id) {
-      
-    }
-
-    if ($cacheFactory.info().Plugin.size === 0) {
-      var visualizatorPluginPromise = Plugin.broker('getVisualizator');
-      visualizatorPluginPromise.then(function(visualizatorPlugin) {
-        $scope.visualizatorService = $injector.get(visualizatorPlugin + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
-      });
-    } else {
-      var cache = $cacheFactory.get("Plugin");
-      if (cache.get("plugins")) {
-        $scope.visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
-        $scope.acquisitorService = $injector.get(Plugin.getAcquisitor() + "Acquisitor");
-      }
-    }
+    var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+    pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+      $scope.visualizatorService = Plugin.getVisualizatorInstance();
+      $scope.acquisitorService = Plugin.getAcquisitorInstance();
+    });
 
     // Modal section
     $scope.animationsEnabled = true;
@@ -91,7 +63,7 @@ angular.module('thedashboardApp')
     };
 
   })
-  .controller('VisualizationEditorTabController', function ($scope, $timeout, $stateParams, queryService, socket, Settings) {
+  .controller('VisualizationEditorTabController', function ($scope, $timeout, $stateParams, queryService, socket, Settings, VisualizationService, Plugin) {
     $scope.form = {};
     $scope.form.fields = {};
     $scope.form.chartType = $scope.$parent.chartType;
@@ -100,15 +72,19 @@ angular.module('thedashboardApp')
     getDatasources();
 
     if ($stateParams.id) {
-      var settingsPromise = Settings.broker('visualizations', 'getData', {});
-      settingsPromise.then(function(visualizations) {
-        $scope.currentVisualization = _.first(visualizations);
+      // Loads a preset visualization
+      var VisualizationPromise = VisualizationService.loadVisualization($stateParams.id);
+      VisualizationPromise.then(function(visualization) {
+        $scope.currentVisualization = visualization;
       });
     }
 
     // Dumb method to emit an event to the directives in order to set a default visualization data
     $scope.$on('visualizatorDirectiveReady', function(event, data) {
-      $scope.$broadcast('currentVisualizationSetted', $scope.currentVisualization);
+      // TODO: It's possible that the visualization can not be ready when the event will be fired
+      if ($scope.currentVisualization) {
+        $scope.$broadcast('currentVisualizationSetted', $scope.currentVisualization);
+      }
     });
 
     function getDatasources(acquisitor) {
@@ -137,9 +113,9 @@ angular.module('thedashboardApp')
                 function(taskData) {
                   // console.log(JSON.stringify(taskData.data));
                   query = taskData.data.query;
-                  $scope.$parent.visualizatorService.data(taskData.data.visualization);
-                  $scope.$parent.visualizatorService.bind('#visualization-chart-editor');
-                  $scope.chart = $scope.$parent.visualizatorService.render();
+                  $scope.visualizatorService.data(taskData.data.visualization);
+                  $scope.visualizatorService.bind('#visualization-chart-editor');
+                  $scope.chart = $scope.visualizatorService.render();
                 }
               );
             });
@@ -157,7 +133,7 @@ angular.module('thedashboardApp')
 
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
-      if ($scope.$parent.visualizatorService.hasGraph()) {
+      if ($scope.visualizatorService.hasGraph()) {
         queryService.saveData(
           'visualizations',
           {
@@ -165,9 +141,9 @@ angular.module('thedashboardApp')
             type: $scope.form.datasource.name,
             query: query,
             json: $scope.form,
-            visualizatorPlugin: $scope.$parent.visualizatorService.name,
-            acquisitorPlugin: $scope.$parent.acquisitorService.name,
-            graph: $scope.$parent.visualizatorService.hasGraph()
+            visualizatorPlugin: $scope.visualizatorService.name,
+            acquisitorPlugin: $scope.acquisitorService.name,
+            graph: $scope.visualizatorService.hasGraph()
           },
           function(){}
         );

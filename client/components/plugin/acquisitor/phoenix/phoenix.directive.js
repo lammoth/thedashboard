@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .directive('acquisitorOperationsBarPhoenix', function () {
+  .directive('acquisitorOperationsBarPhoenix', function (Plugin) {
     var currentVisualization = null;
     return {
       restrict: 'E',
@@ -12,7 +12,9 @@ angular.module('thedashboardApp')
         scope.groupFields = {fields: [], aggs: []};
 
         scope.$on('currentVisualizationSetted', function(event, visualization) {
-          // TODO: Add a function in order to set the visualization info
+          if (visualization) {
+            // scope.form = visualization.json;
+          }
         });
 
         // This function is captured by the acquisitor directive but it's emitted by main editor view
