@@ -5,10 +5,10 @@ visualizator-graphic-data-bar-c3
         div.col-xs-12
           .form-group
             label.control-label Y Data    
-            select.form-control.m-b(ng-model="form.graph.y.field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+            select.form-control.m-b(ng-model="form.graph.y.field", ng-options="field.name for field in fields = selectedFields.concat(extraFields) track by field.name")
     accordion-group(heading="X-Axis")
       div.row
         div.col-xs-12
           .form-group
             label.control-label X Data    
-            select.form-control.m-b(ng-model="form.graph.x.field", ng-options="field.name for field in fields = groupFields.fields.concat(groupFields.aggs) track by field.name")
+            select.form-control.m-b(ng-model="form.graph.x.field", ng-options="field.name for field in fields = selectedFields.concat(extraFields) track by field.name")

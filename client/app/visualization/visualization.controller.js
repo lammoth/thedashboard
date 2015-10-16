@@ -87,16 +87,13 @@ angular.module('thedashboardApp')
       }
     });
 
+    // This function try to set the datasource availables
     function getDatasources(acquisitor) {
       var settingsPromise = Settings.broker('datasource', 'getData', {acquisitor: acquisitor});
       settingsPromise.then(function(datasources) {
         $scope.datasources = datasources;
       });
     }
-
-    $scope.selectFields = function(datasource) {
-      $scope.fields = datasource.fields;
-    };
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;

@@ -6,25 +6,13 @@ angular.module('thedashboardApp')
       restrict: 'E',
       scope: false,
       link: function (scope, element, attrs) {
-        // scope.form.graph = {};
+        
         scope.$on('currentVisualizationSetted', function(event, visualization) {
-          // scope.form.graph = visualization.json.graph;
+          if (visualization) {
+            // Setting X Axis
+            scope.form.graph = visualization.json.graph;
+          }
         });
-
-        // TODO: This behaviour will be needed when graph object will be an array
-        // scope.addYData = function() {
-        //   if (!scope.form.graph.y) {
-        //     scope.form.graph.y = [];
-        //   }
-        //   scope.form.graph.y.push({});
-        // };
-
-        // scope.addXData = function() {
-        //   if (!scope.form.graph.x) {
-        //     scope.form.graph.x = [];
-        //   }
-        //   scope.form.graph.x.push({});
-        // };
 
         // Emits a signal in order to inform to the controller about their availability
         scope.$emit('visualizatorDirectiveReady');
