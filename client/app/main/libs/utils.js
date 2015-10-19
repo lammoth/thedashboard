@@ -1,9 +1,3 @@
-/**
- * HOMER - Responsive Admin Theme
- * Copyright 2015 Webapplayers.com
- *
- */
-
 $(document).ready(function () {
 
     // Add special class to minimalize page elements when screen is less than 768px
@@ -80,7 +74,9 @@ $(window).bind("load", function () {
 
 $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
+    console.log("cosassssssssss");
     setBodySmall();
+    fixWrapperHeight();
 })
 
 function fixWrapperHeight() {
@@ -92,19 +88,19 @@ function fixWrapperHeight() {
     // Set new height when contnet height is less then navigation
     if (contentH < navigationH) {
         $("#wrapper").css("min-height", navigationH + 'px');
-        $("#visualization-chart-editor").css("min-height", navigationH - 240 + 'px');
+        $("#visualization-chart-editor").css("min-height", navigationH - 215 + 'px');
     }
 
     // Set new height when contnet height is less then navigation and navigation is less then window
     if (contentH < navigationH && navigationH < $(window).height()) {
         $("#wrapper").css("min-height", $(window).height() - headerH  + 'px');
-        $("#visualization-chart-editor").css("min-height", $(window).height() - headerH  - 240  + 'px');
+        $("#visualization-chart-editor").css("min-height", $(window).height() - headerH  - 215  + 'px');
     }
 
     // Set new height when contnet is higher then navigation but less then window
     if (contentH > navigationH && contentH < $(window).height()) {
         $("#wrapper").css("min-height", $(window).height() - headerH + 'px');
-        $("#visualization-chart-editor").css("min-height", $(window).height() - headerH - 240 + 'px');
+        $("#visualization-chart-editor").css("min-height", $(window).height() - headerH - 215 + 'px');
     }
 }
 

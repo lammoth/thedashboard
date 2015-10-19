@@ -15,10 +15,14 @@ div.modal.fade.in
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
         button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
           i.fa.fa-floppy-o
-          | &nbsp; Save 
-.row
-  div(ng-controller="VisualizationEditorTabController")
-    .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+          | &nbsp; Save
+div(ng-controller="VisualizationEditorTabController")
+  .row
+    nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round", toggling-method="click")
+      button(mfb-button, icon="ion-record", label="Save", ng-click="saveVisualizationModal()")
+      button(mfb-button, icon="ion-play", label="Run visualization", ng-click="runVisualization()") 
+  .row
+    .col-xs-12
       .hpanel
         tabset
           tab
@@ -30,7 +34,7 @@ div.modal.fade.in
               .panel-body
                 .row
                   .visualizator-container                  
-                    .col-xs-12.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+                    .col-xs-12
                       visualizator-graphic-editor
           tab
             tab-heading
@@ -41,7 +45,7 @@ div.modal.fade.in
               .panel-body
                 .row
                   .visualizator-container
-                    .col-xs-12.col-md-6.col-lg-6.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+                    .col-xs-12.col-md-6.col-lg-6
                       .hpanel.hyellow
                         .panel-heading
                           i.fa.fa-database
@@ -91,14 +95,7 @@ div.modal.fade.in
                                   |             
                                   .panel-body
                                     visualizator-graphic-data(chart="{{chartType}}")
-                              //- div.pull-right
-                              //-   a.btn.btn-info.btn-outline.btn-margin(ng-click="saveVisualizationModal()")
-                              //-     i.fa.fa-floppy-o
-                              //-     | &nbsp; Save 
-                              //-   a.btn.btn-warning2.btn-outline.btn-margin(ng-click="runVisualization()")
-                              //-     i.fa.fa-play
-                              //-     | &nbsp; Run
-                    .col-xs-12.col-md-6.col-lg-6.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
+                    .col-xs-12.col-md-6.col-lg-6
                       .hpanel.hred
                         .panel-heading
                           i.fa.fa-magic
