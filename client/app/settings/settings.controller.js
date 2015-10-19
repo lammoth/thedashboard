@@ -14,6 +14,11 @@ angular.module('thedashboardApp')
       var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
       pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
         $scope.plugins.acquisitors = acquisitorPlugins;
+        $scope.plugins.acquisitorActiveTimeDelay = Plugin.getConfigTimeDelay();
+        $scope.plugins.acquisitorActiveListenRatio = Plugin.getConfigListenRatio();
+        $scope.plugins.acquisitorActiveDataDelayFrom = Plugin.getConfigDataDelayFrom();
+        $scope.plugins.acquisitorActiveDataDelayTo = Plugin.getConfigDataDelayTo();
+        $scope.plugins.acquisitorActiveIndex = Plugin.getAcquisitorIndex();
         $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
         $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
         $scope.plugins.visualizatorActive = Plugin.getVisualizator();
@@ -29,7 +34,7 @@ angular.module('thedashboardApp')
       });
     };
 
-    $scope.visulizatorSelectChange = function() {
+    $scope.visualizatorSelectChange = function() {
       var name = $scope.plugins.visualizatorActive;
       Plugin.setPluginEnable('visualizator', name, function(data) {
       });
@@ -151,7 +156,6 @@ angular.module('thedashboardApp')
     $scope.getIcon = function(visualization) {
       return $scope.visualizatorService.getIcon(visualization.json.chartType);
     }
-
     
   })
   .controller('SettingsTabDataSourcesController', function ($scope, queryService, socket, $injector, $cacheFactory, Plugin, Settings) {
@@ -195,7 +199,7 @@ angular.module('thedashboardApp')
                       action: "updateDatasources",
                       data: taskData.data
                     });
-                    console.log(dataSources);
+                    //console.log(dataSources);
                     // If exists datasources, we get all fields
                     if (dataSources.length > 0) {
                       queryService.createTask(

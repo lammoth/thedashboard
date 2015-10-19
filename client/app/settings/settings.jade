@@ -24,6 +24,43 @@
                         label.control-label Select the acquisition plugin  
                         select.form-control.m-b(ng-model="plugins.acquisitorActive", ng-change="acquisitorSelectChange()")
                           option(ng-repeat="acquisitor in plugins.acquisitors track by $index" ng-selected="{{acquisitor.pluginName == plugins.acquisitorActive}}" value="{{acquisitor.pluginName}}") {{acquisitor.pluginTitle}}
+                      
+                      //- Time Series Config
+                      .form-group
+                        .hpanel
+                          .panel-heading
+                            .panel-tools
+                              a.showhide
+                                i.fa.fa-chevron-up
+                            | Select time series
+                          |             
+                          .panel-body
+                            accordion(close-others="true")
+                              div
+                                accordion-group(heading="Real Time Delay", style="margin-bottom: 5px;")
+                                  div.row
+                                    label.control-label Select the real time delay
+                                    select.form-control.m-b(ng-model="plugins.acquisitorActiveTimeDelay", ng-change="acquisitorSelectChangeDelay()")
+                                      option(ng-repeat="realtime_delay in plugins.acquisitors[plugins.acquisitorActiveIndex].setup.realtime_delay track by $index" ng-selected="{{realtime_delay == plugins.acquisitorActiveDelay}}" value="{{realtime_delay}}") {{realtime_delay}}
+                            
+                              
+                              div
+                                accordion-group(heading="Listen Ratio", style="margin-bottom: 5px;")
+                                  div.row
+                                    label.control-label Select the listen ratio
+                                    select.form-control.m-b(ng-model="plugins.acquisitorActiveListenRatio", ng-change="acquisitorSelectChangeListenRatio()")
+                                      option(ng-repeat="listen_ratio in plugins.acquisitors[plugins.acquisitorActiveIndex].setup.listen_ratio track by $index" ng-selected="{{listen_ratio == plugins.acquisitorActiveListenRatio}}" value="{{listen_ratio}}") {{listen_ratio}}
+                              
+                                div
+                                  accordion-group(heading="Data Delay", style="margin-bottom: 5px;")
+                                    div.row
+                                      label.control-label Select the data delay From
+                                      select.form-control.m-b(ng-model="plugins.acquisitorActiveDataDelayFrom", ng-change="acquisitorSelectChangeDataDelayFrom()")
+                                        option(ng-repeat="data_delay_from in plugins.acquisitors[plugins.acquisitorActiveIndex].setup.data_delay.from track by $index" ng-selected="{{data_delay_from == plugins.acquisitorActiveDataDelayFrom}}" value="{{data_delay_from}}") {{data_delay_from}}
+                                    div.row
+                                      label.control-label Select the data delay To
+                                      select.form-control.m-b(ng-model="plugins.acquisitorActiveDataDelayTo", ng-change="acquisitorSelectChangeDataDelayTo()")
+                                        option(ng-repeat="data_delay_to in plugins.acquisitors[plugins.acquisitorActiveIndex].setup.data_delay.to track by $index" ng-selected="{{data_delay_to == plugins.acquisitorActiveDataDelayTo}}" value="{{data_delay_to}}") {{data_delay_to}}
                   .hpanel.horange
                     .panel-heading
                       .panel-tools

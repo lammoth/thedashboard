@@ -53,6 +53,58 @@ angular.module('thedashboardApp')
           return deferred.promise;
       },
 
+      // Returns setup time for acquisitors
+      // getAcquisitorSetup: function(){
+      //   var plugins = cache.get("plugins"),
+      //       setup = _.last(plugins).setup,
+      //       acquisitorActive = _.find(plugins, {'name':'acquisitor', 'enable': true});
+        
+      //   //console.log(acquisitorActive);
+      //   return _.find(setup, {'name': acquisitorActive.pluginName});
+
+      // },
+
+      getConfigTimeDelay: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins"),
+              valSetup = _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+
+          return valSetup.realtime_delay.toString();
+        }
+        return null;
+      },
+      
+      getConfigListenRatio: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins"),
+              valSetup = _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+
+          return valSetup.listen_ratio.toString();
+        }
+        return null;
+      },
+
+      getConfigDataDelayFrom: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins"),
+              valSetup = _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+         
+          return valSetup.data_delay['from'].toString();
+        }
+        return null;
+      },
+
+      getConfigDataDelayTo: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins"),
+              valSetup = _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+
+          return valSetup.data_delay['to'].toString();
+        }
+        return null;
+      },
+
+
       // Returns the acquisitor plugin active
       getAcquisitor: function() {
           if (cache.get("plugins")) {
@@ -62,6 +114,14 @@ angular.module('thedashboardApp')
           return null;
       },
 
+      getAcquisitorIndex: function() {
+          if (cache.get("plugins")) {
+            var plugins = cache.get("plugins");
+
+            return _.findIndex(_.where(plugins, {"name":"acquisitor"}), {'enable': true});
+          }
+          return null;
+      },
       // Returns all visualizator plugins availables
       getVisualizatorPlugins: function() {
         if (cache.get("plugins")) {

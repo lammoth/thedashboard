@@ -33,14 +33,29 @@ var _ = require('lodash'),
 function isAdmin(user) {
   return config.userRoles.indexOf(user.role) >= config.userRoles.indexOf('admin');
 }
-
+ 
 // Plugins
 // Get plugins info
 exports.pluginsInfo = function(req, res) {
-  PluginModel.find(function (err, data) {
+  PluginModel.find().lean().exec(function (err, data) {
     if(err) { return handleError(res, err); }
-    return res.json(200, {response: "ok", data: data});
+    
+    var setup = [];
+
+    _.forEach(_.where(data, { "name":"acquisitor"}), function(d,k) {
+      setup = _.where(pluginsConfig, {"pluginName": d.pluginName})[0];
+
+      d['setup'] = {
+        'realtime_delay' : setup.config.realtime_delay,
+        'listen_ratio'   : setup.config.listen_ratio,
+        'data_delay'     : setup.config.data_delay
+      };
+
+    });
+
+    return res.json(200, {response: "ok", data: data });
   });
+
 };
 
 // Update plugin

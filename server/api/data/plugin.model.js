@@ -8,7 +8,8 @@ var PluginSchema = new Schema({
   name: String, 
   pluginName: { type: String, unique: true }, 
   pluginTitle: String, 
-  enable: Boolean
+  enable: Boolean,
+  config: Schema.Types.Mixed
 });
 
 PluginSchema.statics.getPluginEnabled = function(type, cb) {
