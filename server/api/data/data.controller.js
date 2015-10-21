@@ -48,7 +48,8 @@ exports.pluginsInfo = function(req, res) {
       d['setup'] = {
         'realtime_delay' : setup.config.realtime_delay,
         'listen_ratio'   : setup.config.listen_ratio,
-        'data_delay'     : setup.config.data_delay
+        'data_delay_from': setup.config.data_delay_from,
+        'data_delay_to'  : setup.config.data_delay_to,
       };
 
     });
@@ -84,6 +85,20 @@ exports.pluginsSetEnable = function(req, res) {
   }
 };
 
+/*
+ * Update Acquisitor time delay config
+ * @query: request
+ * @query: response
+ */
+exports.acquisitorConfigUpdate = function(req, res) {
+
+  var name = req.params.name;
+
+  PluginModel.updatePluginConfig(name, req.body, function(err, config) {
+    if (err) { return handleError(res, err); }
+    return res.json(200, {response: "ok", data: config });
+  });
+};
 
 // Visualizations
 exports.visualization = function(req, res) {

@@ -9,7 +9,13 @@ var PluginSchema = new Schema({
   pluginName: { type: String, unique: true }, 
   pluginTitle: String, 
   enable: Boolean,
-  config: Schema.Types.Mixed
+  config: { 
+    realtime_delay: String,
+    listen_ratio: String,
+    data_delay_from: String,
+    data_delay_to: String
+  }
+  //Schema.Types.Mixed
 });
 
 PluginSchema.statics.getPluginEnabled = function(type, cb) {
@@ -42,10 +48,10 @@ PluginSchema.statics.setPluginEnable = function(type, name, cb) {
             });
           }
         })
+        
       }
     });
 };
-
 
 PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
   var parent = this;
@@ -71,7 +77,7 @@ PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
         var toSave = [];
         _.forEach(idsB, function(plugin, index) {
           if (idsA.indexOf(plugin) === -1) {
-            toSave.push(plugins[index]);    
+            toSave.push(pluginsdata[index]);    
           }
         });
         if (toSave.length) {
@@ -89,6 +95,23 @@ PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
       });
     });
   }
+};
+
+PluginSchema.statics.updatePluginConfig = function(name, value, cb) {
+  this
+    .find({pluginName: name})
+    .exec(function(err, plugins) {
+      if (err) {
+        return cb(err);
+      } else {
+        var configuration = plugins[0].config;
+        for (var attr in value) { configuration[attr] = value[attr];}
+        plugins[0].config = configuration;
+        plugins[0].save(function(err,d) {
+          if(err) console.log(err);
+        });
+      }
+    });
 };
 
 var Plugin = mongoose.model('Plugin', PluginSchema);

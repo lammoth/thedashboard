@@ -10,6 +10,7 @@ var router = express.Router();
 // router.get('/sources/:name', controller.sources);
 router.get('/plugins/info', controller.pluginsInfo);
 router.post('/plugins/enable/:type/:name', controller.pluginsSetEnable);
+router.post('/plugins/update/acquisitor/:name', controller.acquisitorConfigUpdate)
 // router.post('/plugins', controller.config);
 // router.put('/plugins', controller.config);
 

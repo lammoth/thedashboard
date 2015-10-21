@@ -25,14 +25,12 @@ var plugins = [
         driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
       },
       // Waiting seconds to listen new events
-      realtime_delay: { "10": 10, "20": 20, "30": 30, "60": 60},
-      listen_ratio: {"1":1,"2":2,"3":3,"4":4,"5":5},
+      realtime_delay: [10, 20, 30, 60],
+      listen_ratio: [1, 2, 3, 4, 5],
 
       // Error margin to use data saved in the persistor (in hours)
-      data_delay: {
-        from: {"1":1, "2":2, "3":3, "5":5, "10":10, "24":24},
-        to: {"1":1, "2":2, "3":3, "5":5, "10":10, "24":24}
-      }
+      data_delay_from: [1, 2, 3, 5, 10, 24],
+      data_delay_to: [1, 2, 3, 5, 10, 24]
     }
   },
   {
@@ -60,14 +58,12 @@ var plugins = [
       user: 'root',
       password: '',
       // Waiting seconds to listen new events
-      realtime_delay: { "11": 11, "22": 22, "33": 33, "66": 66},
-      listen_ratio: {"1":1,"2":2,"3":3,"4":4,"5":5},
-
+      // Waiting seconds to listen new events
+      realtime_delay: [10, 20, 30, 60],
+      listen_ratio: [1, 2, 3, 4, 5],
       // Error margin to use data saved in the persistor (in hours)
-      data_delay: {
-        from: {"1":1, "2":2, "3":3, "5":5, "10":10, "24":24},
-        to: {"1":1, "2":2, "3":3, "5":5, "10":10, "24":24}
-      }
+      data_delay_from: [1, 2, 3, 5, 10, 24],
+      data_delay_to: [1, 2, 3, 5, 10, 24]
     }
   },
   {

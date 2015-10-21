@@ -14,11 +14,6 @@ angular.module('thedashboardApp')
       var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
       pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
         $scope.plugins.acquisitors = acquisitorPlugins;
-        $scope.plugins.acquisitorActiveTimeDelay = Plugin.getConfigTimeDelay();
-        $scope.plugins.acquisitorActiveListenRatio = Plugin.getConfigListenRatio();
-        $scope.plugins.acquisitorActiveDataDelayFrom = Plugin.getConfigDataDelayFrom();
-        $scope.plugins.acquisitorActiveDataDelayTo = Plugin.getConfigDataDelayTo();
-        $scope.plugins.acquisitorActiveIndex = Plugin.getAcquisitorIndex();
         $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
         $scope.plugins.visualizators = Plugin.getVisualizatorPlugins();
         $scope.plugins.visualizatorActive = Plugin.getVisualizator();
@@ -33,6 +28,12 @@ angular.module('thedashboardApp')
       Plugin.setPluginEnable('acquisitor', name, function(data) {
       });
     };
+
+    $scope.acquisitorSetConfig = function(field, value) {
+      var name = $scope.plugins.acquisitorActive;
+      Plugin.setPluginConfig(name, field, value, function(data){
+      });
+    }
 
     $scope.visualizatorSelectChange = function() {
       var name = $scope.plugins.visualizatorActive;
