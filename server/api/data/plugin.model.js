@@ -97,20 +97,21 @@ PluginSchema.statics.checkAndUpdate = function(plugins, cb) {
   }
 };
 
+
 PluginSchema.statics.updatePluginConfig = function(name, value, cb) {
   this
     .find({pluginName: name})
     .exec(function(err, plugins) {
-      if (err) {
-        return cb(err);
-      } else {
-        var configuration = plugins[0].config;
-        for (var attr in value) { configuration[attr] = value[attr];}
-        plugins[0].config = configuration;
-        plugins[0].save(function(err,d) {
-          if(err) console.log(err);
-        });
-      }
+      if (err) { return cb(err); }
+
+      var configuration = plugins[0].config;
+      for (var attr in value) { configuration[attr] = value[attr];}
+      plugins[0].config = configuration;
+      plugins[0].save(function(err,d) {
+        if(err) console.log(err);
+      });
+
+      cb();
     });
 };
 

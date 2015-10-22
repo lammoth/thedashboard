@@ -6,7 +6,7 @@ angular.module('thedashboardApp')
 
     // Get enable plugins
     function prepareData(cb) {
-      
+
       var deferred = $q.defer();
 
       $http.get(apiPrefix + '/data/plugins/info', {}).
@@ -24,7 +24,7 @@ angular.module('thedashboardApp')
     return {
       cache: cache,
 
-      // Requests broker
+    // Requests broker
       broker: function(name) {
         if (!cache.get("plugins")) {
           var promise = prepareData(this[name]);
@@ -65,7 +65,6 @@ angular.module('thedashboardApp')
       getAcquisitorIndex: function() {
           if (cache.get("plugins")) {
             var plugins = cache.get("plugins");
-
             return _.findIndex(_.where(plugins, {"name":"acquisitor"}), {'enable': true});
           }
           return null;
@@ -139,9 +138,9 @@ angular.module('thedashboardApp')
 
         $http.post(apiPrefix + '/data/plugins/update/acquisitor/' + name, setup)
           .success(function(data) {
-            console.log("srv: " + data);
             return cb(data);
-          }).error(function(err) {
+          })
+          .error(function(err) {
             return cb(err);
           });
       }

@@ -41,11 +41,11 @@ exports.pluginsInfo = function(req, res) {
     if(err) { return handleError(res, err); }
     
     var setup = [];
+    //console.log(req.app.get('plugins'));
+    _.forEach(_.where(data, { "name":"acquisitor"}), function(acquisitor,key) {
+      setup = _.where(req.app.get('plugins'), {"pluginName": acquisitor.pluginName})[0];
 
-    _.forEach(_.where(data, { "name":"acquisitor"}), function(d,k) {
-      setup = _.where(pluginsConfig, {"pluginName": d.pluginName})[0];
-
-      d['setup'] = {
+      acquisitor['setup'] = {
         'realtime_delay' : setup.config.realtime_delay,
         'listen_ratio'   : setup.config.listen_ratio,
         'data_delay_from': setup.config.data_delay_from,
