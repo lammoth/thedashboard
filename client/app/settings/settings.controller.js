@@ -19,6 +19,8 @@ angular.module('thedashboardApp')
         $scope.plugins.visualizatorActive = Plugin.getVisualizator();
         $scope.plugins.eventors = Plugin.getEventorPlugins();
         $scope.plugins.eventorActive = Plugin.getEventor();
+        $scope.plugins.acquisitorSetup = Plugin.getAcquisitorSetup();
+        $scope.plugins.acquisitorConfig = Plugin.getAcquisitorConfig();
         $scope.visualizatorService = $injector.get($scope.plugins.visualizatorActive + "Visualizator");
       });
     }

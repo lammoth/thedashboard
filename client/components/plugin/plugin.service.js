@@ -62,13 +62,22 @@ angular.module('thedashboardApp')
           return null;
       },
 
-      getAcquisitorIndex: function() {
+      getAcquisitorSetup: function() {
           if (cache.get("plugins")) {
             var plugins = cache.get("plugins");
-            return _.findIndex(_.where(plugins, {"name":"acquisitor"}), {'enable': true});
+            return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'setup');
           }
           return null;
       },
+
+      getAcquisitorConfig: function() {
+          if (cache.get("plugins")) {
+            var plugins = cache.get("plugins");
+            return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+          }
+          return null;
+      },
+
       // Returns all visualizator plugins availables
       getVisualizatorPlugins: function() {
         if (cache.get("plugins")) {
