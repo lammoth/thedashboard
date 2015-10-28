@@ -132,6 +132,7 @@ angular.module('thedashboardApp')
 
       // Set enable only one plugin of the type
       setPluginEnable: function(type, name, cb) {
+        cache.remove("plugins")
         $http.post(apiPrefix + '/data/plugins/enable/' + type + '/' + name)
           .success(function(data) {
             return cb(data);

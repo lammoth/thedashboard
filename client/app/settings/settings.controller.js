@@ -28,6 +28,7 @@ angular.module('thedashboardApp')
     $scope.acquisitorSelectChange = function() {
       var name = $scope.plugins.acquisitorActive;
       Plugin.setPluginEnable('acquisitor', name, function(data) {
+        initTabPlugins();
       });
     };
 
