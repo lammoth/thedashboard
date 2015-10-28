@@ -5,17 +5,26 @@ div.modal.fade.in
         div.color-line
       div.modal-header.text-center
         h3.modal-title Save visualization
-      div.modal-body
+      div.modal-body(ng-if="!visualization")
         div.row
           div.col-xs-12
             .form-group
               label.control-label Visualization name
               input.form-control(type="text", ng-model="visualizationName")
-      div.modal-footer
+      div.modal-body(ng-if="visualization")
+        div.row
+          div.col-xs-12
+            p.text-center Do you update the visualization?
+      div.modal-footer(ng-if="!visualization")
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
         button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
           i.fa.fa-floppy-o
           | &nbsp; Save
+      div.modal-footer(ng-if="visualization")
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
+          i.fa.fa-cloud-upload
+          | &nbsp; Update    
 div(ng-controller="VisualizationEditorTabController")
   .row
     nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round", toggling-method="click")

@@ -25,7 +25,10 @@ angular.module('thedashboardApp')
       scope: false,
       link: function (scope, element, attrs) {
         scope.$on('currentVisualizationSetted', function(event, visualization) {
-          // scope.form = visualization.json;
+          if (visualization) {
+            // Setting X Axis
+            scope.graphicOptions = visualization.graphicOptions;
+          }
         });
 
         scope.changeGraphicOptions = function(options, model) {

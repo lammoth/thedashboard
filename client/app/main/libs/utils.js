@@ -74,7 +74,6 @@ $(window).bind("load", function () {
 
 $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
-    console.log("cosassssssssss");
     setBodySmall();
     fixWrapperHeight();
 })

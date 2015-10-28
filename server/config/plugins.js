@@ -14,7 +14,7 @@ var plugins = [
     active: true, 
     config: {
       jdbc: {
-        url: 'jdbc:phoenix:10.128.19.60',
+        url: 'jdbc:phoenix:10.128.19.58',
         minpoolsize: 10,
         maxpoolsize: 100,
         user: '',
