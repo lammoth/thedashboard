@@ -153,6 +153,17 @@ angular.module('thedashboardApp')
     $scope.$on('saveVisualization', function(event, visualizationName) {
       if ($scope.visualizatorService.hasGraph()) {
         if (!$stateParams.id) {
+          var test = {
+              name: visualizationName,
+              type: $scope.form.datasource.name,
+              query: query,
+              json: $scope.form,
+              visualizatorPlugin: $scope.visualizatorService.name,
+              acquisitorPlugin: $scope.acquisitorService.name,
+              graph: $scope.visualizatorService.hasGraph(),
+              graphicOptions: $scope.graphicOptions
+            };
+          console.log(test);
           queryService.saveData(
             'visualizations',
             {

@@ -42,7 +42,7 @@ function visualizationQuery(parent, queryData, task, cb) {
     });
   })
   // Emitting an event in order to refresh the web visualization
-  .then(function(){
+  .then(function() {
     cb();
   });
 }

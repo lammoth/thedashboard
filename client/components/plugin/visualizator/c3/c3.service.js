@@ -45,6 +45,9 @@ angular.module('thedashboardApp')
           case "rotateXText":
             this.rotateText(model, 'x');
             break;
+          case "changePercentage":
+            this.rotateText(model);
+            break;
         }
       },
       transform: function(chart, to) {
@@ -104,6 +107,19 @@ angular.module('thedashboardApp')
               delete graph.axis.x.tick;
             }
           }
+        }
+      },
+      changePercentage: function(option) {
+        if (Boolean(parseInt(option))) {
+          graph.pie = {
+            label: {
+              format: function (value, ratio, id) {
+                return d3.format('$')(value);
+              }
+            }
+          }
+        } else {
+          graph.pie = {};
         }
       },
       getIcon: function(chartType) {
