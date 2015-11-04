@@ -9,6 +9,7 @@ angular.module('thedashboardApp')
       console.log('From:', TimeFilter.from());
       console.log('To  :', TimeFilter.to());
       // TODO: update charts with this from and to
+      queryService.setTimeRange({from: TimeFilter.from(), to: TimeFilter.to()});
       $scope.timeFilterText = $scope.quick.name;
     }
 
@@ -17,6 +18,7 @@ angular.module('thedashboardApp')
       console.log('To  :', TimeFilter.to());
       // TODO: update charts with this from and to
       var humanFormat = 'MMMM Do YYYY, hh:mm:ss'
+      queryService.setTimeRange({from: TimeFilter.from(), to: TimeFilter.to()});
       $scope.timeFilterText = moment(TimeFilter.from()).format(humanFormat) + ' to ' + moment(TimeFilter.to()).format(humanFormat);
     }
 

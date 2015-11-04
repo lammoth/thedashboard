@@ -2,6 +2,7 @@
 
 angular.module('thedashboardApp')
   .service('queryService', function ($http, socket) {
+    var timeData = []
     return {
         // Creates a task in the backend and returns the task id 
         createTask: function(type, subtype, data, cb) {
@@ -88,5 +89,13 @@ angular.module('thedashboardApp')
               console.log(err);
             });  
         },
+
+        setTimeRange: function(timeRange) {
+          timeData = timeRange;
+        },
+
+        getTimeRange: function() {
+          return timeData;
+        }
     };
   });

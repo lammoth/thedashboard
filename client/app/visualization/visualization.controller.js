@@ -97,6 +97,7 @@ angular.module('thedashboardApp')
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
+      $scope.form.where = queryService.getTimeRange();
       queryService.createTask(
         'query',
         'visualization',
