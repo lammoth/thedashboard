@@ -14,14 +14,19 @@ var plugins = [
     active: true, 
     config: {
       jdbc: {
-        url: 'jdbc:phoenix:10.128.19.58',
+        url: 'jdbc:phoenix:10.128.19.62',
         minpoolsize: 10,
         maxpoolsize: 100,
         user: '',
         password: ''
       },
       java: {
-        libPath: path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
+        libPath: [
+          path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'phoenix-4.5.0-HBase-1.0-client.jar'),
+          path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'hadoop-common-2.6.0.jar'),
+          path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'hadoop-hdfs-2.6.0.jar'),
+          path.join(config.root, 'server', 'plugins', 'acquisitor', 'phoenix', 'jar', 'hbase-site.xml')
+        ],
         driverName: 'org.apache.phoenix.jdbc.PhoenixDriver',
       }
     }
