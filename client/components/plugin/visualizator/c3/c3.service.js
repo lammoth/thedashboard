@@ -45,6 +45,9 @@ angular.module('thedashboardApp')
           case "rotateXText":
             this.rotateText(model, 'x');
             break;
+          case "changePercentage":
+            this.rotateText(model);
+            break;
         }
       },
       transform: function(chart, to) {
@@ -106,6 +109,19 @@ angular.module('thedashboardApp')
           }
         }
       },
+      changePercentage: function(option) {
+        if (Boolean(parseInt(option))) {
+          graph.pie = {
+            label: {
+              format: function (value, ratio, id) {
+                return d3.format('$')(value);
+              }
+            }
+          }
+        } else {
+          graph.pie = {};
+        }
+      },
       getIcon: function(chartType) {
         switch(chartType) {
           case 'area':
@@ -115,9 +131,34 @@ angular.module('thedashboardApp')
             return 'fa fa-bar-chart';
             break;
           case 'pie':
-            return 'fa fa-pie-chart'
+            return 'fa fa-pie-chart';
+            break;
+          case 'donut':
+            return 'fa fa-circle-o';
+            break;
+          case 'plot':
+            return 'fa fa-th';
+            break;
+          case 'line':
+            return 'fa fa-line-chart';
+            break;
+          case 'gauge':
+            return 'fa fa-tachometer';
             break;
         }
+      },
+      // It's important respect the order
+      // The order is specified in the "getVisualizatorChartsAvailables" Plugin method 
+      getChartsAvailables: function() {
+        return [
+          {name: 'area', icon: this.getIcon('area')}, 
+          {name: 'bar', icon: this.getIcon('bar')},
+          {name: 'pie', icon: this.getIcon('pie')},
+          {name: 'donut', icon: this.getIcon('donut')},
+          {name: 'plot', icon: this.getIcon('plot')},
+          {name: 'line', icon: this.getIcon('line')},
+          {name: 'gauge', icon: this.getIcon('gauge')}
+        ];
       }
     };
   });

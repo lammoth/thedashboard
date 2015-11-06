@@ -10,7 +10,8 @@ var VisualizationSchema = new Schema({
   query: String,
   json: Mixed,
   visualizatorPlugin: String,
-  acquisitorPlugin: String
+  acquisitorPlugin: String,
+  graphicOptions: Mixed
 });
 
 module.exports = mongoose.model('Visualization', VisualizationSchema);

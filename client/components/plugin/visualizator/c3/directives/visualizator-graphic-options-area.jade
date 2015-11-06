@@ -1,0 +1,43 @@
+visualizator-graphic-options-bar-c3
+  .row
+    .col-xs-12
+      .form-group
+        label.control-label Allow stacked mode
+        select.form-control.m-b(
+          ng-model="graphicOptions.stacked", 
+          ng-change="changeGraphicOptions({option: 'stack', restart: true}, graphicOptions.stacked)",
+        )
+          option(value=1) Yes
+          option(value=0) No
+      .form-group
+        label.control-label Allow zoom
+        select.form-control.m-b(
+          ng-model="graphicOptions.zoom", 
+          ng-change="changeGraphicOptions({option: 'zoom', restart: true}, graphicOptions.zoom)",
+        )
+          option(value=1) Yes
+          option(value=0) No
+      .form-group
+        label.control-label Allow grid
+        select.form-control.m-b(
+          ng-model="graphicOptions.grid", 
+          ng-change="changeGraphicOptions({option: 'grid', restart: true}, graphicOptions.grid)",
+        )
+          option(value=1) Yes
+          option(value=0) No
+      .form-group
+        label.control-label Allow rotate
+        select.form-control.m-b(
+          ng-model="graphicOptions.rotate", 
+          ng-change="changeGraphicOptions({option: 'rotate', restart: true}, graphicOptions.rotate)",
+        )
+          option(value=1) Yes
+          option(value=0) No
+      .form-group
+        label.control-label Allow X axis text rotate
+        select.form-control.m-b(
+          ng-model="graphicOptions.rotateXText", 
+          ng-change="changeGraphicOptions({option: 'rotateXText', restart: true}, graphicOptions.rotateXText)",
+        )
+          option(value=1) Yes
+          option(value=0) No

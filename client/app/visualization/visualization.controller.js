@@ -3,9 +3,24 @@
 angular.module('thedashboardApp')
   .controller('VisualizationCtrl', function ($scope, $state) {
   })
-  .controller('VisualizationNewCtrl', function ($scope, $rootScope) {
+  .controller('VisualizationNewCtrl', function ($scope, $rootScope, Plugin) {
     $rootScope.sectionName = "Visualizations";
     $rootScope.sectionDescription = "Create a new visualization";
+
+    var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+    pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+      $scope.visualizatorService = Plugin.getVisualizatorInstance();
+      $scope.charts = [];
+      _.forEach(Plugin.getVisualizatorInstance().getChartsAvailables(), function(chart) {
+        if (!chart.title) {
+          chart.title = _.first(_.filter(Plugin.getVisualizatorChartsAvailables(), {name: chart.name})).title;
+        }
+        if (!chart.description) {
+          chart.description = _.first(_.filter(Plugin.getVisualizatorChartsAvailables(), {name: chart.name})).description;
+        }
+        $scope.charts.push(chart);
+      });
+    });
   })
   .controller('VisualizationOpenCtrl', function ($scope, $rootScope, $cacheFactory, Plugin, $http, $injector, Settings) {
     $rootScope.sectionName = "Visualizations";
@@ -53,7 +68,12 @@ angular.module('thedashboardApp')
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'ModalVisualizationSaveContent.html',
-        controller: 'ModalSaveInstanceController'
+        controller: 'ModalSaveInstanceController',
+        resolve: {
+          visualization: function () {
+            return $stateParams.id;
+          }
+        }
       });
 
       modalInstance.result.then(function (data) {
@@ -67,6 +87,7 @@ angular.module('thedashboardApp')
     $scope.form = {};
     $scope.form.fields = {};
     $scope.form.chartType = $scope.$parent.chartType;
+    $scope.graphicOptions = {};
     var query = null;
 
     getDatasources();
@@ -131,26 +152,47 @@ angular.module('thedashboardApp')
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
       if ($scope.visualizatorService.hasGraph()) {
-        queryService.saveData(
-          'visualizations',
-          {
-            name: visualizationName,
-            type: $scope.form.datasource.name,
-            query: query,
-            json: $scope.form,
-            visualizatorPlugin: $scope.visualizatorService.name,
-            acquisitorPlugin: $scope.acquisitorService.name,
-            graph: $scope.visualizatorService.hasGraph()
-          },
-          function(){}
-        );
+        if (!$stateParams.id) {
+          queryService.saveData(
+            'visualizations',
+            {
+              name: visualizationName,
+              type: $scope.form.datasource.name,
+              query: query,
+              json: $scope.form,
+              visualizatorPlugin: $scope.visualizatorService.name,
+              acquisitorPlugin: $scope.acquisitorService.name,
+              graph: $scope.visualizatorService.hasGraph(),
+              graphicOptions: $scope.graphicOptions
+            },
+            function(){}
+          );
+        } else {
+          queryService.updateData(
+            'visualizations',
+            {
+              name: $scope.currentVisualization.name,
+              type: $scope.form.datasource.name,
+              query: query,
+              json: $scope.form,
+              visualizatorPlugin: $scope.visualizatorService.name,
+              acquisitorPlugin: $scope.acquisitorService.name,
+              graph: $scope.visualizatorService.hasGraph(),
+              graphicOptions: $scope.graphicOptions
+            },
+            $stateParams.id,
+            function(){}
+          );
+        }
       }
     });
 
   })
-  .controller('ModalSaveInstanceController', function ($scope, $modalInstance) {
+  .controller('ModalSaveInstanceController', function ($scope, $modalInstance, visualization) {
+    $scope.visualization = visualization;
+    $scope.input = {};
     $scope.save = function() {
-      $modalInstance.close($scope.visualizationName);
+      $modalInstance.close($scope.input.visualizationName);
     };
 
     $scope.cancel = function() {

@@ -86,6 +86,8 @@ angular.module('thedashboardApp')
             element.append($compile(html)(scope));
             var childrenEl = element.children()[1]
             $compile(childrenEl)(scope);
+            // Set minimal height of #wrapper to fit the window
+            fixWrapperHeight();
           });
         }
       }

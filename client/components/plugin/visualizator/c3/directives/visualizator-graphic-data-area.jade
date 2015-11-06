@@ -1,0 +1,14 @@
+visualizator-graphic-data-area-c3
+  accordion(close-others="true")
+    accordion-group(heading="Y-Axis")
+      div.row
+        div.col-xs-12
+          .form-group
+            label.control-label Y Data    
+            select.form-control.m-b(ng-model="form.graph.y.field", ng-options="field.name for field in fields = selectedFields.concat(extraFields) track by field.name")
+    accordion-group(heading="X-Axis")
+      div.row
+        div.col-xs-12
+          .form-group
+            label.control-label X Data    
+            select.form-control.m-b(ng-model="form.graph.x.field", ng-options="field.name for field in fields = selectedFields.concat(extraFields) track by field.name")
