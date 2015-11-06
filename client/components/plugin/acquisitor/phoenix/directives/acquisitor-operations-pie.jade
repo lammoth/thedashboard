@@ -1,0 +1,74 @@
+acquisitor-operations-pie-phoenix
+  accordion(close-others="true")
+    accordion-group(heading="Aggregations")
+      div.row
+        div.col-xs-12
+          div(ng-if="form.aggregations.length > 0")
+            accordion(close-others="true")
+              div(ng-repeat="aggregation in form.aggregations")
+                accordion-group(heading="{{ 'Aggregation ' + $index}}", style="margin-bottom: 5px;")
+                  div.row
+                    div.col-xs-12
+                      .form-group
+                        label.control-label Aggregation
+                        select.form-control.m-b(ng-model="form.aggregations[$index].type", ng-options="aggType.type for aggType in acquisitorService.aggregationTypes track by aggType.type", ng-change="updateExtraFields()")
+                      .form-group
+                        label.control-label Field      
+                        select.form-control.m-b(ng-model="form.aggregations[$index].field", ng-options="aggField.name for aggField in form.datasource.fields track by aggField.name", ng-change="updateExtraFields()")
+                      .form-group
+                        label.control-label Name
+                        input.form-control.m-b(type="text", placeholder="Aggregation 1", ng-model="form.aggregations[$index].name", ng-change="updateExtraFields()")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.aggregations, $index)")
+                        i.fa.fa-trash-o
+                        | &nbsp; Delete
+        div.col-xs-12(style="margin-top: 10px;")
+          a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addAggregation()")
+            i.fa.fa-plus-circle
+            | &nbsp; Add new
+    accordion-group(heading="Groups")
+      div.row
+         div.col-xs-12
+          div(ng-if="form.groups.length > 0")
+            accordion(close-others="true")
+              div(ng-repeat="group in form.groups")
+                accordion-group(heading="{{ 'Group ' + $index}}", style="margin-bottom: 5px;")
+                  div.row
+                    div.col-xs-12
+                      .form-group
+                        label.control-label Group by      
+                        select.form-control.m-b(ng-model="form.groups[$index].field", ng-options="field.name for field in fields = form.datasource.fields.concat(extraFields) track by field.name")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.groups, $index)")
+                          i.fa.fa-trash-o
+                          | &nbsp; Delete
+        div.col-xs-12(style="margin-top: 10px;")
+          a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addGroup()")
+            i.fa.fa-plus-circle
+            | &nbsp; Add new
+    accordion-group(heading="Orders")
+      div.row
+        div.col-xs-12
+          div(ng-if="form.orders.length > 0")
+            accordion(close-others="true")
+              div(ng-repeat="order in form.orders")
+                accordion-group(heading="{{ 'Order ' + $index}}", style="margin-bottom: 5px;")
+                  div.row
+                    div.col-xs-12
+                      .form-group
+                        label.control-label Order by      
+                        select.form-control.m-b(ng-model="form.orders[$index].field", ng-options="field.name for field in fields = form.datasource.fields.concat(extraFields) track by field.name")
+                      .form-group
+                        label.control-label Type
+                        select.form-control.m-b(ng-model="form.orders[$index].type", ng-options="orderType for orderType in acquisitorService.orderTypes track by orderType")
+                      a.btn.btn-danger.btn-outline.btn-block.btn-sm(ng-click="deleteElement(form.orders, $index)")
+                        i.fa.fa-trash-o
+                        | &nbsp; Delete
+        div.col-xs-12
+          a.btn.btn-default.btn-outline.btn-block.btn-sm(ng-click="addOrder()")
+            i.fa.fa-plus-circle
+            | &nbsp; Add new
+    accordion-group(heading="Limit")
+      div.row
+        div.col-xs-12
+          .form-group
+            label.control-label Limit results
+            input.form-control(type="number", ng-model="form.limit")

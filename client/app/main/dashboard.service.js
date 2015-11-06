@@ -32,7 +32,6 @@ angular.module('thedashboardApp')
                 queryService.getTaskData(
                   data.job,
                   function(taskData) {
-                    console.log(visualizatorService);
                     visualizatorService.data(taskData.data.visualization);
                     visualizatorService.onresize = function(){resize(visualization._id)};
                     visualizatorService.bind('#vis-' + visualization._id);

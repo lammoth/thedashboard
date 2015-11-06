@@ -206,10 +206,10 @@ angular.module('thedashboardApp')
 
     if ($stateParams.id) {
       $scope.selectedDashboard = false;
-      var visualizatorPromise = Plugin.broker('getVisualizator');
 
-      visualizatorPromise.then(function(visualizator) {
-        var visualizatorService = $injector.get(visualizator + "Visualizator");
+      var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+      pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
+        var visualizatorService = $injector.get(Plugin.getVisualizator() + "Visualizator");
         var dashboardPromise = DashboardService.loadDashboardVisualizations($stateParams.id, visualizatorService);
         dashboardPromise.then(function(items) {
           $scope.items = items;

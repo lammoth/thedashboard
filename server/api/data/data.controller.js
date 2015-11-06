@@ -102,26 +102,39 @@ exports.acquisitorConfigUpdate = function(req, res) {
 
 // Visualizations
 exports.visualization = function(req, res) {
-  VisualizationModel.create(req.body.data, function(err, data) {
-    if(err) { return handleError(res, err); }
-    var persistor = req.app.get('persistor');
-    var persistorData = {
-      graph: req.body.data.graph,
-      type: req.body.data.json.chartType,
-      ds: req.body.data.json.datasource.name,
-      // TODO: Check if name is unique
-      name: req.body.data.name,
-      id: data._id,
-      time: {
-        to: null,
-        from: null
-      },
-      query: req.body.data.query
-    }
-    persistor.saveVisualization(persistorData).then(function() {
-      return res.json(201, {response: "ok", data: data});
+  if (req.method == 'POST') {
+    VisualizationModel.create(req.body.data, function(err, data) {
+      if(err) { return handleError(res, err); }
+      var persistor = req.app.get('persistor');
+      var persistorData = {
+        graph: req.body.data.graph,
+        type: req.body.data.json.chartType,
+        ds: req.body.data.json.datasource.name,
+        // TODO: Check if name is unique
+        name: req.body.data.name,
+        id: data._id,
+        time: {
+          to: null,
+          from: null
+        },
+        query: req.body.data.query
+      }
+      persistor.saveVisualization(persistorData).then(function() {
+        return res.json(201, {response: "ok", data: data});
+      });
     });
-  });
+  } else if (req.method == 'PUT') {
+    VisualizationModel.findByIdAndUpdate(
+      req.params.id, 
+      { 
+        $set: req.body.data
+      },
+      function (err, data) {
+        if (err) return handleError(err);
+        return res.json(201, {response: "ok", data: data});
+      }
+    );
+  }
 };
 
 /*
@@ -131,16 +144,35 @@ exports.visualization = function(req, res) {
  * @query: acquisitor (optional)
  */
 exports.visualizations = function(req, res) {
-  var q = {};
-  if (req.query.visualizator && req.query.acquisitor) {
-    q.visualizatorPlugin = req.query.visualizator;
-    q.acquisitorPlugin = req.query.acquisitor;
-  }
-  if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
-    VisualizationModel.find(q, function(err, data) {
-      if(err) { return handleError(res, err); }
-      return res.json(201, {response: "ok", data: data});
-    });
+  // var q = {};
+  // if (req.query.visualizator && req.query.acquisitor) {
+  //   q.visualizatorPlugin = req.query.visualizator;
+  //   q.acquisitorPlugin = req.query.acquisitor;
+  // }
+  // if (isAdmin(req.user) || (req.query.visualizator && req.query.acquisitor)) {
+  //   VisualizationModel.find(q, function(err, data) {
+  //     if(err) { return handleError(res, err); }
+  //     return res.json(201, {response: "ok", data: data});
+  //   });
+  // } else {
+  //   return res.json(401);
+  // }
+  if (isAdmin(req.user)) {
+    if (_.isEmpty(req.query)) {
+      VisualizationModel
+        .find()
+        .exec(function(err, data) {
+          if(err) { return handleError(res, err); }
+          return res.json(201, {response: "ok", data: data});
+        });
+    } else {
+      VisualizationModel
+      .findOne(req.query)
+      .exec(function(err, data) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, {response: "ok", data: data});
+      });
+    }
   } else {
     return res.json(401);
   }

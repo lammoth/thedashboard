@@ -142,9 +142,9 @@ QueryReq.prototype.execQuery = function(data) {
             if (err) {
               console.log(err);
             } else {
-              Benchmark.stopBenchmark();
-              console.log(Benchmark.result()/1000);
               resultset.toObjArray(function(err, results) {
+                Benchmark.stopBenchmark();
+                console.log(Benchmark.result()/1000);
                 deferred.resolve(results);
               });
             }

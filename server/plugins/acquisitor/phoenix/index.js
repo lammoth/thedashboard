@@ -22,7 +22,7 @@ function PhoenixPlugin(acquisitor, config) {
 
   if (!jinst.isJvmCreated()) {
     jinst.addOption("-Xrs");
-    jinst.setupClasspath([this.config.java.libPath]);
+    jinst.setupClasspath(this.config.java.libPath);
   }
 
   this.connection = new Pool(this.config.jdbc);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('thedashboardApp')
-  .factory('Plugin', function Plugin($http, $q, $cacheFactory) {
+  .factory('Plugin', function Plugin($http, $q, $cacheFactory, $injector) {
     var cache = $cacheFactory('Plugin');
 
     // Get enable plugins
@@ -34,6 +34,8 @@ angular.module('thedashboardApp')
         }
       },
 
+      // TODO: This must be improved, always must call to this method in order
+      // to work with Plugin service methods
       // Returns all acquisitor plugins availables
       getAcquisitorPlugins: function(deferred) {
         ((!deferred) ? deferred = $q.defer() : deferred = deferred);
@@ -62,20 +64,25 @@ angular.module('thedashboardApp')
           return null;
       },
 
-      getAcquisitorSetup: function() {
-          if (cache.get("plugins")) {
-            var plugins = cache.get("plugins");
-            return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'setup');
-          }
-          return null;
+      // Set current acquisitor service instance
+      // CAUTION: This method is valid only for the visualizator editor screen
+      setAcquisitorInstance: function() {
+        if (cache.get("acquisitorService")) {
+          return cache.get("acquisitorService");
+        } else {
+          cache.put("acquisitorService", $injector.get(this.getAcquisitor() + "Acquisitor"));
+          return cache.get("acquisitorService");
+        }
       },
 
-      getAcquisitorConfig: function() {
-          if (cache.get("plugins")) {
-            var plugins = cache.get("plugins");
-            return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
-          }
-          return null;
+      // Get current setAcquisitorInstance service instance
+      // CAUTION: This method is valid only for the visualizator editor screen
+      getAcquisitorInstance: function() {
+        if (cache.get("acquisitorService")) {
+          return cache.get("acquisitorService");
+        } else {
+          return this.setAcquisitorInstance();
+        }
       },
 
       // Returns all visualizator plugins availables
@@ -97,11 +104,32 @@ angular.module('thedashboardApp')
 
       // Returns the visualizator plugin active
       getVisualizator: function() {
-          if (cache.get("plugins")) {
-            var plugins = cache.get("plugins");
-            return _.result(_.find(plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
-          }
-          return null;
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins");
+          return _.result(_.find(plugins, {'name': 'visualizator', 'enable': true}), 'pluginName');
+        }
+        return null;
+      },
+
+      // Set current visualizator service instance
+      // CAUTION: This method is valid only for the visualizator editor screen
+      setVisualizatorInstance: function() {
+        if (cache.get("visualizatorService")) {
+          return cache.get("visualizatorService");
+        } else {
+          cache.put("visualizatorService", $injector.get(this.getVisualizator() + "Visualizator"));
+          return cache.get("visualizatorService");
+        }
+      },
+
+      // Get current visualizator service instance
+      // CAUTION: This method is valid only for the visualizator editor screen
+      getVisualizatorInstance: function() {
+        if (cache.get("visualizatorService")) {
+          return cache.get("visualizatorService");
+        } else {
+          return this.setVisualizatorInstance();
+        }
       },
 
       // Returns all eventor plugins availables
@@ -153,6 +181,21 @@ angular.module('thedashboardApp')
           .error(function(err) {
             return cb(err);
           });
+
+      // Returns the visualizator's charts supported
+      // This result must be contracted with the charts of visualizator selected
+      // The order is mandatory
+      getVisualizatorChartsAvailables: function() {
+        return [
+          {name: 'area', icon: 'fa fa-area-chart', title: 'Area chart', description: 'Great for stacked timelines in which the total of all series is more important than comparing any two or more series.'}, 
+          {name: 'bar', icon: 'fa fa-bar-chart', title: 'Vertical bar chart', description: 'The goto chart for oh-so-many needs. Great for time and non-time data. Stacked or grouped, exact numbers or percentages. If you are not sure which chart your need, you could do worse than to start here.'}, 
+          {name: 'pie', icon: 'fa fa-pie-chart', title: 'Pie chart', description: 'Pie charts are ideal for displaying the parts of some whole. For example, sales percentages by department.Pro Tip: Pie charts are best used sparingly, and with no more than 7 slices per pie.'}, 
+          {name: 'donut', icon: 'fa fa-circle-o', title: 'Donut chart', description: 'A donut chart description'},
+          {name: 'plot', icon: 'fa fa-th', title: 'Plot chart', description: 'A plot chart description'},
+          {name: 'line', icon: 'fa fa-line-chart', title: 'Line chart', description: 'A line chart description'},
+          {name: 'gauge', icon: 'fa fa-tachometer', title: 'Gauge chart', description: 'A gauge chart description'}
+        ];
+
       }
     };
   });

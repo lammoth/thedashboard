@@ -17,6 +17,7 @@ router.post('/plugins/update/acquisitor/:name', controller.acquisitorConfigUpdat
 // Visualization routes
 router.get('/visualizations', auth.isAuthenticated(), controller.visualizations);
 router.post('/visualizations', controller.visualization);
+router.put('/visualizations/:id', controller.visualization);
 router.delete('/visualization/:id', auth.hasRole('admin'), controller.destroyVisualization);
 
 

@@ -6,36 +6,116 @@ angular.module('thedashboardApp')
       restrict: 'E',
       scope: false,
       link: function (scope, element, attrs) {
-        scope.form.graph = {};
-
-        scope.addYData = function() {
-          if (!scope.form.graph.y) {
-            scope.form.graph.y = [];
+        
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          if (visualization) {
+            // Setting X Axis
+            scope.form.graph = visualization.json.graph;
           }
-          scope.form.graph.y.push({});
-        };
+        });
 
-        scope.addXData = function() {
-          if (!scope.form.graph.x) {
-            scope.form.graph.x = [];
-          }
-          scope.form.graph.x.push({});
-        };
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
       }
     };
   })
-  .directive('visualizatorGraphicOptionsBarC3', function () {
+  .directive('visualizatorGraphicOptionsBarC3', function (Plugin) {
     return {
       restrict: 'E',
       scope: false,
       link: function (scope, element, attrs) {
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          if (visualization) {
+            // Setting graphic options
+            scope.graphicOptions = visualization.graphicOptions;
+          }
+        });
+
         scope.changeGraphicOptions = function(options, model) {
-          scope.$parent.$parent.visualizatorService.option(options, model, scope.chart); 
+          scope.visualizatorService.option(options, model, scope.chart); 
           if (options.restart) {
-            // TODO: Improve this reference to the grandfather making a service or something similar
-            scope.chart = scope.$parent.$parent.visualizatorService.render();
+            scope.chart = scope.visualizatorService.render();
           }
         };
+
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
+      }
+    };
+  })
+  .directive('visualizatorGraphicDataAreaC3', function () {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function (scope, element, attrs) {
+        
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          if (visualization) {
+            // Setting X Axis
+            scope.form.graph = visualization.json.graph;
+          }
+        });
+
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
+      }
+    };
+  })
+  .directive('visualizatorGraphicOptionsAreaC3', function (Plugin) {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function (scope, element, attrs) {
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          if (visualization) {
+            // Setting graphic options
+            scope.graphicOptions = visualization.graphicOptions;
+          }
+        });
+
+        scope.changeGraphicOptions = function(options, model) {
+          scope.visualizatorService.option(options, model, scope.chart); 
+          if (options.restart) {
+            scope.chart = scope.visualizatorService.render();
+          }
+        };
+
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
+      }
+    };
+  })
+  .directive('visualizatorGraphicDataPieC3', function () {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function (scope, element, attrs) {
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
+      }
+    };
+  })
+  .directive('visualizatorGraphicOptionsPieC3', function (Plugin) {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function (scope, element, attrs) {
+        scope.$on('currentVisualizationSetted', function(event, visualization) {
+          if (visualization) {
+            // Setting graphic options
+            scope.graphicOptions = visualization.graphicOptions;
+          }
+        });
+
+        scope.changeGraphicOptions = function(options, model) {
+          scope.visualizatorService.option(options, model, scope.chart); 
+          if (options.restart) {
+            scope.chart = scope.visualizatorService.render();
+          }
+        };
+
+        // Emits a signal in order to inform to the controller about their availability
+        scope.$emit('visualizatorDirectiveReady');
       }
     };
   });
