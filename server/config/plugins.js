@@ -14,7 +14,7 @@ var plugins = [
     active: true, 
     config: {
       jdbc: {
-        url: 'jdbc:phoenix:10.128.19.60',
+        url: 'jdbc:phoenix:10.128.19.62',
         minpoolsize: 10,
         maxpoolsize: 100,
         user: '',
@@ -67,7 +67,7 @@ var plugins = [
     pluginTitle: 'Kafka',
     active: true,
     config: {
-      address: '10.128.19.58:2181,10.128.19.59:2181,10.128.19.60:2181/kafka',
+      address: '10.128.19.58:2181/kafka',
       // TODO: Partition number could be required in a near future
       topics: [
         {topic: 'logstash.collectd'},
