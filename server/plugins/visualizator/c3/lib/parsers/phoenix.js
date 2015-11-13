@@ -12,10 +12,15 @@ function PhoenixC3Parser(data, raw, promise) {
 }
 
 PhoenixC3Parser.prototype.rawParser = function() {
-  console.log(typesFn);
   if (this.raw.chartType) {
     switch(this.raw.chartType) {
       case 'bar':
+        var graph = new (require('../graphics/' + this.raw.chartType))(this.preTreatment(this.data), this.raw, this.promise, typesFn.types);
+        graph.dataset();
+      case 'area':
+        var graph = new (require('../graphics/' + this.raw.chartType))(this.preTreatment(this.data), this.raw, this.promise, typesFn.types);
+        graph.dataset();
+      case 'pie':
         var graph = new (require('../graphics/' + this.raw.chartType))(this.preTreatment(this.data), this.raw, this.promise, typesFn.types);
         graph.dataset();
       default:

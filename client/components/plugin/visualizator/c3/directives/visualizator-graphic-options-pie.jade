@@ -1,0 +1,11 @@
+visualizator-graphic-options-bar-c3
+  .row
+    .col-xs-12
+      .form-group
+        label.control-label Set value instead percentage
+        select.form-control.m-b(
+          ng-model="graphicOptions.changePercentage", 
+          ng-change="changeGraphicOptions({option: 'changePercentage', restart: true}, graphicOptions.changePercentage)",
+        )
+          option(value=1) Yes
+          option(value=0) No

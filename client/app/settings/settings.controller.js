@@ -12,6 +12,7 @@ angular.module('thedashboardApp')
 
     function initTabPlugins() {
       var pluginsAcquisitorPromise = Plugin.broker('getAcquisitorPlugins');
+
       pluginsAcquisitorPromise.then(function(acquisitorPlugins) {
         $scope.plugins.acquisitors = acquisitorPlugins;
         $scope.plugins.acquisitorActive = Plugin.getAcquisitor();
@@ -149,7 +150,9 @@ angular.module('thedashboardApp')
     };
 
     $scope.getIcon = function(visualization) {
-      return $scope.visualizatorService.getIcon(visualization.json.chartType);
+      if (visualization.json) {
+        return $scope.visualizatorService.getIcon(visualization.json.chartType);
+      }
     }
 
     
@@ -195,7 +198,7 @@ angular.module('thedashboardApp')
                       action: "updateDatasources",
                       data: taskData.data
                     });
-                    console.log(dataSources);
+
                     // If exists datasources, we get all fields
                     if (dataSources.length > 0) {
                       queryService.createTask(

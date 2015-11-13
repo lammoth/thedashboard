@@ -5,85 +5,111 @@ div.modal.fade.in
         div.color-line
       div.modal-header.text-center
         h3.modal-title Save visualization
-      div.modal-body
+      div.modal-body(ng-if="!visualization")
         div.row
           div.col-xs-12
             .form-group
               label.control-label Visualization name
-              input.form-control(type="text", ng-model="visualizationName")
-      div.modal-footer
+              input.form-control(type="text", ng-model="input.visualizationName")
+      div.modal-body(ng-if="visualization")
+        div.row
+          div.col-xs-12
+            p.text-center Do you update the visualization?
+      div.modal-footer(ng-if="!visualization")
         button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
         button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
           i.fa.fa-floppy-o
-          | &nbsp; Save 
-.row
-  .col-xs-12.col-md-4.col-lg-3.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
-    .hpanel
-      div(ng-controller="VisualizationEditorTabController")
+          | &nbsp; Save
+      div.modal-footer(ng-if="visualization")
+        button(type="button", class="btn btn-default btn-outline", data-dismiss="modal", ng-click="cancel()") Close
+        button(type="button", class="btn btn-info btn-outline", data-dismiss="modal", ng-click="save()")
+          i.fa.fa-cloud-upload
+          | &nbsp; Update    
+div(ng-controller="VisualizationEditorTabController")
+  .row
+    nav(mfb-menu, position="br", effect="slidein", active-icon="ion-navicon-round", resting-icon="ion-navicon-round", toggling-method="click")
+      button(mfb-button, icon="ion-record", label="Save", ng-click="saveVisualizationModal()")
+      button(mfb-button, icon="ion-play", label="Run visualization", ng-click="runVisualization()") 
+  .row
+    .col-xs-12
+      .hpanel
         tabset
-          tab(heading='Data')           
-            .tab-content
-              tab-pane.active
-                .panel-body
-                  .row
-                    .col-xs-12
-                      .form-group(style="margin-bottom: 25px;")
-                        label.control-label Select datasource         
-                        select.form-control.m-b(ng-model="form.datasource", ng-options="datasource.name for datasource in datasources track by datasource.name", ng-change="selectFields(form.datasource)")
-                    .col-xs-12
-                      .hpanel.hviolet
-                          .panel-heading
-                            .panel-tools
-                              a.showhide
-                                i.fa.fa-chevron-up
-                            | Graph fields
-                          |             
-                          .panel-body
-                            div.row
-                              div.col-md-12.col-xs-12
-                                div.checkbox(ng-repeat="field in fields")
-                                  label
-                                    input(type="checkbox", ng-model="form.fields[field.name]", ng-click="updateFields(field)")
-                                    | {{ field.name }}
-                                .hpanel.hbgorange(style="margin-bottom: 0px;", ng-show="!fields")
-                                  .panel-body
-                                    .text-center
-                                      small No datasource selected
-                      .hpanel.horange
-                          .panel-heading
-                            .panel-tools
-                              a.showhide
-                                i.fa.fa-chevron-up
-                            | Operations
-                          |             
-                          .panel-body
-                            acquisitor-operations(chart="{{chartType}}")
-                      .hpanel.hred
-                          .panel-heading
-                            .panel-tools
-                              a.showhide
-                                i.fa.fa-chevron-up
-                            | Graph data
-                          |             
-                          .panel-body
-                            visualizator-graphic-data(chart="{{chartType}}")
-                      div.pull-right
-                        a.btn.btn-info.btn-outline.btn-margin(ng-click="saveVisualizationModal()")
-                          i.fa.fa-floppy-o
-                          | &nbsp; Save 
-                        a.btn.btn-warning2.btn-outline.btn-margin(ng-click="runVisualization()")
-                          i.fa.fa-play
-                          | &nbsp; Run
-          tab(heading='Graph options')           
+          tab
+            tab-heading
+              i.fa.fa-television
+              &nbsp;
+              | Visualization           
             .tab-content
               .panel-body
-                visualizator-graphic-options(chart="{{chartType}}")
-  .col-xs-12.col-md-8.col-lg-9.animated-panel.zoomIn(style='animation-delay: 0.4s; -webkit-animation-delay: 0.4s;')
-    .hpanel
-      .panel-heading
-        .panel-tools
-          a.showhide
-            i.fa.fa-chevron-up
-        | Visualization
-      .panel-body
-        visualizator-graphic-editor
+                .row
+                  .visualizator-container                  
+                    .col-xs-12
+                      visualizator-graphic-editor
+          tab
+            tab-heading
+              i.fa.fa-cog
+              &nbsp;
+              | Data
+            .tab-content
+              .panel-body
+                .row
+                  .visualizator-container
+                    .col-xs-12.col-md-6.col-lg-6
+                      .hpanel.hyellow
+                        .panel-heading
+                          i.fa.fa-database
+                          &nbsp;
+                          | Data
+                        | 
+                        .panel-body
+                          .row
+                            .col-xs-12
+                              .form-group(style="margin-bottom: 25px;")
+                                label.control-label Select datasource         
+                                select.form-control.m-b(ng-model="form.datasource", ng-options="datasource.name for datasource in datasources track by datasource.name", ng-change="selectFields(form.datasource)")
+                            .col-xs-12
+                              .hpanel.hviolet
+                                  .panel-heading
+                                    .panel-tools
+                                      a.showhide
+                                        i.fa.fa-chevron-up
+                                    | Graph fields
+                                  |             
+                                  .panel-body
+                                    div.row
+                                      div.col-md-12.col-xs-12
+                                        div.checkbox(ng-repeat="field in fields")
+                                          label
+                                            input(type="checkbox", ng-model="form.fields[field.name]", ng-click="updateFields(field)")
+                                            | {{ field.name }}
+                                        .hpanel.hbgorange(style="margin-bottom: 0px;", ng-show="!fields")
+                                          .panel-body
+                                            .text-center
+                                              small No datasource selected
+                              .hpanel.horange
+                                  .panel-heading
+                                    .panel-tools
+                                      a.showhide
+                                        i.fa.fa-chevron-up
+                                    | Operations
+                                  |             
+                                  .panel-body
+                                    acquisitor-operations(chart="{{chartType}}")
+                              .hpanel.hred
+                                  .panel-heading
+                                    .panel-tools
+                                      a.showhide
+                                        i.fa.fa-chevron-up
+                                    | Graph data
+                                  |             
+                                  .panel-body
+                                    visualizator-graphic-data(chart="{{chartType}}")
+                    .col-xs-12.col-md-6.col-lg-6
+                      .hpanel.hred
+                        .panel-heading
+                          i.fa.fa-magic
+                          &nbsp;
+                          | Graph effects
+                        | 
+                        .panel-body
+                          visualizator-graphic-options(chart="{{chartType}}")

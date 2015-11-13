@@ -12,9 +12,43 @@ angular.module('thedashboardApp')
         scope.groupFields = {fields: [], aggs: []};
 
         scope.$on('currentVisualizationSetted', function(event, visualization) {
-          // TODO: Add a function in order to set the visualization info
+          if (visualization) {
+            // Setting datsource
+            scope.form.datasource = visualization.json.datasource;
+            // Setting datasource fields
+            scope.fields = visualization.json.datasource.fields;
+            // Setting datasource fields selected
+            scope.form.fields = visualization.json.fields;
+            // Setting aggregations
+            scope.form.aggregations = visualization.json.aggregations;
+            // Updating fields
+            scope.loadFields();
+            // Updating extra-fields
+            scope.updateExtraFields();
+            // Setting groups
+            scope.form.groups = visualization.json.groups;
+            // Setting orders
+            scope.form.orders = visualization.json.orders;
+            // Setting limit
+            scope.form.limit = visualization.json.limit;
+          }
         });
 
+        scope.selectFields = function(datasource) {
+          scope.fields = datasource.fields;
+        };
+        
+        // This function loads the selectedFiles variable
+        scope.loadFields = function() {
+          scope.selectedFields = [];
+          _.forEach(scope.form.fields, function (value, field) {
+            var richField = _.find(scope.fields, function(fieldRich) {
+              return fieldRich.name === field;
+            });
+            scope.selectedFields.push(richField);
+          });
+        }
+        
         // This function is captured by the acquisitor directive but it's emitted by main editor view
         scope.updateFields = function(field) {
           if (!scope.form.fields[field.name]) {

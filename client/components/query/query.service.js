@@ -96,6 +96,23 @@ angular.module('thedashboardApp')
 
         getTimeRange: function() {
           return timeData;
-        }
+        },
+
+        // Save a data like visualizations, dashboards, etc
+        updateData: function(type, data, id, cb) {
+
+          $http.put(
+            apiPrefix + '/data/' + type + '/' + id,
+            {data: data}
+          ).
+            success(function(data) {
+              console.log(data);
+              if (data.response === "error") { return cb(data); }
+              return cb(data);
+            }).
+            error(function(err) {
+              console.log(err);
+            });  
+        },
     };
   });
