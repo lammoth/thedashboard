@@ -64,6 +64,22 @@ angular.module('thedashboardApp')
           return null;
       },
 
+      getAcquisitorSetup: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins");
+          return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'setup');
+        }
+        return null;
+      },
+
+      getAcquisitorConfig: function() {
+        if (cache.get("plugins")) {
+          var plugins = cache.get("plugins");
+          return _.result(_.find(plugins, {'name': 'acquisitor', 'enable': true}), 'config');
+        }
+        return null;
+      },
+
       // Set current acquisitor service instance
       // CAUTION: This method is valid only for the visualizator editor screen
       setAcquisitorInstance: function() {
@@ -181,6 +197,7 @@ angular.module('thedashboardApp')
           .error(function(err) {
             return cb(err);
           });
+      },
 
       // Returns the visualizator's charts supported
       // This result must be contracted with the charts of visualizator selected
