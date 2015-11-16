@@ -158,7 +158,9 @@ angular.module('thedashboardApp')
     };
 
     $scope.getIcon = function(visualization) {
-      return $scope.visualizatorService.getIcon(visualization.json.chartType);
+      if ($scope.visualizatorService && visualization.json) {
+        return $scope.visualizatorService.getIcon(visualization.json.chartType);
+      }
     }
     
   })
