@@ -22,7 +22,7 @@ function Persistor() {
 Persistor.prototype.saveTaskResults = function(task, data) {
   var deferred = Q.defer();
   var parent = this;
-  
+
   this.client.mset(
     'task:' + task,
     JSON.stringify(data),
@@ -39,7 +39,7 @@ Persistor.prototype.saveTaskResults = function(task, data) {
 Persistor.prototype.saveVisualization = function(data) {
   var deferred = Q.defer();
   var parent = this;
-  
+
   this.client.mset(
     'visualization:' + data.id,
     JSON.stringify(data),
@@ -60,15 +60,23 @@ Persistor.prototype.getTaskResults = function(task, cb) {
 };
 
 Persistor.prototype.getVisualizationResults = function(data) {
+
+  // time range on header : data.time
+  //console.log(data.time);
+
   var deferred = Q.defer();
   var TimeUtilInstance = new timeUtil();
+
   // TODO: Get a real value to set "Margin of Error"
   // For test purposes the ME has been established to 10 hours
   this.client.get("visualization:" + data.id, function(err, result) {
-    deferred.resolve(JSON.parse(result));
-    if (err) deferred.resolve(false);
-    // if (result) {
-    //   var visualization = JSON.parse(result);
+    
+    //if (err) deferred.resolve(false);
+    // Time range on redis : JSON.parse(result).time
+    //console.log(JSON.parse(result).time);
+    if (result) {
+      deferred.resolve(JSON.parse(result));
+    //  var visualization = JSON.parse(result);
     //   deferred.resolve(
     //     (
     //       (
@@ -78,9 +86,9 @@ Persistor.prototype.getVisualizationResults = function(data) {
     //       ? result : false
     //     )
     //   );
-    // } else {
-    //   deferred.resolve(false);
-    // }
+    } else {
+      deferred.resolve(false);
+    }
   });
   return deferred.promise;
 };

@@ -63,7 +63,6 @@ angular.module('thedashboardApp')
     // Modal section
     $scope.animationsEnabled = true;
 
-
     $scope.saveVisualizationModal = function() {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
@@ -81,9 +80,8 @@ angular.module('thedashboardApp')
         $scope.$broadcast('saveVisualization', data);
       });
     };
-
   })
-  .controller('VisualizationEditorTabController', function ($scope, $timeout, $stateParams, queryService, socket, Settings, VisualizationService, Plugin) {
+  .controller('VisualizationEditorTabController', function ($scope, $timeout, $stateParams, queryService, socket, Settings, VisualizationService, Plugin, TimeFilter) {
     $scope.form = {};
     $scope.form.fields = {};
     $scope.form.chartType = $scope.$parent.chartType;
@@ -96,11 +94,6 @@ angular.module('thedashboardApp')
       // Loads a preset visualization
       var VisualizationPromise = VisualizationService.loadVisualization($stateParams.id);
       VisualizationPromise.then(function(visualization) {
-        //console.log(visualization.json.where);
-        if (visualization.json.where) {
-          console.log(({from: visualization.json.where.from, to: visualization.json.where.to}));
-        }
-        //queryService.setTimeRange({from: visualization.json.where.from, to: visualization.json.where.to});
         $scope.currentVisualization = visualization;
       });
     }
@@ -123,8 +116,9 @@ angular.module('thedashboardApp')
 
     $scope.runVisualization = function() {
       var chart = $scope.$parent.chart;
-      //console.log(queryService.getTimeRange());
-      $scope.form.where = queryService.getTimeRange();
+
+      $scope.form.time = { from: TimeFilter.from(), to:TimeFilter.to() }
+
       queryService.createTask(
         'query',
         'visualization',
@@ -137,7 +131,6 @@ angular.module('thedashboardApp')
                 data.job,
                 function(taskData) {
                   query = taskData.data.query;
-                  console.log(query);
                   $scope.visualizatorService.data(taskData.data.visualization);
                   $scope.visualizatorService.bind('#visualization-chart-editor');
                   $scope.chart = $scope.visualizatorService.render();
@@ -159,6 +152,7 @@ angular.module('thedashboardApp')
     // TODO: Shit, this must be improved
     $scope.$on('saveVisualization', function(event, visualizationName) {
       if ($scope.visualizatorService.hasGraph()) {
+
         if (!$stateParams.id) {
           queryService.saveData(
             'visualizations',
@@ -198,6 +192,7 @@ angular.module('thedashboardApp')
   .controller('ModalSaveInstanceController', function ($scope, $modalInstance, visualization) {
     $scope.visualization = visualization;
     $scope.input = {};
+
     $scope.save = function() {
       $modalInstance.close($scope.input.visualizationName);
     };

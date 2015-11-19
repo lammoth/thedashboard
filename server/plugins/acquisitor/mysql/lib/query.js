@@ -37,10 +37,11 @@ QueryReq.prototype.execQuery = function(data) {
     Parser.parse(data);
   }
 
-  this.connection.query(((!data.action) ? Parser.query : raw), function(err, rows) {
+  this.connection.query(((!data.action) ? Parser.query.full : raw), function(err, rows) {
     deferred.resolve({
       rows: rows,
-      query: ((!data.action) ? Parser.query : raw)
+      query: ((!data.action) ? Parser.query.full : raw),
+      query_raw: Parser.query.raw
     });
   });
 

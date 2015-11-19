@@ -9,13 +9,14 @@ function visualizationQuery(parent, queryData, task, cb) {
     visualizatorPluginObj: null,
     VisualizatorPlugin: null,
     query: null,
+    query_raw: null
   };
 
   // Getting the visualizator plugin
   parent.visualizator.plugin()
   .then(function(dataVisualizator) {
     data.visualizatorPluginObj = parent.visualizator.getObject(parent.app.get('plugins'), dataVisualizator);
-    // Instantiating Visulazator plugin 
+    // Instantiating Visualizator plugin 
     data.VisualizatorPlugin = new (require(data.visualizatorPluginObj.path))();
     // In this call, you must transform the frontend JSON to SQL or whatever
     return parent.acquisitor.queryClient.execQuery(queryData);
@@ -25,6 +26,8 @@ function visualizationQuery(parent, queryData, task, cb) {
     data.VisualizatorPlugin.data = queryResult.rows;
     // Setting query
     data.query = queryResult.query;
+    data.query_raw = queryResult.query_raw;
+
     // Passing the raw data to the Visualizator plugin
     data.VisualizatorPlugin.raw = queryData;
     // Setting the Acquisitor name in the visualizator in order to do a proper parsing
@@ -38,7 +41,8 @@ function visualizationQuery(parent, queryData, task, cb) {
   .then(function(visualizatorData) {
     return parent.persistor.saveTaskResults(task, {
       visualization: visualizatorData,
-      query: data.query
+      query: data.query,
+      query_raw: data.query_raw
     });
   })
   // Emitting an event in order to refresh the web visualization

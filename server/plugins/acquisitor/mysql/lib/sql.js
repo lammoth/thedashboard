@@ -9,6 +9,7 @@ function SQLParser() {
 }
 
 SQLParser.prototype.run = function() {
+  var query = {};
   inspector = new SQLInspector(this.data, this.query);
 
   inspector.datasource();
@@ -17,10 +18,16 @@ SQLParser.prototype.run = function() {
   inspector.groups();
   inspector.orders();
   inspector.limit();
+  
+  query.raw = this.query.toString();
+
+  inspector.where();
+  
+  query.full = this.query.toString();
 
   console.log(this.query.toString());
-
-  return this.query.toString();
+   
+  return query;
 };
 
 function SQLInspector(data, query) {
@@ -92,4 +99,12 @@ function SQLInspector(data, query) {
       parent.query.limit(this.data.limit);
     }
   };  
+
+  // Set query where
+  this.where = function() {
+    if (this.data.time) {
+      parent.query.where('FSW BETWEEN CAST("' + this.data.time.from + '" AS DATETIME) AND CAST("' + this.data.time.to + '" AS DATETIME)');
+    }
+  };
+
 }

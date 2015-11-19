@@ -84,8 +84,8 @@ exports.visualization = function(req, res) {
         name: req.body.data.name,
         id: data._id,
         time: {
-          to: null,
-          from: null
+          to: req.body.data.json.time.to,
+          from: req.body.data.json.time.from
         },
         query: req.body.data.query
       }

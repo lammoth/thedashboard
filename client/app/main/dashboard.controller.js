@@ -136,6 +136,12 @@ angular.module('thedashboardApp')
             },
             mongo: {
               data: visualization.json
+            },
+            header: {
+              time: {
+                from: TimeFilter.from(),
+                to: TimeFilter.to()
+              }
             }
           },
           function(data) {
