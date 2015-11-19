@@ -24,7 +24,8 @@ angular.module('thedashboardApp')
             // Updating fields
             scope.loadFields();
             // Updating extra-fields
-            scope.updateExtraFields();
+            //scope.updateExtraFields();
+            scope.updateGroupFields();
             // Setting groups
             scope.form.groups = visualization.json.groups;
             // Setting orders
@@ -58,7 +59,7 @@ angular.module('thedashboardApp')
             });
             scope.groupFields.fields = scope.selectedFields;
           } else {
-            // scope.selectedFields.push(_.find(scope.fields, {'name': field.name}));
+            scope.selectedFields.push(_.find(scope.fields, {'name': field.name}));
             scope.groupFields.fields.push(_.find(scope.fields, {'name': field.name}));
           }
         };
